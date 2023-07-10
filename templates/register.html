@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>Register Page</p>
+
+
+<form method="POST" action="{{url_for('register')}}" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.profile_picture }}
+    {{ form.username }}
+    {{ form.email }}
+    {{ form.phone_number }}
+    {{ form.password }}
+    {{ form.submit }}
+</form>
+
+
+{% endblock %}

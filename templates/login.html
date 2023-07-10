@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>Login Page</p>
+<p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+       <p>{{ message }}</p>  
+      {% endfor %}
+    {% else %}
+        <a style="color:rgb(124, 82, 100)" href="{{url_for('register')}}">Don't have an account? Signup!</a>
+    {% endif %}
+    
+    {% endwith %}
+</p>
+
+<form method="POST" action="{{url_for('login')}}">
+    {{ form.hidden_tag() }}
+    {{ form.email }}
+    {{ form.password }}
+    {{ form.submit }}
+</form>
+
+{% endblock %}

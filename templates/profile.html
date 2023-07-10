@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>Profile</p>
+<hr><br>
+
+{% for post in user_posts %}
+<div>
+    <p>{{ post.body }}</p>
+    <p style="font-weight:lighter">
+        {{ post.likes }}
+        {{ post.created_at.strftime('%B %Y') }}
+        - Posted by: 
+        {{ post.user.username }}
+    </p>
+    <p>
+        {% if post.user.profile_picture %}
+            <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}" alt="Profile Picture">
+        {% else %}
+            <p>No profile picture</p>
+        {% endif %}
+    </p>
+ 
+    <br><hr>
+
+
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>All Posts</p>
+<hr><br>
+
+{% for post in posts %}
+<div>
+    <a href="{{ url_for('user_posts', user_id=post.user.id) }}">
+        <p> 
+        
+            <span>
+            {% if post.user.profile_picture %}
+                <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}" alt="Profile Picture">
+            {% else %}
+             <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}" alt="Profile Picture">
+            {% endif %}
+        </span>
+        <strong> {{ post.user.username }}</strong>
+       
+        </p>
+    </a>
+    <br>
+    <p>{{ post.body }}</p>
+    <p style="font-weight:lighter">
+        ♡  {{ post.likes }} • 
+        {{ post.created_at.strftime('%B %Y') }} 
+        <br>
+    </p>
+    <br><hr>
+</div>
+{% endfor %}
+
+
+{% endblock %}
