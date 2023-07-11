@@ -3,7 +3,7 @@ Crow Nexus - Social Media Platform
 started on: July/08/2023
 """
 
-from flask import Flask, render_template, url_for, redirect, jsonify, flash
+from flask import Flask, render_template, url_for, redirect, jsonify, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField
 from flask_wtf.file import FileField, FileAllowed
@@ -19,7 +19,7 @@ from datetime import datetime
 
 import os
 import secrets
-from PIL import Image  # pip pillow
+from PIL import Image  # pip Pillow
 from flask import current_app
 
 # ----------------- Configuring Flask, Bcrypt & Connecting to DB -----------------
@@ -202,12 +202,13 @@ with app.app_context():
             return redirect(url_for('home'))
 
     # --------------------- Post Page by ID --------------------------------------
-    @app.route('/post_details/<int:post_id>')
-    def post_details(post_id):
+    @app.route('/showpost/<int:post_id>')
+    def show_post(post_id):
         form = CommentForm()
-        post = Post.query.get(post_id)
-        if post:
-            return render_template('post_details', form=form, post=post, current_user=current_user, logged_in=current_user.is_authenticated)
+        requested_post = Post.query.get(post_id)
+        
+        if requested_post:
+            return render_template('showpost.html', form=form, post=requested_post, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('Post not found.')
             return redirect(url_for('home'))
@@ -234,7 +235,7 @@ with app.app_context():
     #     else:
     #         flash('Failed to add comment.')
 
-    #     return redirect(url_for('post_details', post_id=post.id))
+    #     return redirect(url_for('show_post', post_id=post.id))
 
     # -------------------- Create New Post Page  --------------------------------
 
