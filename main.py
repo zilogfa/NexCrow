@@ -87,6 +87,7 @@ with app.app_context():
         profile_picture = db.Column(db.String(100))
 
         posts = relationship('Post', back_populates='user')
+        comments = db.relationship('Comment', back_populates='user')
 
     class Post(db.Model):
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
@@ -100,6 +101,21 @@ with app.app_context():
         updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
         user = relationship('User', back_populates='posts')
+        comments = db.relationship('Comment', back_populates='post')
+
+    class Comment(db.Model):
+        __tablename__ = 'comments'
+        id = db.Column(db.Integer, primary_key=True)
+        content = db.Column(db.String(255), nullable=False)
+        timestamp = db.Column(db.DateTime, nullable=False,
+                              default=datetime.utcnow)
+        user_id = db.Column(db.Integer, db.ForeignKey(
+            'user.id'), nullable=False)
+        post_id = db.Column(db.Integer, db.ForeignKey(
+            'post.id'), nullable=False)
+
+        user = db.relationship('User', back_populates='comments')
+        post = db.relationship('Post', back_populates='comments')
 
     db.create_all()
 
@@ -147,6 +163,16 @@ with app.app_context():
             DataRequired(), Length(min=6, max=20)], render_kw={'placeholder': 'Password'})
         submit = SubmitField('Login')
 
+    class CommentForm(FlaskForm):
+        """Comment Form: TextArea - Submit-btn"""
+        comment = TextAreaField('Post',
+                                validators=[
+                                    DataRequired(), Length(min=1, max=280)],
+                                render_kw={'class': '',
+                                           'placeholder': 'Type Something'}
+                                )
+        submit = SubmitField('Submit', render_kw={'class': ''})
+
     # -------------------- Pages  ----------------------------------------------
     # -------------------- Home Page  ------------------------------------------
     # if NOT logged_in: see All posts and Login/Register btn's NavBar
@@ -174,6 +200,41 @@ with app.app_context():
         else:
             flash('User not found.')
             return redirect(url_for('home'))
+
+    # --------------------- Post Page by ID --------------------------------------
+    @app.route('/post_details/<int:post_id>')
+    def post_details(post_id):
+        form = CommentForm()
+        post = Post.query.get(post_id)
+        if post:
+            return render_template('post_details', form=form, post=post, current_user=current_user, logged_in=current_user.is_authenticated)
+        else:
+            flash('Post not found.')
+            return redirect(url_for('home'))
+
+    # --------------------- Comment Page -----------------------------------------
+    # @app.route('/post/<int:post_id>/comment', methods=['POST'])
+    # @login_required
+    # def add_comment(post_id):
+    #     # Get the current user ID from the session or any authentication mechanism
+    #     user_id = get_current_user_id()
+
+    #     # Retrieve the post and user from the database
+    #     post = Post.query.get(post_id)
+    #     user = User.query.get(user_id)
+
+    #     # Get the comment content from the form data
+    #     content = request.form.get('content')
+
+    #     # Create a new comment and associate it with the post and user
+    #     comment = create_comment(user.id, post.id, content)
+
+    #     if comment:
+    #         flash('Comment added successfully.')
+    #     else:
+    #         flash('Failed to add comment.')
+
+    #     return redirect(url_for('post_details', post_id=post.id))
 
     # -------------------- Create New Post Page  --------------------------------
 
