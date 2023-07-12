@@ -202,10 +202,21 @@ with app.app_context():
             return redirect(url_for('home'))
 
     # --------------------- Post Page by ID --------------------------------------
-    @app.route('/showpost/<int:post_id>')
+    @app.route('/showpost/<int:post_id>', methods=['GET', 'POST'])
+    @login_required
     def show_post(post_id):
-        form = CommentForm()
         requested_post = Post.query.get(post_id)
+        form = CommentForm()
+        if form.validate_on_submit():
+            user_id = current_user.id
+            post = Post.query.get(post_id)
+            user = User.query.get(user_id)
+
+            new_comment = Comment(content=form.comment.data, user=user, post=post)
+            db.session.add(new_comment)
+            db.session.commit()
+            flash('Comment added successfully.')
+            return redirect(url_for('show_post', post_id=post_id))    
         
         if requested_post:
             return render_template('showpost.html', form=form, post=requested_post, current_user=current_user, logged_in=current_user.is_authenticated)

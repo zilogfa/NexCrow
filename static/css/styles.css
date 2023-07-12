@@ -8,6 +8,11 @@ div p img {
     height: 50px;
 }
 
+.comment-img {
+    border-radius: 50%;
+    height: 30px;
+}
+
 a {
     text-decoration: none;
     color: beige;
@@ -18,3 +23,4 @@ a {
     justify-content: center;
 
 }
+

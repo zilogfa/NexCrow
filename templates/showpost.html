@@ -26,4 +26,31 @@
 
 
 
+ <!-- Comment Section  -->
+<form action="{{url_for('show_post', post_id=post.id)}}" method="post">
+{{ form.csrf_token }}
+{{ form.comment }}
+{{ form.submit }}
+</form>
+
+
+ <!-- Display existing comments -->
+ <h3>Comments</h3>
+ {% for comment in post.comments %}
+ <span>
+    {% if comment.user.profile_picture %}
+        <img class="comment-img" src="{{ url_for('static', filename='profile_pictures/' + comment.user.profile_picture) }}" alt="Profile Picture">
+    {% else %}
+     <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}" alt="Profile Picture">
+    {% endif %}
+    {{comment.user.username }}
+    </span>
+    
+     <p>{{ comment.content }}</p>
+     <br> <hr>
+     
+     <!-- Display other comment information -->
+ {% endfor %}
+
+
 {% endblock %}
