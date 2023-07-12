@@ -72,6 +72,12 @@ def save_profile_picture(file):
 
 # -------------------- DATABASE Tables  -----------------------------------------
 with app.app_context():
+
+    likes = db.Table('likes',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
+)
+
     class User(db.Model, UserMixin):
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
         __tablename__ = 'user'
@@ -88,6 +94,7 @@ with app.app_context():
 
         posts = relationship('Post', back_populates='user')
         comments = db.relationship('Comment', back_populates='user')
+        liked_posts = db.relationship('Post', secondary=likes, backref='likers')
 
     class Post(db.Model):
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
@@ -102,6 +109,7 @@ with app.app_context():
 
         user = relationship('User', back_populates='posts')
         comments = db.relationship('Comment', back_populates='post')
+        
 
     class Comment(db.Model):
         __tablename__ = 'comments'
@@ -116,6 +124,8 @@ with app.app_context():
 
         user = db.relationship('User', back_populates='comments')
         post = db.relationship('Post', back_populates='comments')
+
+    
 
     db.create_all()
 
@@ -239,6 +249,38 @@ with app.app_context():
             db.session.commit()
             return redirect(url_for('home'))
         return render_template('new_post.html', form=form, logged_in=current_user.is_authenticated)
+    
+
+    # -------------------- Like Function ---------------------------------------
+    #---------------------------------------------------------------------------
+    #---------------------------------------------------------------------------
+
+    @app.route('/like/<int:post_id>', methods=['POST'])
+    @login_required
+    def like_post(post_id):
+        # Get the current user
+
+        # Get the post
+        post = Post.query.get(post_id)
+        print("USER CALLED Like_Post function ///////////////////////////")
+        if post and current_user:
+            if post in current_user.liked_posts:
+                # User already liked the post, remove the like
+                current_user.liked_posts.remove(post)
+                post.likes -= 1
+                print("USER Like_Post post.Likes -=1 ///////////////////////////")
+            else:
+                # User didn't like the post yet, add the like
+                current_user.liked_posts.append(post)
+                post.likes += 1
+                print("USER Like_Post post.Likes +=1 ///////////////////////////")
+
+            db.session.commit()
+            flash('Post liked successfully.')
+        else:
+            flash('Post not found.')
+
+        return redirect(url_for('show_post', post_id=post_id))
 
     # -------------------- Edit Page  ------------------------------------------
 

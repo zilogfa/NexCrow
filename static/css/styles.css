@@ -24,3 +24,15 @@ a {
 
 }
 
+
+
+
+
+/* -- Like Class ♥ */
+.heart-emoji {
+    font-size: 24px;}
+.red-heart {
+    color: red;}
+.empty-heart {
+    color: gray;}
+/* -- End of Like Class ♥ */

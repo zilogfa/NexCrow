@@ -19,14 +19,31 @@
 
 <p>{{ post.body }}</p>
  <p style="font-weight:lighter">
-    ♡  {{ post.likes }} • 
+     • 
     {{ post.created_at.strftime('%B %Y') }} 
     <br>
 </p>
 
 
-
 {% if logged_in %}
+
+        <!-- Like ♥ -->
+        <p>
+            <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
+                <span class="likes-wrapper">
+                {% if post.likes == 1 %}
+                    <span class="heart-emoji red-heart">♥</span>
+                {% else %}
+                    <span class="heart-emoji empty-heart">♥</span>
+                {% endif %}
+                <span class="likes-count">{{ post.likes }}</span>
+                </span>
+            </a>
+            </p> 
+            <!-- End of Like ♥ -->
+
+<hr>
+
  <!-- Comment Section  -->
 <form action="{{url_for('show_post', post_id=post.id)}}" method="post">
 {{ form.csrf_token }}
@@ -55,4 +72,33 @@
  {% endfor %}
 
 
+
 {% endblock %}
+
+
+
+<!-- 
+<script>
+    function likePost(postId) {
+      fetch(`/post/${postId}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token() }}'  // Assuming you're using CSRF protection
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          // Handle successful response, e.g., display a success message
+          console.log('Post liked successfully');
+        } else {
+          // Handle error response, e.g., display an error message
+          console.error('Failed to like the post');
+        }
+      })
+      .catch(error => {
+        // Handle error, e.g., display an error message
+        console.error('An error occurred:', error);
+      });
+    }
+  </script> -->

@@ -20,7 +20,22 @@
     <br>
     <p>{{ post.body }}</p>
     <p style="font-weight:lighter">
-        ♡ {{ post.likes }} • 
+
+        <!-- Like ♥ -->
+        <p>
+            <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
+                <span class="likes-wrapper">
+                {% if post.likes == 1 %}
+                    <span class="heart-emoji red-heart">♥</span>
+                {% else %}
+                    <span class="heart-emoji empty-heart">♥</span>
+                {% endif %}
+                <span class="likes-count">{{ post.likes }}</span>
+                </span>
+            </a>
+            </p> 
+            <!-- End of Like ♥ -->
+
         {{ post.created_at.strftime('%B %Y') }}
         <a href="{{ url_for('show_post', post_id=post.id) }}"> Comment </a>
     <br>
