@@ -26,12 +26,14 @@
 
 
 
+{% if logged_in %}
  <!-- Comment Section  -->
 <form action="{{url_for('show_post', post_id=post.id)}}" method="post">
 {{ form.csrf_token }}
 {{ form.comment }}
 {{ form.submit }}
 </form>
+{% endif %}
 
 
  <!-- Display existing comments -->

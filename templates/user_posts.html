@@ -6,7 +6,7 @@
 <h1>{{ user.username }}'s Posts</h1>
 {% for post in posts %}
 <div>
-    <p>      
+    <p>  
         <span>
         {% if post.user.profile_picture %}
             <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}" alt="Profile Picture">
@@ -15,12 +15,14 @@
         {% endif %}
     </span>
     <strong>{{ post.user.username }}</strong>
+    
     </p>
     <br>
     <p>{{ post.body }}</p>
     <p style="font-weight:lighter">
         ♡ {{ post.likes }} • 
         {{ post.created_at.strftime('%B %Y') }}
+        <a href="{{ url_for('show_post', post_id=post.id) }}"> Comment </a>
     <br>
     </p>
     <br><hr>

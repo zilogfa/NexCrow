@@ -203,7 +203,6 @@ with app.app_context():
 
     # --------------------- Post Page by ID --------------------------------------
     @app.route('/showpost/<int:post_id>', methods=['GET', 'POST'])
-    @login_required
     def show_post(post_id):
         requested_post = Post.query.get(post_id)
         form = CommentForm()
@@ -224,29 +223,6 @@ with app.app_context():
             flash('Post not found.')
             return redirect(url_for('home'))
 
-    # --------------------- Comment Page -----------------------------------------
-    # @app.route('/post/<int:post_id>/comment', methods=['POST'])
-    # @login_required
-    # def add_comment(post_id):
-    #     # Get the current user ID from the session or any authentication mechanism
-    #     user_id = get_current_user_id()
-
-    #     # Retrieve the post and user from the database
-    #     post = Post.query.get(post_id)
-    #     user = User.query.get(user_id)
-
-    #     # Get the comment content from the form data
-    #     content = request.form.get('content')
-
-    #     # Create a new comment and associate it with the post and user
-    #     comment = create_comment(user.id, post.id, content)
-
-    #     if comment:
-    #         flash('Comment added successfully.')
-    #     else:
-    #         flash('Failed to add comment.')
-
-    #     return redirect(url_for('show_post', post_id=post.id))
 
     # -------------------- Create New Post Page  --------------------------------
 
