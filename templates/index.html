@@ -6,7 +6,7 @@
 
 {% for post in posts %}
 <div>
-    <a href="{{ url_for('user_posts', user_id=post.user.id) }}">
+    <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
         <p> 
         
             <span>

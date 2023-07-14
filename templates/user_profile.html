@@ -4,6 +4,21 @@
 <p>Other User Profile</p>
 
 <h1>{{ user.username }}'s Posts</h1>
+
+<!-- Follow unfollow -->
+{% if current_user != user %}
+  {% if current_user.is_following(user) %}
+    <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
+      <button type="submit">Unfollow</button>
+    </form>
+  {% else %}
+    <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
+      <button type="submit">Follow</button>
+    </form>
+  {% endif %}
+{% endif %}
+
+<!-- SOWE POST -->
 {% for post in posts %}
 <div>
     <p>  

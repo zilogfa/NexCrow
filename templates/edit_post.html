@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p>Edit Page</p>
+
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ form.body(size=40, placeholder='Stick a new task') }} <br>
+    {{ form.submit }}
+</form>
+
+{% endblock %}

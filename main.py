@@ -78,6 +78,13 @@ with app.app_context():
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
 )
 
+    followers = db.Table(
+    'followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+)
+    
+
     class User(db.Model, UserMixin):
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
         __tablename__ = 'user'
@@ -95,6 +102,25 @@ with app.app_context():
         posts = relationship('Post', back_populates='user')
         comments = db.relationship('Comment', back_populates='user')
         liked_posts = db.relationship('Post', secondary=likes, backref='likers')
+
+        followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic'
+    )
+        
+        def follow(self, user):
+            if not self.is_following(user):
+                self.followed.append(user)
+
+        def unfollow(self, user):
+            if self.is_following(user):
+                self.followed.remove(user)
+
+        def is_following(self, user):
+            return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
 
     class Post(db.Model):
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
@@ -200,13 +226,14 @@ with app.app_context():
         all_user_posts = current_user.posts
         return render_template('profile.html', user_posts=all_user_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
-    # -------------------- Other User Profile Page  -----------------------------
+    # -------------------- User Profile Page by ID  -------------------------
     @app.route('/<int:user_id>')
-    def user_posts(user_id):
+    @login_required
+    def user_profile(user_id):
         user = User.query.get(user_id)
         if user:
             posts = user.posts
-            return render_template('user_posts.html', user=user, posts=posts, current_user=current_user, logged_in=current_user.is_authenticated)
+            return render_template('user_profile.html', user=user, posts=posts, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('User not found.')
             return redirect(url_for('home'))
@@ -281,18 +308,59 @@ with app.app_context():
             flash('Post not found.')
 
         return redirect(url_for('show_post', post_id=post_id))
+    
+    # -------------------- Follow / Unfollow -----------------------------------
+    #---------------------------------------------------------------------------
+
+    # Follow .................................................
+    @app.route('/user/<int:user_id>/follow', methods=['POST'])
+    @login_required
+    def follow(user_id):
+        user = User.query.get(user_id)
+        if user:
+            current_user.follow(user)
+            db.session.commit()
+            flash('You are now following {}'.format(user.username))
+        else:
+            flash('User not found')
+        return redirect(url_for('user_profile', user_id=user_id))
+
+    #Unfollow ..................................................
+    @app.route('/user/<int:user_id>/unfollow', methods=['POST'])
+    @login_required
+    def unfollow(user_id):
+        user = User.query.get(user_id)
+        if user:
+            current_user.unfollow(user)
+            db.session.commit()
+            flash('You have unfollowed {}'.format(user.username))
+        else:
+            flash('User not found')
+        return redirect(url_for('user_profile', user_id=user_id))
 
     # -------------------- Edit Page  ------------------------------------------
 
     @app.route('/edit-post/<int:post_id>', methods=['POST', 'GET'])
+    @login_required
     def edit_post(post_id):
-        return render_template('edit.html')
+        post = Post.query.get_or_404(post_id)
+        edit_form = PostForm(obj=post)
+        if edit_form.validate_on_submit():
+            post.body = edit_form.body.data
+            db.session.commit()
+            return redirect(url_for('profile'))
+        return render_template('edit_post.html', form=edit_form ,post=post, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Delete Page  -----------------------------------------
 
-    @app.route('/delete/<int:post_id>', methods=['POST'])
-    def delete(post_id):
-        return
+    @app.route('/delete-post')
+    @login_required
+    def delete_post():
+        id = request.args.get('post_id')
+        post_to_delete = Post.query.get(id)
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        return redirect('profile')
 
     # -------------------- About Page  -----------------------------------------
 
