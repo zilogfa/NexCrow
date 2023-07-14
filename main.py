@@ -216,24 +216,26 @@ with app.app_context():
 
     @app.route('/')
     def home():
-        all_posts = Post.query.all()
+        all_posts = Post.query.order_by(Post.created_at.desc()).all() # Sorting and Reversing by created_at time
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Profile Page  ---------------------------------------
     @app.route('/profile')
     @login_required
     def profile():
-        all_user_posts = current_user.posts
-        return render_template('profile.html', user_posts=all_user_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+        """Current User Profile page - include all posts"""
+        user_posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc()).all() #reversing posts based on created_at , and calling posts by user id
+        return render_template('profile.html', user_posts=user_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- User Profile Page by ID  -------------------------
     @app.route('/<int:user_id>')
     @login_required
     def user_profile(user_id):
         user = User.query.get(user_id)
+        
         if user:
-            posts = user.posts
-            return render_template('user_profile.html', user=user, posts=posts, current_user=current_user, logged_in=current_user.is_authenticated)
+            reversed_posts = Post.query.filter_by(user_id=user.id).order_by(Post.created_at.desc()).all()
+            return render_template('user_profile.html', user=user, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('User not found.')
             return redirect(url_for('home'))

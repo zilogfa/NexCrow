@@ -12,7 +12,7 @@
         {% else %}
             <p>No profile picture</p>
         {% endif %}
-        {{ post.user.username }}
+        <strong>{{ post.user.username }}</strong>
 
     </p>
 
@@ -20,8 +20,8 @@
     <p style="font-weight:lighter">
         {{ post.likes }}
         {{ post.created_at.strftime('%B %Y') }}
-
-        <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+ 
+        <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a> .
         <a href="{{ url_for('delete_post', post_id=post.id) }}">Delete</a>
         
     </p>
