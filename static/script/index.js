@@ -1,6 +1,6 @@
 
 
-// -------------------- Like Script ♥   
+// -------------------- Like btn Script ♥   
 function likePost(event, button) {
     event.preventDefault();
 
