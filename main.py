@@ -162,26 +162,26 @@ with app.app_context():
         body = TextAreaField('Post',
                              validators=[
                                  DataRequired(), Length(min=1, max=280)],
-                             render_kw={'class': '',
-                                        'placeholder': 'Type Something'}
+                             render_kw={'class': 'textArea',
+                                        'placeholder': ' What is happening?!'}
                              )
-        submit = SubmitField('Submit', render_kw={'class': ''})
+        submit = SubmitField('Post', render_kw={'class': 'btn-form'})
 
     class RegisterForm(FlaskForm):
         """Registeration Form: username, email, Phone_Number, Password, Submit btn"""
         username = StringField('Name', validators=[
-            DataRequired(), Length(min=2, max=20)], render_kw={'placeholder': 'Display Name'})
-        email = EmailField('Email', validators=[DataRequired()], render_kw={
-                           'placeholder': 'Email'})
-        phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=6, max=20)], render_kw={
-                                'placeholder': 'Phone Number'})
+            DataRequired(), Length(min=2, max=20)], render_kw={'class':'formField' ,'placeholder': ' Display Name'})
+        email = EmailField('Email', validators=[DataRequired()], render_kw={ 'class':'formField',
+                           'placeholder': ' Email'})
+        phone_number = TelField('Phone Number', validators=[DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,
+                                'placeholder': ' Phone Number'})
         password = PasswordField('Password', validators=[
-            DataRequired(), Length(min=6, max=20)], render_kw={'placeholder': 'Password'})
+            DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])])
+                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
 
-        submit = SubmitField('Register')
+        submit = SubmitField('Register', render_kw={'class':'btn-form'})
 
         def validate_user_email(self, email):
             """Validating if user already Existed"""
@@ -193,26 +193,27 @@ with app.app_context():
 
     class LoginForm(FlaskForm):
         """Login Form: email, Password, login-btn"""
-        email = EmailField('Email', validators=[DataRequired()], render_kw={
-                           'placeholder': 'Email'})
+        email = EmailField('Email', validators=[DataRequired()], render_kw={ 
+                            'class':'formField',
+                           'placeholder': ' Email'})
         password = PasswordField('Password', validators=[
-            DataRequired(), Length(min=6, max=20)], render_kw={'placeholder': 'Password'})
-        submit = SubmitField('Login')
+            DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,'placeholder': ' Password'})
+        submit = SubmitField('Login', render_kw={'class': 'btn-form'})
 
     class CommentForm(FlaskForm):
         """Comment Form: TextArea - Submit-btn"""
         comment = TextAreaField('Post',
                                 validators=[
                                     DataRequired(), Length(min=1, max=280)],
-                                render_kw={'class': '',
-                                           'placeholder': 'Type Something'}
+                                render_kw={'class': 'textArea',
+                                           'placeholder': ' Post your reply!'}
                                 )
-        submit = SubmitField('Submit', render_kw={'class': ''})
+        submit = SubmitField('Submit', render_kw={'class': 'btn-form'})
 
     # -------------------- Pages  ----------------------------------------------
     # -------------------- Home Page  ------------------------------------------
-    # if NOT logged_in: see All posts and Login/Register btn's NavBar
-    # if logged_in: see all posts & access more features: Likes, & Edit your own post.
+    # if NOT logged_in: see All posts and Login/Register
+    # if logged_in: see all posts & access more features: Post, Likes, & Delete & Edit your own post.
 
     @app.route('/')
     def home():
@@ -362,7 +363,20 @@ with app.app_context():
         post_to_delete = Post.query.get(id)
         db.session.delete(post_to_delete)
         db.session.commit()
-        return redirect('profile')
+        return redirect(url_for('profile'))
+    
+    # -------------------- Delete Comment I/P show post!!!  -----------------------------------------
+
+    @app.route('/delete-comment')
+    @login_required
+    def delete_comment():
+        post_id = request.args.get('post_id')
+        id = request.args.get('comment_id')
+        post_to_delete = Comment.query.get(id)
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        return redirect(url_for('show_post', post_id=post_id))
+    
 
     # -------------------- About Page  -----------------------------------------
 

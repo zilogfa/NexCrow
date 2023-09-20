@@ -1,63 +1,131 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<p>Other User Profile</p>
+<!-- Other User's Profile -->
 
 <h1>{{ user.username }}'s Posts</h1>
 
-<!-- Follow unfollow -->
-{% if current_user != user %}
-  {% if current_user.is_following(user) %}
-    <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
-      <button type="submit">Unfollow</button>
-    </form>
-  {% else %}
-    <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
-      <button type="submit">Follow</button>
-    </form>
-  {% endif %}
-{% endif %}
 
-<!-- SOWE POST -->
-{% for post in posts %}
-<div>
-    <p>  
-        <span>
-        {% if post.user.profile_picture %}
-            <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}" alt="Profile Picture">
-        {% else %}
-         <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}" alt="Profile Picture">
-        {% endif %}
-    </span>
-    <strong>{{ post.user.username }}</strong>
-    
-    </p>
-    <br>
-    <p>{{ post.body }}</p>
-    <p style="font-weight:lighter">
 
-        <!-- Like ♥ -->
-        <p>
-            <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
-                <span class="likes-wrapper">
-                {% if post.likes == 1 %}
-                    <span class="heart-emoji red-heart">♥</span>
+<div class="profile-sec">
+    <div class="profile-heading">
+        <div class="profile-title">
+            <div class="profile-img">
+                {% if user.profile_picture %}
+                <img src="{{ url_for('static', filename='profile_pictures/' + user.profile_picture) }}">
                 {% else %}
-                    <span class="heart-emoji empty-heart">♥</span>
+                <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
                 {% endif %}
-                <span class="likes-count">{{ post.likes }}</span>
-                </span>
-            </a>
-            </p> 
-            <!-- End of Like ♥ -->
+            </div>
+            
+            <h3>{{ user.username }}</h3>
+        </div>
+        <div class="profile-detail">
+            <div class="profile-about">
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos perspiciatis fugit porro reprehenderit delectus officia ipsum dicta neque voluptate consequuntur mollitia magnam, ab cumque repudiandae nisi numquam totam possimus? Rem.</p>
+                <div class="profile-follow">
+                    <h4>Followers: 30</h4>
+                    <h4>Following: 701</h4>
+                    <div>
+                        <!-- Follow unfollow -->
+                        {% if current_user != user %}
+                        {% if current_user.is_following(user) %}
+                        <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
+                            <button class="btn-follow" type="submit">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
+                            <button class="btn-follow" type="submit">Follow</button>
+                        </form>
+                        {% endif %}
+                        {% endif %}
 
-        {{ post.created_at.strftime('%B %Y') }}
-        <a href="{{ url_for('show_post', post_id=post.id) }}"> Comment </a>
-    <br>
-    </p>
-    <br><hr>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+
+    </div>
 </div>
+
+
+
+<!-- SHOWE POSTs -->
+
+            {% for post in posts %}
+            <div class="user-post">
+                <div class="content">
+
+                
+                    <div class="title">
+                        {% if post.user.profile_picture %}
+                        <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+                        {% endif %}
+
+                        <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
+                        <h3>{{ post.user.username }}</h3>
+                        </a>
+                        
+                    </div>
+                    
+
+
+
+                    <div class="post-body">
+                        <p>{{ post.body }}</p>
+
+                        <!-- if post images:
+                        <img src="image/postimage.jpg"> -->
+                        
+
+
+                        <div class="comment-icon">
+
+
+                            <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
+                                <span class="likes-wrapper">
+                                    {% if post.likes == 1 %}
+                                        <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                                            favorite_border
+                                        </span></span>
+                                    {% else %}
+                                        <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                                            favorite_border
+                                        </span></span>
+                                    {% endif %}
+                                <span class="likes-count">{{ post.likes }}</span>
+                                </span>
+                            </a>
+
+
+
+
+                            
+                            <a href="{{ url_for('show_post', post_id=post.id) }}">
+                                <span class="material-icons-sharp">
+                                    chat_bubble_outline
+                                </span>
+                                <p>63</p>
+                            </a>
+
+
+
+
+                            <a href="#">
+                                <span class="material-icons-sharp">
+                                    more_horiz
+                                    </span>
+                                <p>{{ post.created_at.strftime('%B %Y') }} </p>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 {% endfor %}
 
 {% endblock %}

@@ -39,11 +39,12 @@ function likePost(event, button) {
   function updateHeartEmoji(button, likesCount) {
     var heartEmoji = button.querySelector('.heart-emoji');
     if (likesCount === 1) {
-      heartEmoji.innerHTML = '♥'; // Red heart
+      
+      heartEmoji.innerHTML = '<span class="material-icons-sharp">favorite</span>'; // Red heart
       heartEmoji.classList.add('red-heart');
       heartEmoji.classList.remove('empty-heart');
     } else {
-      heartEmoji.innerHTML = '♥'; // Empty heart
+      heartEmoji.innerHTML = '<span class="material-icons-sharp">favorite_border</span>'; // Empty heart
       heartEmoji.classList.remove('red-heart');
       heartEmoji.classList.add('empty-heart');
     }

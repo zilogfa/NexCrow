@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<p>Edit Page</p>
+<h1>Edit post</h1>
+<div class="user-post main-bg-color">
+<div class="content">
 
+<p>Max 280 Char</p>
 <form method="POST">
     {{ form.csrf_token }}
-    {{ form.body(size=40, placeholder='Stick a new task') }} <br>
+    {{ form.body }} <br>
     {{ form.submit }}
 </form>
 
+</div>
+</div>
+
 {% endblock %}
+
+
+

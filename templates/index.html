@@ -1,60 +1,122 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<p>All Posts</p>
-<hr><br>
 
-{% for post in posts %}
-<div>
-    <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
-        <p> 
+        <!-- Main content Section -->
+
         
-            <span>
-            {% if post.user.profile_picture %}
-                <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}" alt="Profile Picture">
-            {% else %}
-             <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}" alt="Profile Picture">
-            {% endif %}
-        </span>
-        <strong> {{ post.user.username }}</strong>
-       
-        </p>
-    </a>
-    <br>
-    <p>{{ post.body }}</p>
-    <p style="font-weight:lighter">
+            <h1>Home</h1>
+            {% for post in posts %}
+            <div class="user-post">
+                <div class="content">
+
+                
+                    <div class="title">
+                        {% if post.user.profile_picture %}
+                        <img src="{{ url_for('static', filename='profile_pictures/' + post.user.profile_picture) }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+                        {% endif %}
+
+                        <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
+                        <h3>{{ post.user.username }}</h3>
+                        <p style="font-size: xx-small; color: dimgray;">{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
+                        </a>
+                        
+                    </div>
+                    
 
 
 
-        <!-- Like ♥ -->
-        <p>
-        <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
-            <span class="likes-wrapper">
-            {% if post.likes == 1 %}
-                <span class="heart-emoji red-heart">♥</span>
-            {% else %}
-                <span class="heart-emoji empty-heart">♥</span>
-            {% endif %}
-            <span class="likes-count">{{ post.likes }}</span>
-            </span>
-        </a>
-        </p> 
-        <!-- End of Like ♥ -->
-               
-        • 
+                    <div class="post-body">
+                        <p>{{ post.body }}</p>
+
+                        <!-- if post images:
+                        <img src="image/postimage.jpg"> -->
+                        
+
+
+                        <div class="comment-icon">
+
+
+                            <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
+                                <span class="likes-wrapper">
+                                    {% if post.likes == 1 %}
+                                        <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                                            favorite
+                                        </span></span>
+                                    {% else %}
+                                        <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                                            favorite_border
+                                        </span></span>
+                                    {% endif %}
+                                <span class="likes-count">{{ post.likes }}</span>
+                                </span>
+                            </a>
 
 
 
-        {{ post.created_at.strftime('%B %Y') }} 
-        <a href="{{ url_for('show_post', post_id=post.id) }}">• Comments</a>
-        <br>
+
+                            
+                            <a href="{{ url_for('show_post', post_id=post.id) }}">
+                                <span class="material-icons-sharp">
+                                    chat_bubble_outline
+                                </span>
+                                <p>comment</p>
+                            </a>
+
+
+
+
+                            <a href="{{ url_for('show_post', post_id=post.id) }}">
+                                
+                                <span class="material-icons-sharp">
+                                    more_horiz
+                                </span>
+                                
+                                <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        <!-- End of Main Section     -->
+
+        {% endfor %}
         
-    </p>
-    
-    
-    <br><hr>
-</div>
-{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 {% endblock %}
