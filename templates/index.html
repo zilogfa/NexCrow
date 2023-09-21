@@ -29,7 +29,7 @@
 
 
                     <div class="post-body">
-                        <p>{{ post.body }}</p>
+                        <p class="p-body">{{ post.body }}</p>
 
                         <!-- if post images:
                         <img src="image/postimage.jpg"> -->
@@ -62,18 +62,14 @@
                                 <span class="material-icons-sharp">
                                     chat_bubble_outline
                                 </span>
-                                <p>comment</p>
+                                <p>{{ post.comments|length }} </p>
                             </a>
 
 
 
 
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                                
-                                <span class="material-icons-sharp">
-                                    more_horiz
-                                </span>
-                                
+
                                 <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
                             </a>
                             

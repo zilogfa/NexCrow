@@ -24,8 +24,8 @@
             <div class="profile-about">
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos perspiciatis fugit porro reprehenderit delectus officia ipsum dicta neque voluptate consequuntur mollitia magnam, ab cumque repudiandae nisi numquam totam possimus? Rem.</p>
                 <div class="profile-follow">
-                    <h4>Followers: 30</h4>
-                    <h4>Following: 701</h4>
+                    <h4>Followers: {{ followers|length }}</h4>
+                    <h4>Following: {{ followed|length }}</h4>
                     <div>
                         <!-- Follow unfollow -->
                         {% if current_user != user %}
@@ -65,8 +65,9 @@
                         <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
                         {% endif %}
 
-                        <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
+                        <a href="#" onclick="return false;">
                         <h3>{{ post.user.username }}</h3>
+                        <p style="font-size: xx-small; color: dimgray;">{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
                         </a>
                         
                     </div>
@@ -75,7 +76,7 @@
 
 
                     <div class="post-body">
-                        <p>{{ post.body }}</p>
+                        <p class="p-body">{{ post.body }}</p>
 
                         <!-- if post images:
                         <img src="image/postimage.jpg"> -->
@@ -102,7 +103,7 @@
 
 
 
-
+                            {% if current_user != user %}
                             
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
                                 <span class="material-icons-sharp">
@@ -120,6 +121,34 @@
                                     </span>
                                 <p>{{ post.created_at.strftime('%B %Y') }} </p>
                             </a>
+
+                            {% else %}
+
+                            <a href="{{ url_for('show_post', post_id=post.id) }}">
+                                <span class="material-icons-sharp">
+                                    chat_bubble_outline
+                                </span>
+                                <p>{{ post.comments|length }}</p>
+                            </a>
+
+
+
+
+                            <a href="{{url_for('edit_post', post_id=post.id)}}">
+                                <span class="material-icons-sharp">
+                                    edit_note
+                                    </span>
+                                <p>Edit</p>
+                            </a>
+
+                            <a href="{{url_for('delete_post', post_id=post.id)}}">
+                                <span class="material-icons-sharp">
+                                    delete
+                                    </span>
+                                <p>delete </p>
+                            </a>
+
+                            {% endif %}
                             
                         </div>
                     </div>

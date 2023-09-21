@@ -58,12 +58,23 @@ def save_profile_picture(file):
     destination = os.path.join(
         current_app.root_path, 'static/profile_pictures', new_filename)
 
-    # Resize=zing the image to a desired size (optional)
-    output_size = (400, 400)  # Adjust the size as needed
+    # Opening the uploaded image
     image = Image.open(file)
+
+    # Croping the image to a square aspect ratio (1x1)
+    width, height = image.size
+    size = min(width, height)
+    left = (width - size) / 2
+    top = (height - size) / 2
+    right = (width + size) / 2
+    bottom = (height + size) / 2
+    image = image.crop((left, top, right, bottom))
+
+    # Resizing the image to a desired size (optional)
+    output_size = (400, 400)  # Adjust the size as needed
     image.thumbnail(output_size)
 
-    # Saving the resized image to the destination folder
+    # Saving the cropped and resized image to the destination folder
     image.save(destination)
 
     # Returning the filename to store in the database
@@ -134,7 +145,7 @@ with app.app_context():
         updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
         user = relationship('User', back_populates='posts')
-        comments = db.relationship('Comment', back_populates='post')
+        comments = db.relationship('Comment', back_populates='post', cascade="all, delete-orphan")
         
 
     class Comment(db.Model):
@@ -235,8 +246,10 @@ with app.app_context():
         user = User.query.get(user_id)
         
         if user:
+            followers = user.followers.all()
+            followed = user.followed.all()
             reversed_posts = Post.query.filter_by(user_id=user.id).order_by(Post.created_at.desc()).all()
-            return render_template('user_profile.html', user=user, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+            return render_template('user_profile.html', user=user, followers=followers, followed=followed, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('User not found.')
             return redirect(url_for('home'))
@@ -351,7 +364,7 @@ with app.app_context():
         if edit_form.validate_on_submit():
             post.body = edit_form.body.data
             db.session.commit()
-            return redirect(url_for('profile'))
+            return redirect(url_for('user_profile', user_id =current_user.id))
         return render_template('edit_post.html', form=edit_form ,post=post, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Delete Page  -----------------------------------------
@@ -363,7 +376,7 @@ with app.app_context():
         post_to_delete = Post.query.get(id)
         db.session.delete(post_to_delete)
         db.session.commit()
-        return redirect(url_for('profile'))
+        return redirect(url_for('user_profile', user_id = current_user.id))
     
     # -------------------- Delete Comment I/P show post!!!  -----------------------------------------
 
