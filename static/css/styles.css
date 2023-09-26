@@ -205,7 +205,7 @@ aside .sidebar .user-profile .profile-img{
 aside .sidebar .user-profile img{
     display: flex;
     justify-content: center;
-    width: 6rem;
+    width: 10rem;
     clip-path: circle();
     margin-bottom: 0.8rem;
     border-radius: 50%;
@@ -424,8 +424,8 @@ main .profile-sec .profile-heading .profile-title .profile-img{
 }
 
 main .profile-sec .profile-heading .profile-title .profile-img img{
-
-
+    width: 100%;
+    height: auto;
 }
 
 main .profile-sec .profile-heading .profile-detail{
@@ -635,7 +635,7 @@ main .comment-sec .comment-detail a:hover{
 
 
     aside .sidebar .user-profile img{
-        width: 4rem;
+        width: 5rem;
     }
     
     
@@ -692,7 +692,7 @@ main .comment-sec .comment-detail a:hover{
 
 
     aside .sidebar .user-profile img{
-        width: 3rem;
+        width: 4rem;
     }
     
     

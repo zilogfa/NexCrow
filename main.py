@@ -87,13 +87,14 @@ def save_profile_picture(file):
 # -------------------- DATABASE Tables  -----------------------------------------
 with app.app_context():
 
+    # post.likes - user.liked_posts
     likes = db.Table('likes',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
 )
 
-    followers = db.Table(
-    'followers',
+    # followers = user.followers.all()  # followed = user.followed.all()
+    followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
@@ -103,26 +104,35 @@ with app.app_context():
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
         __tablename__ = 'user'
         id = db.Column(db.Integer, primary_key=True)
+
         username = db.Column(db.String(40), nullable=False, unique=False)
         email = db.Column(db.String(80), nullable=False, unique=True)
-        phone_number = db.Column(db.String(20))
         password = db.Column(db.String(100), nullable=False)
-        created_at = db.Column(db.DateTime, default=datetime.utcnow)
-        updated_at = db.Column(
-            db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-        is_blocked = db.Column(db.Boolean, default=False)
-        profile_picture = db.Column(db.String(100))
 
+        profile_picture = db.Column(db.String(200))
+        header_picture = db.Column(db.String(200))
+        bio = db.Column(db.Text, nullable=True)
+        phone_number = db.Column(db.String(20), nullable=True)
+        location = db.Column(db.String(30), nullable=True)
+        birthday = db.Column(db.String(30), nullable=True)
+        bio_url = db.Column(db.String(255), nullable=True)
+        profile_impressions = db.Column(db.Integer, default=0)
+
+        created_at = db.Column(db.DateTime, default=datetime.utcnow)
+        updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        is_blocked = db.Column(db.Boolean, default=False)
+        is_private = db.Column(db.Boolean, default=False)
+        dark_theme = db.Column(db.Boolean, default=False)
+
+
+        # relations
         posts = relationship('Post', back_populates='user')
         comments = db.relationship('Comment', back_populates='user')
         liked_posts = db.relationship('Post', secondary=likes, backref='likers')
-
-        followed = db.relationship(
-        'User', secondary=followers,
+        followed = db.relationship('User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic'
-    )
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
         
         def follow(self, user):
             if not self.is_following(user):
@@ -136,36 +146,53 @@ with app.app_context():
             return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
 
-    class Post(db.Model):
+    class Post(db.Model): #user.posts.all()
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
         __tablename__ = 'post'
         id = db.Column(db.Integer, primary_key=True)
         user_id = db.Column(db.Integer, db.ForeignKey(
             'user.id'), nullable=False)
         body = db.Column(db.Text, nullable=False)
+        post_picture = db.Column(db.String(200))
         likes = db.Column(db.Integer, default=0)
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
         updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+        post_impressions = db.Column(db.Integer, default=0)
 
         user = relationship('User', back_populates='posts')
         comments = db.relationship('Comment', back_populates='post', cascade="all, delete-orphan")
         
 
-    class Comment(db.Model):
+    class Comment(db.Model): #user.comments.all()
         __tablename__ = 'comments'
         id = db.Column(db.Integer, primary_key=True)
         content = db.Column(db.String(255), nullable=False)
-        timestamp = db.Column(db.DateTime, nullable=False,
-                              default=datetime.utcnow)
-        user_id = db.Column(db.Integer, db.ForeignKey(
-            'user.id'), nullable=False)
-        post_id = db.Column(db.Integer, db.ForeignKey(
-            'post.id'), nullable=False)
+        timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+        comment_impressions = db.Column(db.Integer, default=0)
+        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+        post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
         user = db.relationship('User', back_populates='comments')
         post = db.relationship('Post', back_populates='comments')
 
     
+    class UserLoginHistory(db.Model): #user.login_history.all()
+        id = db.Column(db.Integer, primary_key=True)
+        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+        timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+        ip_address = db.Column(db.String(45))  # Storing IP addresses as strings
+
+        # Defining a relationship to the User model
+        user = db.relationship('User', backref=db.backref('login_history', lazy='dynamic'))
+
+        def __init__(self, user_id, ip_address):
+            self.user_id = user_id
+            self.ip_address = ip_address
+
+        def save(self):
+            db.session.add(self)
+            db.session.commit()
+
 
     db.create_all()
 
@@ -394,6 +421,13 @@ with app.app_context():
         return redirect(url_for('show_post', post_id=post_id))
     
 
+
+    # -------------------- Setting Page  -----------------------------------------
+
+    @app.route('/setting')
+    @login_required
+    def setting():
+        return render_template('setting.html', logged_in=current_user.is_authenticated)
     # -------------------- About Page  -----------------------------------------
 
     @app.route('/about')
