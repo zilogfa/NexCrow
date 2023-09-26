@@ -15,6 +15,8 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 
+# import flask_whooshalchemy as wa
+
 from datetime import datetime
 
 import os
@@ -28,6 +30,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'My-Secret-Key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///user.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
+# app.config['WHOOSH_BASE'] = 'whoosh'
 app.config['UPLOAD_FOLDER'] = 'static/profile_pictures'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

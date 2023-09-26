@@ -130,6 +130,11 @@ aside{
     height: 100vh;
 }
 
+aside .aside-fixed{
+    position: fixed; 
+    max-width: 12rem;
+}
+
 aside .toggle {
     display: flex;
     align-items: center;
@@ -269,6 +274,7 @@ aside .sidebar a:last-child{
 main {
     margin-top: 1.4rem;
     margin-bottom: 1.4rem;
+
 }
 
 main .user-post{
@@ -591,6 +597,10 @@ main .comment-sec .comment-detail a:hover{
     .container{
         width: 95%;
         grid-template-columns: 6rem auto 6rem;
+    }
+
+    aside .aside-fixed{
+        max-width: 6rem;
     }
 
     aside .logo h2{
