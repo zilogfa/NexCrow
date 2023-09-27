@@ -107,7 +107,7 @@
                     <h3>Alert</h3>
                 </a>
 
-                <a href="{{ url_for('setting') }}">
+                <a href="{{ url_for('setting', user_id=current_user.id) }}">
                     <span class="material-icons-sharp">
                         settings
                     </span>

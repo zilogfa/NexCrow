@@ -9,10 +9,12 @@
 
 <p>Max 280 Char</p>
 
-<form action="{{url_for('new_post')}}" method="post">
-{{ form.csrf_token }}
-{{ form.body }}
-{{ form.submit }}
+<!--  enctype="multipart/form-data",  telling the browser to handle the form data as a multi-part form. -->
+<form action="{{ url_for('new_post') }}" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.body }}
+    {{ form.post_picture }}
+    {{ form.submit }}
 </form>
 
 

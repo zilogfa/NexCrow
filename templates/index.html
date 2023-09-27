@@ -30,9 +30,9 @@
 
                     <div class="post-body">
                         <p class="p-body">{{ post.body }}</p>
-
-                        <!-- if post images:
-                        <img src="image/postimage.jpg"> -->
+                        {% if post.post_picture %}
+                            <img src="{{ url_for('static', filename='post_pictures/' + post.post_picture) }}">
+                        {% endif %}    
                         
 
 

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Setting</h1>
+<div class="user-post main-bg-color">
+<div class="content">
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.bio }} 
+        {{ form.submit}}
+
+    </form>
+    
+</div>
+</div>
+
+{% endblock %}

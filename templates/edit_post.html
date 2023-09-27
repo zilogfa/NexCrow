@@ -6,9 +6,10 @@
 <div class="content">
 
 <p>Max 280 Char</p>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {{ form.body }} <br>
+    {{ form.post_picture }}
     {{ form.submit }}
 </form>
 

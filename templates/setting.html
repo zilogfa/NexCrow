@@ -1,6 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<p>setting</p>
+<h1>Setting</h1>
+<div class="user-post main-bg-color">
+<div class="content">
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <label for="">Name: </label>
+        {{ form.username }}
+        <label for="">Email: </label> 
+        {{ form.email }}
+        
+        <label for="">Profile Picture: </label> <br>
+        {{ form.profile_picture }}
+         <br> <br>
+         <label for="">Header Picture: </label> <br>
+        {{ form.header_picture }} <br> <br> <br>
+        <label for="">Phone Numbe: </label>
+        {{ form.phone_number }}
+        <br><br>
+        {{ form.bio }} <br>
+        <label for="">Birthday:  &emsp; &emsp; </label>
+        {{ form.birthday }}  <br>
+        <br><br>
+        {{ form.location }} <br>
+        
+        {{ form.url }} <br>
+
+        {{ form.submit }}
+        <br><br><br><br>
+    </form>
+    
+</div>
+</div>
 
 {% endblock %}
