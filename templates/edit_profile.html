@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Setting</h1>
+<div class="user-post main-bg-color" style="background-color: rgb(255, 255, 255);">
+<div class="content">
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.username }}
+        {{ form.bio }}
+        {{ form.location }}
+        {% if current_user.birthday %}
+        <p>{{ current_user.birthday.strftime(' Birthday: %B %d, %Y') }}</p>
+        {% endif %}
+        <input type="date" name="birthday" class="date-input" placeholder=" Birthday">
+        {{ form.url }}
+        {{ form.profile_picture.label }}
+        {{ form.profile_picture }} <br>
+        {{ form.submit }}
+
+
+    </form>
+    
+</div>
+</div>
+
+{% endblock %}
+
+
+

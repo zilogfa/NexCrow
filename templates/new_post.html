@@ -13,7 +13,8 @@
 <form action="{{ url_for('new_post') }}" method="post" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {{ form.body }}
-    {{ form.post_picture }}
+    <p>Image</p>
+    {{ form.post_picture }} <br><br><br>
     {{ form.submit }}
 </form>
 

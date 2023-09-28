@@ -22,8 +22,9 @@
         </div>
         <div class="profile-detail">
             <div class="profile-about">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos perspiciatis fugit porro reprehenderit delectus officia ipsum dicta neque voluptate consequuntur mollitia magnam, ab cumque repudiandae nisi numquam totam possimus? Rem.</p>
-                <div class="profile-follow">
+                {% if user.bio %}
+                <p>{{ user.bio }}</p>
+                {% endif %}                <div class="profile-follow">
                     <h4>Followers: {{ followers|length }}</h4>
                     <h4>Following: {{ followed|length }}</h4>
                     <div>

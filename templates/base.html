@@ -79,7 +79,10 @@
                     <div class="profile-name">
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit!</p>
+                            {% if current_user.bio %}
+                            <p>{{ current_user.bio }}</p>
+                            <p style="font-size: small;"> <span class="material-icons-sharp" style="font-size: small;">cake</span>{{ current_user.birthday.strftime('%B %d, %Y') }}</p>
+                            {% endif %}
                         </div>
 
                     </div>
