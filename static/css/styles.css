@@ -112,6 +112,21 @@ a:hover {
 }
 
 
+main .user-post .content .about-sec{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+
+}
+
+main .user-post .content .about-sec ol, ul{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+
+}
 
 
 
@@ -296,6 +311,28 @@ main .user-post{
 
 main .user-post .content{
     padding: 1rem;
+}
+
+
+main .user-post .setting-sec{
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+main .user-post .setting-sec button{
+    width: 8rem;
+    height: 3rem;
+    border-radius: 25px;
+    font-weight: 900;
+    font-style: initial;
+    transition: all 0.3s ease;
+}
+main .user-post .setting-sec button:hover{
+    background-color: #d6d6d6;
+    color: #ffffff;
+    transition: all 0.3s ease;
 }
 
 
