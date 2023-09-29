@@ -8,6 +8,13 @@
 
 
 <div class="profile-sec">
+    <div class="header-img">
+        {% if user.header_picture %}
+        <img src="{{ url_for('static', filename='header_pictures/' + user.header_picture) }}">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+        {% endif %}
+    </div>
     <div class="profile-heading">
         <div class="profile-title">
             <div class="profile-img">
@@ -20,34 +27,49 @@
             
             <h3>{{ user.username }}</h3>
         </div>
+        <!-- FOLLOW COUNT -->
+        <div class="profile-follow">
+            <p><strong>{{ followers|length }}</strong> Followers</p>
+            <p><strong>{{ followed|length }}</strong> Following</p>
+            <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
+                      
+        </div>
+        <!-- END FOLLOW -->  
+
         <div class="profile-detail">
             <div class="profile-about">
-                {% if user.bio %}
-                <p>{{ user.bio }}</p>
-                {% endif %}                <div class="profile-follow">
-                    <h4>Followers: {{ followers|length }}</h4>
-                    <h4>Following: {{ followed|length }}</h4>
-                    <div>
-                        <!-- Follow unfollow -->
-                        {% if current_user != user %}
-                        {% if current_user.is_following(user) %}
-                        <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
-                            <button class="btn-follow" type="submit">Unfollow</button>
-                        </form>
-                        {% else %}
-                        <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
-                            <button class="btn-follow" type="submit">Follow</button>
-                        </form>
-                        {% endif %}
-                        {% endif %}
+                                
+                <!-- BIO -->
+                <div>
+                    {% if user.bio %}
+                    <p>{{ user.bio }}</p>
+                    {% endif %} 
+                </div>  
+                <!-- END BIO   -->
 
-                    </div>
-                </div>
+        
             </div>
 
         </div>
 
+        <div>
+            <!-- Follow unfollow -->
+            {% if current_user != user %}
+            {% if current_user.is_following(user) %}
+            <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
+                <button class="btn-follow" type="submit">Unfollow</button>
+            </form>
+            {% else %}
+            <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
+                <button class="btn-follow" type="submit">Follow</button>
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+
     </div>
+
+                   
 </div>
 
 
