@@ -13,6 +13,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from flask_bcrypt import Bcrypt
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from sqlalchemy.orm import relationship
 
 # import flask_whooshalchemy as wa
@@ -51,48 +52,88 @@ def load_user(user_id):
 # -------------------- Profile picture Storing function Setup ---------------------
 
 def save_profile_picture(file):
-    # Check if the uploaded file exists
     if not file:
         return None
-
     # Generating a secure random string as the filename
     random_hex = secrets.token_hex(8)
     # Getting the file extension
     _, file_extension = os.path.splitext(file.filename)
     # Creating a new filename using the random string and the original extension
     new_filename = random_hex + file_extension
-    # Setting the destination folder to save the profile pictures
-    destination = os.path.join(current_app.config['UPLOAD_FOLDER'], 'profile_pictures', new_filename)
+    # Setting the destination folder to save the post pictures
+    destination = os.path.join(current_app.root_path, 'static/profile_pictures', new_filename)
 
-    # Create missing directories
-    os.makedirs(os.path.dirname(destination), exist_ok=True)
+    # Resize the image to a desired size (optional)
+    output_size = (800, 800)  # Adjust the size as needed
+    image = Image.open(file)
+    width, height = image.size
+    size = min(width, height)
+    left = (width - size) / 2
+    top = (height - size) / 2
+    right = (width + size) / 2
+    bottom = (height + size) / 2
+    image = image.crop((left, top, right, bottom))
+    image.thumbnail(output_size)
 
-    # Opening the uploaded image
-    try:
-        image = Image.open(file)
+    # Saving the resized image to the destination folder
+    image.save(destination)
 
-        # Croping the image to a square aspect ratio (1x1)
-        width, height = image.size
-        size = min(width, height)
-        left = (width - size) / 2
-        top = (height - size) / 2
-        right = (width + size) / 2
-        bottom = (height + size) / 2
-        image = image.crop((left, top, right, bottom))
+    # Returning the filename to store in the database
+    return new_filename
 
-        # Resizing the image to a desired size (optional)
-        output_size = (400, 400)  # Adjust the size as needed
-        image.thumbnail(output_size)
+# def save_profile_picture(file):
+#     # Check if the uploaded file exists
+#     if not file:
+#         return None
 
-        # Saving the cropped and resized image to the destination folder
-        image.save(destination)
+#     # Generating a secure random string as the filename
+#     random_hex = secrets.token_hex(8)
+#     # Getting the file extension
+#     _, file_extension = os.path.splitext(file.filename)
+#     # Creating a new filename using the random string and the original extension
+#     new_filename = random_hex + file_extension
+#     # Setting the destination folder to save the profile pictures
+#     destination = os.path.join(current_app.config['UPLOAD_FOLDER'], 'profile_pictures', new_filename)
 
-        # Returning the filename to store in the database
-        return new_filename
-    except Exception as e:
-        # Handle any errors that might occur during image processing
-        print(f"Error while saving image: {e}")
-        return None
+#     # Create missing directories
+#     os.makedirs(os.path.dirname(destination), exist_ok=True)
+
+#     # Opening the uploaded image
+#     try:
+#         image = Image.open(file)
+
+#         # Croping the image to a square aspect ratio (1x1)
+#         width, height = image.size
+#         size = min(width, height)
+#         left = (width - size) / 2
+#         top = (height - size) / 2
+#         right = (width + size) / 2
+#         bottom = (height + size) / 2
+#         image = image.crop((left, top, right, bottom))
+
+#         # Resizing the image to a desired size (optional)
+#         output_size = (400, 400)  # Adjust the size as needed
+#         image.thumbnail(output_size)
+
+#         # Saving the cropped and resized image to the destination folder
+#         image.save(destination)
+
+#         # Returning the filename to store in the database
+#         return new_filename
+#     except Exception as e:
+#         # Handle any errors that might occur during image processing
+#         print(f"Error while saving image: {e}")
+#         return None
+    
+
+
+
+
+
+
+
+
+
 
 # def save_profile_picture(file):
 #     # Generating a secure random string as the filename
@@ -133,6 +174,8 @@ def save_profile_picture(file):
 # -------------------- Post picture Storing Setup ---------------------
 
 def save_post_picture(file):
+    if not file:
+        return None
     # Generating a secure random string as the filename
     random_hex = secrets.token_hex(8)
     # Getting the file extension
@@ -157,6 +200,8 @@ def save_post_picture(file):
 # -------------------- Header picture Storing Setup ---------------------
 
 def save_header_picture(file):
+    if not file:
+        return None
     # Generating a secure random string as the filename
     random_hex = secrets.token_hex(8)
     # Getting the file extension
@@ -237,6 +282,18 @@ with app.app_context():
 
         def is_following(self, user):
             return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+        
+        def followed_posts(self):
+            # Get the IDs of followed users
+            followed_ids = [user.id for user in self.followed]
+
+            # Include your own user ID
+            followed_ids.append(self.id)
+
+            # Query all posts from users in the followed_ids list
+            return Post.query.filter(Post.user_id.in_(followed_ids)).order_by(desc(Post.created_at)).all()
+
+
 
 
     class Post(db.Model): #user.posts.all()
@@ -249,7 +306,7 @@ with app.app_context():
         post_picture = db.Column(db.String(200))
         likes = db.Column(db.Integer, default=0)
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
-        updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+        updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
         post_impressions = db.Column(db.Integer, default=0)
 
         user = relationship('User', back_populates='posts')
@@ -371,12 +428,19 @@ with app.app_context():
             if field.data is not None and not field.data.strip():
                 field.data = None                   
 
+    class EditBirthday(FlaskForm):
+        birthday = DateField('Birthday', render_kw={'class': '','placeholder': ' Birthday'})
+        submit = SubmitField('Save', render_kw={'class':'btn-form'})
 
     class EditProfilePic(FlaskForm):
         profile_picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
         
         submit = SubmitField('Save', render_kw={'class':'btn-form'}) 
 
+    class EditHeaderPic(FlaskForm):
+        header_picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
+        
+        submit = SubmitField('Save', render_kw={'class':'btn-form'}) 
 
     class LoginForm(FlaskForm):
         """Login Form: email, Password, login-btn"""
@@ -406,6 +470,16 @@ with app.app_context():
     def home():
         all_posts = Post.query.order_by(Post.created_at.desc()).all() # Sorting and Reversing by created_at time
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+    
+    # -------------------- Home Page  ------------------------------------------
+    # if NOT logged_in: see All posts and Login/Register
+    # if logged_in: see all posts & access more features: Post, Likes, & Delete & Edit your own post.
+
+    @app.route('/home')
+    @login_required
+    def home_page():
+        followed_posts = current_user.followed_posts()
+        return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Profile Page  ---------------------------------------
     @app.route('/profile')
@@ -528,23 +602,34 @@ with app.app_context():
         user = User.query.get_or_404(current_user.id)
         form = EditProfile(request.form, obj=user)
         if form.validate_on_submit():
-            # Debug: Print the value of bio
-            print("Bio value from form:", form.bio.data)
             user.username = form.username.data
             user.bio = form.bio.data 
             user.location = form.location.data
             user.birthday = form.birthday.data
-            user.url = form.url.data
-
-
+            user.bio_url = form.url.data
             db.session.commit()
             return redirect(url_for('edit_profile'))     
 
         response = make_response(render_template('edit_profile.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user))
         response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
         return response 
+    
+        # --- edit Birthday.................................
+    @app.route('/edit_birthday', methods=['POST', 'GET'])
+    @login_required
+    def edit_birthday():
+        user = User.query.get_or_404(current_user.id)
+        form = EditBirthday(request.form, obj=user)
+        if form.validate_on_submit():
+            user.birthday = form.birthday.data
+            db.session.commit()
+            return redirect(url_for('edit_birthday'))     
 
-    # --- edit profile Pic.................................
+        response = make_response(render_template('edit_birthday.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user))
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        return response 
+
+    # --- Edit Profile Pic.................................
     @app.route('/edit_profile_pic', methods=['POST', 'GET'])
     @login_required
     def edit_profile_pic():
@@ -558,7 +643,21 @@ with app.app_context():
                 db.session.commit()
 
             return redirect(url_for('edit_profile_pic'))   
-        return render_template('edit_profile_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)     
+        return render_template('edit_profile_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)  
+
+    # --- Edit Header Pic.................................
+    @app.route('/edit_header_pic', methods=['POST', 'GET'])
+    @login_required
+    def edit_header_pic():
+        user = User.query.get_or_404(current_user.id)
+        form = EditHeaderPic()
+        if form.validate_on_submit():
+            if request.files['header_picture']:
+                user.header_picture = save_header_picture(form.header_picture.data)
+                db.session.commit()
+
+            return redirect(url_for('edit_header_pic'))   
+        return render_template('edit_header_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)        
     # -------------------- Like Function ---------------------------------------
     #---------------------------------------------------------------------------
     #---------------------------------------------------------------------------
