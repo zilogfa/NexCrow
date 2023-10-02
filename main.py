@@ -422,8 +422,6 @@ with app.app_context():
                                'class': 'formField', 'placeholder': ' Location'})
         birthday = DateField('Birthday', render_kw={
                              'class': '', 'placeholder': ' Birthday'})
-        url = URLField('Website', render_kw={
-                       'class': 'formField', 'placeholder': ' Website'})
 
         submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
@@ -431,6 +429,11 @@ with app.app_context():
             # Check if the field is empty or contains only whitespace
             if field.data is not None and not field.data.strip():
                 field.data = None
+
+    class EditURL(FlaskForm):
+        url = URLField('Website', render_kw={
+                'class': 'formField', 'placeholder': ' Website'})   
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})         
 
     class EditBirthday(FlaskForm):
         birthday = DateField('Birthday', render_kw={
@@ -617,9 +620,8 @@ with app.app_context():
             user.bio = form.bio.data
             user.location = form.location.data
             user.birthday = form.birthday.data
-            user.bio_url = form.url.data
             db.session.commit()
-            return redirect(url_for('edit_profile'))
+            return redirect(url_for('user_profile', user_id = current_user.id))
 
         response = make_response(render_template('edit_profile.html', form=form, user=user,
                                  logged_in=current_user.is_authenticated, current_user=current_user))
@@ -658,6 +660,19 @@ with app.app_context():
 
             return redirect(url_for('edit_profile_pic'))
         return render_template('edit_profile_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)
+
+ # --- Edit Website URL.................................
+    @app.route('/edit_website_url', methods=['POST', 'GET'])
+    @login_required
+    def edit_website_url():
+        user = User.query.get_or_404(current_user.id)
+        form = EditURL(obj=user)
+        if form.validate_on_submit():
+            user.bio_url = form.url.data
+            db.session.commit()
+
+            return redirect(url_for('edit_website_url'))
+        return render_template('edit_website_url.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)
 
     # --- Edit Header Pic.................................
     @app.route('/edit_header_pic', methods=['POST', 'GET'])
