@@ -5,7 +5,7 @@ started on: July/08/2023
 
 from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField,DateField, DateTimeField, URLField, DateTimeLocalField
+from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField, DateField, DateTimeField, URLField, DateTimeLocalField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError, EqualTo, Email
 
@@ -61,7 +61,8 @@ def save_profile_picture(file):
     # Creating a new filename using the random string and the original extension
     new_filename = random_hex + file_extension
     # Setting the destination folder to save the post pictures
-    destination = os.path.join(current_app.root_path, 'static/profile_pictures', new_filename)
+    destination = os.path.join(
+        current_app.root_path, 'static/profile_pictures', new_filename)
 
     # Resize the image to a desired size (optional)
     output_size = (800, 800)  # Adjust the size as needed
@@ -124,15 +125,6 @@ def save_profile_picture(file):
 #         # Handle any errors that might occur during image processing
 #         print(f"Error while saving image: {e}")
 #         return None
-    
-
-
-
-
-
-
-
-
 
 
 # def save_profile_picture(file):
@@ -143,7 +135,7 @@ def save_profile_picture(file):
 #     # Creating a new filename using the random string and the original extension
 #     new_filename = random_hex + file_extension
 #     # Setting the destination folder to save the profile pictures
-    
+
 #     destination = os.path.join(app.config['UPLOAD_FOLDER'], 'profile_pictures', new_filename)
 
 #     # Create missing directories
@@ -183,7 +175,8 @@ def save_post_picture(file):
     # Creating a new filename using the random string and the original extension
     new_filename = random_hex + file_extension
     # Setting the destination folder to save the post pictures
-    destination = os.path.join(current_app.root_path, 'static/post_pictures', new_filename)
+    destination = os.path.join(
+        current_app.root_path, 'static/post_pictures', new_filename)
 
     # Resize the image to a desired size (optional)
     output_size = (800, 800)  # Adjust the size as needed
@@ -209,7 +202,8 @@ def save_header_picture(file):
     # Creating a new filename using the random string and the original extension
     new_filename = random_hex + file_extension
     # Setting the destination folder to save the post pictures
-    destination = os.path.join(current_app.root_path, 'static/header_pictures', new_filename)
+    destination = os.path.join(
+        current_app.root_path, 'static/header_pictures', new_filename)
 
     # Resize the image to a desired size (optional)
     output_size = (1000, 1000)  # Adjust the size as needed
@@ -222,21 +216,25 @@ def save_header_picture(file):
     # Returning the filename to store in the database
     return new_filename
 
+
 # -------------------- DATABASE Tables  -----------------------------------------
 with app.app_context():
 
     # post.likes - user.liked_posts
     likes = db.Table('likes',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
-)
+                     db.Column('user_id', db.Integer, db.ForeignKey(
+                         'user.id'), primary_key=True),
+                     db.Column('post_id', db.Integer, db.ForeignKey(
+                         'post.id'), primary_key=True)
+                     )
 
     # followers = user.followers.all()  # followed = user.followed.all()
     followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
-)
-    
+                         db.Column('follower_id', db.Integer, db.ForeignKey(
+                             'user.id'), primary_key=True),
+                         db.Column('followed_id', db.Integer,
+                                   db.ForeignKey('user.id'), primary_key=True)
+                         )
 
     class User(db.Model, UserMixin):
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
@@ -257,21 +255,23 @@ with app.app_context():
         profile_impressions = db.Column(db.Integer, default=0)
 
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
-        updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        updated_at = db.Column(
+            db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
         is_blocked = db.Column(db.Boolean, default=False)
         is_private = db.Column(db.Boolean, default=False)
         dark_theme = db.Column(db.Boolean, default=False)
 
-
         # relations
         posts = relationship('Post', back_populates='user')
         comments = db.relationship('Comment', back_populates='user')
-        liked_posts = db.relationship('Post', secondary=likes, backref='likers')
+        liked_posts = db.relationship(
+            'Post', secondary=likes, backref='likers')
         followed = db.relationship('User', secondary=followers,
-        primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
-        
+                                   primaryjoin=(followers.c.follower_id == id),
+                                   secondaryjoin=(
+                                       followers.c.followed_id == id),
+                                   backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
         def follow(self, user):
             if not self.is_following(user):
                 self.followed.append(user)
@@ -282,7 +282,7 @@ with app.app_context():
 
         def is_following(self, user):
             return self.followed.filter(followers.c.followed_id == user.id).count() > 0
-        
+
         def followed_posts(self):
             # Get the IDs of followed users
             followed_ids = [user.id for user in self.followed]
@@ -293,10 +293,7 @@ with app.app_context():
             # Query all posts from users in the followed_ids list
             return Post.query.filter(Post.user_id.in_(followed_ids)).order_by(desc(Post.created_at)).all()
 
-
-
-
-    class Post(db.Model): #user.posts.all()
+    class Post(db.Model):  # user.posts.all()
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
         __tablename__ = 'post'
         id = db.Column(db.Integer, primary_key=True)
@@ -306,34 +303,40 @@ with app.app_context():
         post_picture = db.Column(db.String(200))
         likes = db.Column(db.Integer, default=0)
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
-        updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        updated_at = db.Column(
+            db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
         post_impressions = db.Column(db.Integer, default=0)
 
         user = relationship('User', back_populates='posts')
-        comments = db.relationship('Comment', back_populates='post', cascade="all, delete-orphan")
-        
+        comments = db.relationship(
+            'Comment', back_populates='post', cascade="all, delete-orphan")
 
-    class Comment(db.Model): #user.comments.all()
+    class Comment(db.Model):  # user.comments.all()
         __tablename__ = 'comments'
         id = db.Column(db.Integer, primary_key=True)
         content = db.Column(db.String(255), nullable=False)
-        timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+        timestamp = db.Column(db.DateTime, nullable=False,
+                              default=datetime.utcnow)
         comment_impressions = db.Column(db.Integer, default=0)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-        post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+        user_id = db.Column(db.Integer, db.ForeignKey(
+            'user.id'), nullable=False)
+        post_id = db.Column(db.Integer, db.ForeignKey(
+            'post.id'), nullable=False)
 
         user = db.relationship('User', back_populates='comments')
         post = db.relationship('Post', back_populates='comments')
 
-    
-    class UserLoginHistory(db.Model): #user.login_history.all()
+    class UserLoginHistory(db.Model):  # user.login_history.all()
         id = db.Column(db.Integer, primary_key=True)
-        user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+        user_id = db.Column(db.Integer, db.ForeignKey(
+            'user.id'), nullable=False)
         timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-        ip_address = db.Column(db.String(45))  # Storing IP addresses as strings
+        # Storing IP addresses as strings
+        ip_address = db.Column(db.String(45))
 
         # Defining a relationship to the User model
-        user = db.relationship('User', backref=db.backref('login_history', lazy='dynamic'))
+        user = db.relationship('User', backref=db.backref(
+            'login_history', lazy='dynamic'))
 
         def __init__(self, user_id, ip_address):
             self.user_id = user_id
@@ -342,7 +345,6 @@ with app.app_context():
         def save(self):
             db.session.add(self)
             db.session.commit()
-
 
     db.create_all()
 
@@ -357,47 +359,51 @@ with app.app_context():
                                         'placeholder': ' What is happening?!'}
                              )
         post_picture = FileField('Post Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
+            FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
         submit = SubmitField('Post', render_kw={'class': 'btn-form'})
 
     class RegisterForm(FlaskForm):
         """Registeration Form: username, email, Phone_Number, Password, Submit btn"""
         username = StringField('Name', validators=[
-            DataRequired(), Length(min=2, max=20)], render_kw={'class':'formField' ,'placeholder': ' Display Name'})
-        email = EmailField('Email', validators=[DataRequired()], render_kw={ 'class':'formField',
+            DataRequired(), Length(min=2, max=20)], render_kw={'class': 'formField', 'placeholder': ' Display Name'})
+        email = EmailField('Email', validators=[DataRequired()], render_kw={'class': 'formField',
                            'placeholder': ' Email'})
-        phone_number = TelField('Phone Number', validators=[Length(min=6, max=20)], render_kw={'class':'formField' ,
+        phone_number = TelField('Phone Number', validators=[Length(min=6, max=20)], render_kw={'class': 'formField',
                                 'placeholder': ' Phone Number'})
         password = PasswordField('Password', validators=[
-            DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,'placeholder': ' Password'})
+            DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
+                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
 
-        submit = SubmitField('Register', render_kw={'class':'btn-form'})
+        submit = SubmitField('Register', render_kw={'class': 'btn-form'})
 
     class EditRegister(FlaskForm):
         """Edit Form: username, email, Phone_Number, Password, Submit btn"""
         username = StringField('Name', validators=[
-            DataRequired(), Length(max=20)], render_kw={'class':'formField' ,'placeholder': ' Display Name'})
-        email = EmailField('Email', validators=[DataRequired()], render_kw={ 'class':'formField',
+            DataRequired(), Length(max=20)], render_kw={'class': 'formField', 'placeholder': ' Display Name'})
+        email = EmailField('Email', validators=[DataRequired()], render_kw={'class': 'formField',
                            'placeholder': ' Email'})
-        phone_number = TelField('Phone Number', validators=[Length(min=6, max=20)], render_kw={'class':'formField' ,
+        phone_number = TelField('Phone Number', validators=[Length(min=6, max=20)], render_kw={'class': 'formField',
                                 'placeholder': ' Phone Number'})
         password = PasswordField('Password', validators=[
-            DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,'placeholder': ' Password'})
+            DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
+                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
         header_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
-        
-        bio = TextAreaField('Bio', validators=[Length(min=1, max=280)], render_kw={'class': 'textArea','placeholder': ' Bio'})
-        location = StringField('Location', validators=[Length(min=2, max=20)], render_kw={'class':'formField' ,'placeholder': ' Location'})
-        birthday = DateField('Birthday', render_kw={'class': '','placeholder': ' Birthday'})
-        url = URLField('Website', render_kw={'class': 'formField','placeholder': ' Website'})
-        
-        submit = SubmitField('Save', render_kw={'class':'btn-form'})    
+            FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+
+        bio = TextAreaField('Bio', validators=[Length(min=1, max=280)], render_kw={
+                            'class': 'textArea', 'placeholder': ' Bio'})
+        location = StringField('Location', validators=[Length(min=2, max=20)], render_kw={
+                               'class': 'formField', 'placeholder': ' Location'})
+        birthday = DateField('Birthday', render_kw={
+                             'class': '', 'placeholder': ' Birthday'})
+        url = URLField('Website', render_kw={
+                       'class': 'formField', 'placeholder': ' Website'})
+
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
         def validate_user_email(self, email):
             """Validating if user already Existed"""
@@ -407,48 +413,49 @@ with app.app_context():
                 raise ValidationError(
                     "That email already exist. Please choose a diffent one.")
 
-
-
-
-
-
-
     class EditProfile(FlaskForm):
-        username = StringField('Name', validators=[DataRequired(), Length(min=2, max=20)], render_kw={'class':'formField' ,'placeholder': ' Display Name'})
-        bio = TextAreaField('Bio', validators=[Length(max=80)], render_kw={'class': 'textArea','placeholder': ' Bio'})
-        location = StringField('Location', validators=[Length(max=20)], render_kw={'class':'formField' ,'placeholder': ' Location'})
-        birthday = DateField('Birthday', render_kw={'class': '','placeholder': ' Birthday'})
-        url = URLField('Website', render_kw={'class': 'formField','placeholder': ' Website'})
-        
-        submit = SubmitField('Save', render_kw={'class':'btn-form'})    
+        username = StringField('Name', validators=[DataRequired(), Length(
+            min=2, max=20)], render_kw={'class': 'formField', 'placeholder': ' Display Name'})
+        bio = TextAreaField('Bio', validators=[Length(max=80)], render_kw={
+                            'class': 'textArea', 'placeholder': ' Bio'})
+        location = StringField('Location', validators=[Length(max=20)], render_kw={
+                               'class': 'formField', 'placeholder': ' Location'})
+        birthday = DateField('Birthday', render_kw={
+                             'class': '', 'placeholder': ' Birthday'})
+        url = URLField('Website', render_kw={
+                       'class': 'formField', 'placeholder': ' Website'})
 
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
         def validate_bio(self, field):
-        # Check if the field is empty or contains only whitespace
+            # Check if the field is empty or contains only whitespace
             if field.data is not None and not field.data.strip():
-                field.data = None                   
+                field.data = None
 
     class EditBirthday(FlaskForm):
-        birthday = DateField('Birthday', render_kw={'class': '','placeholder': ' Birthday'})
-        submit = SubmitField('Save', render_kw={'class':'btn-form'})
+        birthday = DateField('Birthday', render_kw={
+                             'class': '', 'placeholder': ' Birthday'})
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
     class EditProfilePic(FlaskForm):
-        profile_picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
-        
-        submit = SubmitField('Save', render_kw={'class':'btn-form'}) 
+        profile_picture = FileField('Profile Picture', validators=[
+                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
     class EditHeaderPic(FlaskForm):
-        header_picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class':''})
-        
-        submit = SubmitField('Save', render_kw={'class':'btn-form'}) 
+        header_picture = FileField('Profile Picture', validators=[
+                                   FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
     class LoginForm(FlaskForm):
         """Login Form: email, Password, login-btn"""
-        email = EmailField('Email', validators=[DataRequired()], render_kw={ 
-                            'class':'formField',
+        email = EmailField('Email', validators=[DataRequired()], render_kw={
+            'class': 'formField',
                            'placeholder': ' Email'})
         password = PasswordField('Password', validators=[
-            DataRequired(), Length(min=6, max=20)], render_kw={'class':'formField' ,'placeholder': ' Password'})
+            DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         submit = SubmitField('Login', render_kw={'class': 'btn-form'})
 
     class CommentForm(FlaskForm):
@@ -467,10 +474,11 @@ with app.app_context():
     # if logged_in: see all posts & access more features: Post, Likes, & Delete & Edit your own post.
 
     @app.route('/')
-    def home():
-        all_posts = Post.query.order_by(Post.created_at.desc()).all() # Sorting and Reversing by created_at time
+    def all():
+        # Sorting and Reversing by created_at time
+        all_posts = Post.query.order_by(Post.created_at.desc()).all()
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
-    
+
     # -------------------- Home Page  ------------------------------------------
     # if NOT logged_in: see All posts and Login/Register
     # if logged_in: see all posts & access more features: Post, Likes, & Delete & Edit your own post.
@@ -486,7 +494,8 @@ with app.app_context():
     @login_required
     def profile():
         """Current User Profile page - include all posts"""
-        user_posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc()).all() #reversing posts based on created_at , and calling posts by user id
+        user_posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc(
+        )).all()  # reversing posts based on created_at , and calling posts by user id
         return render_template('profile.html', user_posts=user_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- User Profile Page by ID  -------------------------
@@ -494,15 +503,16 @@ with app.app_context():
     @login_required
     def user_profile(user_id):
         user = User.query.get(user_id)
-        
+
         if user:
             followers = user.followers.all()
             followed = user.followed.all()
-            reversed_posts = Post.query.filter_by(user_id=user.id).order_by(Post.created_at.desc()).all()
+            reversed_posts = Post.query.filter_by(
+                user_id=user.id).order_by(Post.created_at.desc()).all()
             return render_template('user_profile.html', user=user, followers=followers, followed=followed, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('User not found.')
-            return redirect(url_for('home'))
+            return redirect(url_for('home_page'))
 
     # --------------------- Post Page by ID --------------------------------------
     @app.route('/showpost/<int:post_id>', methods=['GET', 'POST'])
@@ -514,18 +524,18 @@ with app.app_context():
             post = Post.query.get(post_id)
             user = User.query.get(user_id)
 
-            new_comment = Comment(content=form.comment.data, user=user, post=post)
+            new_comment = Comment(
+                content=form.comment.data, user=user, post=post)
             db.session.add(new_comment)
             db.session.commit()
             flash('Comment added successfully.')
-            return redirect(url_for('show_post', post_id=post_id))    
-        
+            return redirect(url_for('show_post', post_id=post_id))
+
         if requested_post:
             return render_template('showpost.html', form=form, post=requested_post, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
             flash('Post not found.')
-            return redirect(url_for('home'))
-
+            return redirect(url_for('home_page'))
 
     # -------------------- Create New Post Page  --------------------------------
 
@@ -549,9 +559,9 @@ with app.app_context():
             db.session.add(new_post)
             db.session.commit()
 
-            return redirect(url_for('home'))
+            return redirect(url_for('home_page'))
         return render_template('new_post.html', form=form, logged_in=current_user.is_authenticated)
-    
+
     # -------------------- Edit Post Page  ------------------------------------------
 
     @app.route('/edit-post/<int:post_id>', methods=['POST', 'GET'])
@@ -562,40 +572,41 @@ with app.app_context():
         if edit_form.validate_on_submit():
             post.body = edit_form.body.data
             if request.files['post_picture']:
-                post.post_picture = save_post_picture(edit_form.post_picture.data)
+                post.post_picture = save_post_picture(
+                    edit_form.post_picture.data)
             db.session.commit()
-            return redirect(url_for('user_profile', user_id =current_user.id))
-        return render_template('edit_post.html', form=edit_form ,post=post, current_user=current_user, logged_in=current_user.is_authenticated)
-    
-
+            return redirect(url_for('user_profile', user_id=current_user.id))
+        return render_template('edit_post.html', form=edit_form, post=post, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Setting Page  -----------------------------------------
 
-    @app.route('/setting/<int:user_id>', methods=['POST', 'GET'])
+    @app.route('/setting/', methods=['POST', 'GET'])
     @login_required
-    def setting(user_id):
-        user = User.query.get_or_404(user_id)
+    def setting():
+        user = User.query.get_or_404(current_user.id)
         setting = EditRegister(obj=user)
         if setting.validate_on_submit():
             print("////\n\n\n******* SAVE CLICKED \n\n\n\n////////////")
             user.username = setting.username.data
             user.email = setting.email.data
             if request.files['profile_picture']:
-                user.profile_picture = save_profile_picture(setting.profile_picture.data)
+                user.profile_picture = save_profile_picture(
+                    setting.profile_picture.data)
             if request.files['header_picture']:
-                user.header_picture = save_header_picture(setting.header_picture.data)
+                user.header_picture = save_header_picture(
+                    setting.header_picture.data)
             user.bio = setting.bio.data
             user.location = setting.location.data
             user.url = setting.url.data
             if request.files['birthday']:
                 user.birthday = setting.birthday.data
             db.session.commit()
-            
-            return redirect(url_for('setting'))     
+
+            return redirect(url_for('setting'))
         return render_template('setting.html', form=setting, user=user, logged_in=current_user.is_authenticated)
-    
 
     # --- edit profile.................................
+
     @app.route('/edit_profile', methods=['POST', 'GET'])
     @login_required
     def edit_profile():
@@ -603,17 +614,18 @@ with app.app_context():
         form = EditProfile(request.form, obj=user)
         if form.validate_on_submit():
             user.username = form.username.data
-            user.bio = form.bio.data 
+            user.bio = form.bio.data
             user.location = form.location.data
             user.birthday = form.birthday.data
             user.bio_url = form.url.data
             db.session.commit()
-            return redirect(url_for('edit_profile'))     
+            return redirect(url_for('edit_profile'))
 
-        response = make_response(render_template('edit_profile.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user))
+        response = make_response(render_template('edit_profile.html', form=form, user=user,
+                                 logged_in=current_user.is_authenticated, current_user=current_user))
         response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-        return response 
-    
+        return response
+
         # --- edit Birthday.................................
     @app.route('/edit_birthday', methods=['POST', 'GET'])
     @login_required
@@ -623,11 +635,12 @@ with app.app_context():
         if form.validate_on_submit():
             user.birthday = form.birthday.data
             db.session.commit()
-            return redirect(url_for('edit_birthday'))     
+            return redirect(url_for('edit_birthday'))
 
-        response = make_response(render_template('edit_birthday.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user))
+        response = make_response(render_template('edit_birthday.html', form=form, user=user,
+                                 logged_in=current_user.is_authenticated, current_user=current_user))
         response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-        return response 
+        return response
 
     # --- Edit Profile Pic.................................
     @app.route('/edit_profile_pic', methods=['POST', 'GET'])
@@ -638,12 +651,13 @@ with app.app_context():
         if form.validate_on_submit():
             if request.files['profile_picture']:
                 # Save the new profile picture and update the user's profile_picture field
-                new_profile_picture = save_profile_picture(form.profile_picture.data)
+                new_profile_picture = save_profile_picture(
+                    form.profile_picture.data)
                 user.profile_picture = new_profile_picture
                 db.session.commit()
 
-            return redirect(url_for('edit_profile_pic'))   
-        return render_template('edit_profile_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)  
+            return redirect(url_for('edit_profile_pic'))
+        return render_template('edit_profile_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)
 
     # --- Edit Header Pic.................................
     @app.route('/edit_header_pic', methods=['POST', 'GET'])
@@ -653,14 +667,15 @@ with app.app_context():
         form = EditHeaderPic()
         if form.validate_on_submit():
             if request.files['header_picture']:
-                user.header_picture = save_header_picture(form.header_picture.data)
+                user.header_picture = save_header_picture(
+                    form.header_picture.data)
                 db.session.commit()
 
-            return redirect(url_for('edit_header_pic'))   
-        return render_template('edit_header_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)        
+            return redirect(url_for('edit_header_pic'))
+        return render_template('edit_header_pic.html', form=form, user=user, logged_in=current_user.is_authenticated, current_user=current_user)
     # -------------------- Like Function ---------------------------------------
-    #---------------------------------------------------------------------------
-    #---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
 
     @app.route('/like/<int:post_id>', methods=['POST'])
     @login_required
@@ -688,9 +703,9 @@ with app.app_context():
             flash('Post not found.')
 
         return redirect(url_for('show_post', post_id=post_id))
-    
+
     # -------------------- Follow / Unfollow -----------------------------------
-    #---------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------
 
     # Follow .................................................
     @app.route('/user/<int:user_id>/follow', methods=['POST'])
@@ -705,7 +720,7 @@ with app.app_context():
             flash('User not found')
         return redirect(url_for('user_profile', user_id=user_id))
 
-    #Unfollow ..................................................
+    # Unfollow ..................................................
     @app.route('/user/<int:user_id>/unfollow', methods=['POST'])
     @login_required
     def unfollow(user_id):
@@ -727,8 +742,8 @@ with app.app_context():
         post_to_delete = Post.query.get(id)
         db.session.delete(post_to_delete)
         db.session.commit()
-        return redirect(url_for('user_profile', user_id = current_user.id))
-    
+        return redirect(url_for('user_profile', user_id=current_user.id))
+
     # -------------------- Delete Comment I/P show post!!!  -----------------------------------------
 
     @app.route('/delete-comment')
@@ -740,7 +755,7 @@ with app.app_context():
         db.session.delete(post_to_delete)
         db.session.commit()
         return redirect(url_for('show_post', post_id=post_id))
-    
+
     # -------------------- About Page  -----------------------------------------
 
     @app.route('/about')
@@ -796,8 +811,8 @@ with app.app_context():
                     login_user(user)
                     user.updated_at = datetime.utcnow()
                     db.session.commit()
-                    return redirect(url_for('home'))
-            return redirect(url_for('home'))
+                    return redirect(url_for('all'))
+            return redirect(url_for('home_page'))
         return render_template('login.html', form=form, logged_in=current_user.is_authenticated)
 
     # -------------------- Logout Page  ----------------------------------------
@@ -806,7 +821,7 @@ with app.app_context():
     @login_required
     def logout():
         logout_user()
-        return redirect(url_for('home'))
+        return redirect(url_for('home_page'))
 
     if __name__ == '__main__':
         app.run(debug=True)

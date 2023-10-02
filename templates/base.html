@@ -38,7 +38,7 @@
 
                 {% if not logged_in: %}
 
-                <a href="{{ url_for('home') }}">
+                <a href="{{ url_for('all') }}">
                     <span class="material-icons-sharp">
                         travel_explore
                     </span>
@@ -72,16 +72,20 @@
 
                 <div class="user-profile">
 
+
                     <div class="profile-img">
+                        {% if current_user.profile_picture %}
                         <img src="{{ url_for('static', filename='profile_pictures/' + current_user.profile_picture) }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+                        {% endif %}
                     </div>
                     
                     <div class="profile-name">
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
-                            {% if current_user.bio %}
-                            <p>{{ current_user.bio }}</p>
-                            <p style="font-size: small;"> <span class="material-icons-sharp" style="font-size: small;">cake</span>{{ current_user.birthday.strftime('%B %d, %Y') }}</p>
+                            {% if current_user.birthday %}
+                            <p style="font-size: smaller; color: rgb(118, 118, 118);"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
                             {% endif %}
                         </div>
 
@@ -97,7 +101,7 @@
                 </a>
 
 
-                <a href="{{ url_for('home') }}">
+                <a href="{{ url_for('all') }}">
                     <span class="material-icons-sharp">
                         travel_explore
                     </span>
@@ -119,7 +123,7 @@
                     <h3>Alert</h3>
                 </a>
 
-                <a href="{{ url_for('setting', user_id=current_user.id) }}">
+                <a href="{{ url_for('setting') }}">
                     <span class="material-icons-sharp">
                         settings
                     </span>

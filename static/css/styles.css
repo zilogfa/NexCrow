@@ -77,19 +77,19 @@ a:hover {
 
 
 .btn-follow{
-    background-color: #1c8dde;
-    color: #e7e7e7;
-    font-size: 1rem;
+    background-color: #ffffff;
+    color: #636363;
+    font-size: .9rem;
     font-weight: 700;
-    width: 5rem;
-    height: 2.5rem;
-    border-radius: 5px;
+    width: 7rem;
+    height: 2rem;
+    border-radius: 15px;
     border: 0.5px solid #838383;
     box-shadow: 2px 1px 2px #a4bfff00;
 }
 
 .btn-follow:hover{
-    background-color: rgb(15, 85, 216);
+    background-color: rgb(243, 243, 243);
 }
 
 
@@ -211,7 +211,6 @@ aside .sidebar .user-profile {
 
 
 aside .sidebar .user-profile .profile-img{
-
     overflow: hidden;
 }
 
@@ -325,6 +324,7 @@ main .user-post .setting-sec button{
     width: 8rem;
     height: 3rem;
     border-radius: 25px;
+    background-color: whitesmoke;
     font-weight: 900;
     font-style: initial;
     transition: all 0.3s ease;
@@ -438,8 +438,7 @@ main .profile-sec{
     width: 46rem;
     background-color: white;
     border-radius: 15px;
-    margin-top: 1.5rem;
-    position: relative;
+    margin-top: 1.6rem;
 }
 
 main .profile-sec .header-img{
@@ -452,7 +451,7 @@ main .profile-sec .header-img{
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
     overflow: hidden;
-
+    aspect-ratio: 16/9
 }
 
 main .profile-sec .header-img img{
@@ -462,13 +461,13 @@ main .profile-sec .header-img img{
 
 
 main .profile-sec .profile-heading{
-    display: grid;
-    width: 96%;
+    display: flex;
+    flex-direction: row;
+    max-width: 96%;
     margin: 0 auto;
-    gap: 1.8rem;
-    grid-template-columns: 12rem auto;
+    gap: 4rem;
     position: relative;
-    top: -7rem;
+    top: -4rem;
     justify-items: center;
     align-items: center;
 }
@@ -481,16 +480,11 @@ main .profile-sec .profile-heading .profile-title{
 }
 
 main .profile-sec .profile-heading .profile-title .profile-img{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
     height: 12rem;
     width: 12rem;
     border-radius: 50%;
     border: solid 0.5rem #fff;
     overflow: hidden;
-
 }
 
 main .profile-sec .profile-heading .profile-title .profile-img img{
@@ -501,24 +495,53 @@ main .profile-sec .profile-heading .profile-title .profile-img img{
 
 main .profile-sec .profile-heading .profile-follow{
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+main .profile-sec .profile-heading .profile-follow .right-sec{
+    display: flex;
     flex-direction: row;
     gap: 1rem;
-    justify-content: space-around;
+    align-items: center;
+    margin-top: 1rem;
 }
 
 
-main .profile-sec .profile-heading .profile-detail{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
+main .profile-sec .profile-detail{
+    color: #8e8e8e;
+    
 }
 
 main .profile-sec .profile-heading .profile-about{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin: 5rem 0;
+    margin-top: 1rem;
+    font-size: .8rem;
+    width: 80%;
+    color: #393939;
+    font-weight: 500;
+}
 
+main .profile-sec .profile-heading .profile-location{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+main .profile-sec .profile-heading .profile-location p{
+    font-size: smaller;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+main .profile-sec .profile-heading .profile-location p span{
+    font-size: small;
+}
+
+main .profile-sec .profile-heading .profile-location p a{
+    color: #8e8e8e;
 }
 
 
@@ -742,6 +765,8 @@ main .comment-sec .comment-detail a:hover{
         background-color: transparent;
     }
 
+    
+
 
 }
 
@@ -778,17 +803,20 @@ main .comment-sec .comment-detail a:hover{
 
 
     main .profile-sec{
-        display: flex;
-        flex-direction: column;
         width: 76vw;
+    }
+
+    main .profile-sec .header-img{
+
+        margin-bottom: 0rem;
+        height: 9rem;
     }
 
     main .profile-sec .profile-heading{
         display: flex;
         flex-direction: column;
+        gap: 2rem;
         width: 96%;
-        margin: 0 auto;
-        position: relative;
     }
 
 
@@ -796,6 +824,13 @@ main .comment-sec .comment-detail a:hover{
         width: 70vw;
     }
 
+    main .profile-sec .profile-heading .profile-follow .right-sec{
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        align-items: center;
+        margin-top: 0rem;
+    }
 
 }
 

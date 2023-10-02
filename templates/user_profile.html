@@ -3,7 +3,7 @@
 
 <!-- Other User's Profile -->
 
-<h1>{{ user.username }}'s Posts</h1>
+<h1>{{ user.username }}'s Profile</h1>
 
 
 
@@ -29,45 +29,50 @@
         </div>
         <!-- FOLLOW COUNT -->
         <div class="profile-follow">
-            <p><strong>{{ followers|length }}</strong> Followers</p>
-            <p><strong>{{ followed|length }}</strong> Following</p>
-            <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
-                      
-        </div>
-        <!-- END FOLLOW -->  
-
-        <div class="profile-detail">
-            <div class="profile-about">
-                                
-                <!-- BIO -->
+            <div class="right-sec">
+                <p><strong>{{ followers|length }}</strong> Followers</p>
+                <p><strong>{{ followed|length }}</strong> Following</p>
+                <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
                 <div>
+                {% if current_user == user %}
+                    <a href="{{url_for('edit_profile')}}"><button class="btn-follow">Edit profile</button></a>
+                {% endif %}
+                <!-- Follow unfollow -->
+                {% if current_user != user %}
+                {% if current_user.is_following(user) %}
+                <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
+                    <button class="btn-follow" type="submit">Unfollow</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
+                    <button class="btn-follow" type="submit">Follow</button>
+                </form>
+                {% endif %}
+                {% endif %}
+                </div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-about">             
                     {% if user.bio %}
                     <p>{{ user.bio }}</p>
                     {% endif %} 
-                </div>  
-                <!-- END BIO   -->
-
-        
+                </div>
+                <div class="profile-location">
+                    <p><span class="material-icons-sharp">date_range</span> Joined {{ user.created_at.strftime('%B %Y') }}</p>
+                    {% if user.location %}
+                    <p><span class="material-icons-sharp">room</span> {{ user.location }}</p>
+                    {% endif %} 
+                    {% if user.bio_url %}
+                    <p><span class="material-icons-sharp">link</span> <a href="{{ user.bio_url }}" target="_blank" > Link</a></p>
+                    {% endif %} 
+                </div>
             </div>
-
+                      
         </div>
-
-        <div>
-            <!-- Follow unfollow -->
-            {% if current_user != user %}
-            {% if current_user.is_following(user) %}
-            <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
-                <button class="btn-follow" type="submit">Unfollow</button>
-            </form>
-            {% else %}
-            <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
-                <button class="btn-follow" type="submit">Follow</button>
-            </form>
-            {% endif %}
-            {% endif %}
-        </div>
-
+        <!-- END FOLLOW -->  
     </div>
+
+
 
                    
 </div>
@@ -114,7 +119,7 @@
                                 <span class="likes-wrapper">
                                     {% if post.likes == 1 %}
                                         <span class="heart-emoji red-heart"><span class="material-icons-sharp">
-                                            favorite_border
+                                            favorite
                                         </span></span>
                                     {% else %}
                                         <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
