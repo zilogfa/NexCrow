@@ -1,0 +1,81 @@
+
+@media screen and (max-width: 1200px){
+
+    .container{
+        width: 95%;
+        grid-template-columns: 6rem auto 6rem;
+    }
+
+    aside .aside-fixed{
+        max-width: 6rem;
+    }
+
+    aside .logo h2{
+        display: none;
+    }
+
+    aside .toggle .logo img{
+        margin-left: 2rem;
+    }
+
+
+    aside .sidebar h3{
+        display: none;
+    }
+
+    aside .sidebar a{
+        width: 5.6rem;
+    }
+
+    aside .sidebar a:last-child{
+        position: relative;
+        margin-top: 1.8rem;
+    }
+
+    main .user-post{
+        max-width: 40rem;
+    }
+
+    main .comment-posting {
+        max-width: 40rem;
+    }
+
+
+    aside .sidebar .user-profile img{
+        width: 5rem;
+    }
+    
+    
+    aside .sidebar .user-profile .info p:last-child{
+        display: none
+    
+    }
+
+    main .profile-sec{
+        width: 40rem;
+
+    }
+
+    main .comment-sec{
+        width: 36rem;
+    }
+
+    
+    .post-btn{
+
+        background-color:transparent;
+        width: fit-content;
+    }
+
+    .post-btn span{
+        color: #5dbbff;
+    }
+
+    .post-btn:hover{
+        background-color: transparent;
+    }
+
+    
+
+
+}

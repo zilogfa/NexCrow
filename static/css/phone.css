@@ -1,0 +1,63 @@
+
+@media screen and (max-width: 768px){
+
+    /* ALI :D */
+    .container{
+        width: 98%;
+        margin: 0 auto;
+        gap: 1rem;
+        grid-template-columns: 6rem auto 26rem;
+    }
+
+    main .user-post{
+        max-width: 76vw;
+    }
+
+    main .comment-posting {
+        max-width: 76vw;
+    }
+
+
+    aside .sidebar .user-profile img{
+        width: 4rem;
+    }
+    
+    
+    aside .sidebar .user-profile .info{
+        display: none
+    
+    }
+
+
+
+    main .profile-sec{
+        width: 76vw;
+    }
+
+    main .profile-sec .header-img{
+
+        margin-bottom: 0rem;
+        height: 9rem;
+    }
+
+    main .profile-sec .profile-heading{
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 96%;
+    }
+
+
+    main .comment-sec{
+        width: 70vw;
+    }
+
+    main .profile-sec .profile-heading .profile-follow .right-sec{
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        align-items: center;
+        margin-top: 0rem;
+    }
+
+}

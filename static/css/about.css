@@ -1,0 +1,15 @@
+main .user-post .content .about-sec{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+
+}
+
+main .user-post .content .about-sec ol, ul{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+
+}

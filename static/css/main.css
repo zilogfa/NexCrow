@@ -1,144 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-
-* {
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    appearance: 0;
-    border: 0;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 14px;
-}
-
-body{
-    background-color:whitesmoke;
-    width: 100vw;
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.88rem;
- 
-    overflow-x: hidden;
-    color: rgb(51, 51, 51);
-}
-
-a {
-    color: #1d1d1d;
-}
-
-a:hover {
-    color: #4d4d4d;
-}
-
-
-
-
-.textArea{
-    display: flex;
-    flex-direction: column;
-    margin: 1rem 0;
-    width: 96%;
-    min-height: 8rem;
-    resize: none;
-    border-radius: 8px;
-    border: 1px solid #cbcbcb;
-}
-
-.formField{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    height: 2rem;
-    border-radius: 2px;
-    margin: 1rem 0;
-    border: 0.5px solid #d6d6d6;
-    border-radius: 5px;
-}
-
-.btn-form{
-    background-color: #5697ff;
-    color: #e7e7e7;
-    font-size: 1rem;
-    font-weight: 700;
-    width: 5rem;
-    height: 2.5rem;
-    border-radius: 5px;
-    border: 0.5px solid #97daf7;
-    box-shadow: 2px 1px 2px #a4bfff00;
-}
-
-.btn-form:hover{
-    background-color: rgb(14, 140, 208);
-}
-
-
-.btn-follow{
-    background-color: #ffffff;
-    color: #636363;
-    font-size: .9rem;
-    font-weight: 700;
-    width: 7rem;
-    height: 2rem;
-    border-radius: 15px;
-    border: 0.5px solid #838383;
-    box-shadow: 2px 1px 2px #a4bfff00;
-}
-
-.btn-follow:hover{
-    background-color: rgb(243, 243, 243);
-}
-
-
-.post-btn{
-    background-color: #5dbbff;
-    border-radius: 25px;
-    width: 7rem;
-}
-
-.post-btn span{
-    color: #fff;
-}
-
-.post-btn h3{
-    color: #fff;
-}
-
-.post-btn:hover{
-    background-color: #1c8dde;
-}
-
-
-main .user-post .content .about-sec{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem;
-
-}
-
-main .user-post .content .about-sec ol, ul{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1.5rem;
-
-}
-
-
-
-
-
-.container {
-    display: grid;
-    width: 96%;
-    margin: 0 auto;
-    gap: 1.8rem;
-    grid-template-columns: 12rem auto 23rem;
-}
 
 
 aside{
@@ -177,25 +37,21 @@ aside .toggle .close{
 
 
 
-
-
-
-
-
 aside .sidebar{
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
     border-radius: 15px;
     height: 88vh;
-
     position: relative;
     top: 1.5rem;
     transition: all 0.3s ease;
 }
 
-
-
+aside .sidebar:hover{
+    box-shadow: none;
+}
 
 
 aside .sidebar .user-profile {
@@ -208,13 +64,9 @@ aside .sidebar .user-profile {
     padding: 0 1rem;
 }
 
-
-
 aside .sidebar .user-profile .profile-img{
     overflow: hidden;
 }
-
-
 
 aside .sidebar .user-profile img{
     display: flex;
@@ -225,31 +77,29 @@ aside .sidebar .user-profile img{
     border-radius: 50%;
 }
 
-
 aside .sidebar .user-profile .info{
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    color: var(--color-dark)
 }
 
 aside .sidebar .user-profile .info p:first-child{
     text-align: center;
+    color: var(--color-dark);
 }
 
-
-
-
-
+aside .sidebar .user-profile .info p b{
+    color: var(--color-dark);
+}
 
 
 aside .sidebar a{
     display: flex;
     align-items: center;
-    color: dimgray;
+    color: var(--color-info-dark);
     height: 3.7rem;
     gap: 1rem;
-
     position: relative;
     margin-left: 2rem;
     transition: all 0.3s ease;
@@ -268,6 +118,34 @@ aside .sidebar a:last-child{
 }
 
 
+aside .sidebar a.active{
+    width: 100%;
+    color: var(--color-primary);
+    background-color: var(--color-light);
+    margin-left: 0;
+}
+
+
+
+aside .sidebar a.active::before{
+    content: '';
+    width: 6px;
+    height: 18px;
+    background-color: var(--color-primary);
+}
+
+aside .sidebar a.active span{
+    color: var(--color-primary);
+    margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover{
+    color: var(--color-primary);
+}
+
+aside .sidebar a:hover span{
+    margin-left: 0.6rem;
+}
 
 
 
@@ -295,18 +173,23 @@ main .user-post{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: white;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
     border-radius: 15px;
     min-height: 12vh;
     width: 46rem;
-    
-
     position: relative;
     top: 1.5rem;
     transition: all 0.3s ease;
     margin-bottom: 1rem;
 
 }
+
+main .user-post:hover{
+    box-shadow: none;
+}
+
+
 
 main .user-post .content{
     padding: 1rem;
@@ -320,20 +203,6 @@ main .user-post .setting-sec{
     justify-content:space-between;
 }
 
-main .user-post .setting-sec button{
-    width: 8rem;
-    height: 3rem;
-    border-radius: 25px;
-    background-color: whitesmoke;
-    font-weight: 900;
-    font-style: initial;
-    transition: all 0.3s ease;
-}
-main .user-post .setting-sec button:hover{
-    background-color: #d6d6d6;
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
 
 
 
@@ -382,7 +251,7 @@ main .user-post .content .post-body img{
     width: 100%;
     max-height: 50rem;
     border-radius: 15px;
-    border: 0.5px solid #cfcfcf;
+    border: 0.5px solid var(--color-light);
 }
 
 main .user-post .content .post-body .comment-icon{
@@ -393,7 +262,7 @@ main .user-post .content .post-body .comment-icon{
 }
 
 main .user-post .content .post-body .comment-icon a{
-    color: darkgray;
+    color: var(--color-info-dark);
     display: flex;
     position: relative;
     align-items: center;
@@ -409,24 +278,6 @@ main .user-post .content .post-body .comment-icon a span{
 }
 
 
-main .user-post .content form input{
-    border: 0.5px solid #ccc;
-    border-radius: 10px;
-    padding: 6px 8px;
-    font-size: 16px;
-    min-width: 20rem;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -434,9 +285,15 @@ main .user-post .content form input{
 
 main .profile-sec{
     width: 46rem;
-    background-color: white;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
     border-radius: 15px;
     margin-top: 1.6rem;
+    transition: all 0.3s ease;
+}
+
+main .profile-sec:hover{
+    box-shadow: none;
 }
 
 main .profile-sec .header-img{
@@ -449,12 +306,13 @@ main .profile-sec .header-img{
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
     overflow: hidden;
-    aspect-ratio: 16/9
+    object-fit: cover;
 }
 
 main .profile-sec .header-img img{
     width: 100%;
     height: auto;
+    object-fit: cover;
 }
 
 
@@ -481,7 +339,7 @@ main .profile-sec .profile-heading .profile-title .profile-img{
     height: 12rem;
     width: 12rem;
     border-radius: 50%;
-    border: solid 0.5rem #fff;
+    border: solid 0.5rem var(--color-white);
     overflow: hidden;
 }
 
@@ -489,6 +347,11 @@ main .profile-sec .profile-heading .profile-title .profile-img img{
     width: 100%;
     height: auto;
 
+}
+
+main .profile-sec .profile-heading .profile-title h3{
+    color: var(--color-dark);
+    font-weight:700;
 }
 
 main .profile-sec .profile-heading .profile-follow{
@@ -509,9 +372,12 @@ main .profile-sec .profile-heading .profile-follow .right-sec{
     margin-top: 4rem;
 }
 
+main .profile-sec .profile-heading .profile-follow .right-sec p{
+    color: var(--color-dark);
+}
+
 
 main .profile-sec .profile-detail{
-    color: #8e8e8e;
     width: 100%;
 }
 
@@ -519,8 +385,11 @@ main .profile-sec .profile-heading .profile-about{
     margin-top: 1rem;
     font-size: .8rem;
     width: 90%;
-    color: #393939;
     font-weight: 500;
+}
+
+main .profile-sec .profile-heading .profile-about p{
+    color: var(--color-dark);
 }
 
 main .profile-sec .profile-heading .profile-location{
@@ -539,6 +408,7 @@ main .profile-sec .profile-heading .profile-location p{
     flex: 50%;
     inline-size: 98%;
     overflow-wrap: break-word;
+    color: var(--color-info-dark);
 }
 
 main .profile-sec .profile-heading .profile-location p span{
@@ -546,28 +416,10 @@ main .profile-sec .profile-heading .profile-location p span{
 }
 
 main .profile-sec .profile-heading .profile-location p a{
-    color: #8e8e8e;
+    color: var(--color-info-dark);
     inline-size: 98%;
     overflow-wrap: break-word;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -615,12 +467,17 @@ main .comment-sec{
     border-radius: 20px;
     min-height: 8vh;
     width: 44rem;
-    background-color: #fcfcfc;
-
+    background-color: var(--color-white);
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
     position: relative;
     left: 1.5rem;
     transition: all 0.3s ease;
     margin-bottom: 1rem;
+}
+
+main .comment-sec:hover{
+    box-shadow: none;
 }
 
 
@@ -670,13 +527,13 @@ main .comment-sec .comment-detail{
     padding: 1rem;
     margin-top: 0.7rem;
     font-size: 0.7rem;
-    color:#838383;
+    color:var(--color-info-dark);
 }
 
 main .comment-sec .comment-detail a{
     display: flex;
     flex-direction: row;
-    color: #838383;
+    color: var(--color-info-dark);
     align-items: center;
 }
 
@@ -685,184 +542,6 @@ main .comment-sec .comment-detail a span{
 }
 
 main .comment-sec .comment-detail a:hover{
-    color: #c22323;
+    color: var(--color-danger);
 }
 
-
-
-
-
-
-
-
-
-@media screen and (max-width: 1200px){
-
-    .container{
-        width: 95%;
-        grid-template-columns: 6rem auto 6rem;
-    }
-
-    aside .aside-fixed{
-        max-width: 6rem;
-    }
-
-    aside .logo h2{
-        display: none;
-    }
-
-    aside .toggle .logo img{
-        margin-left: 2rem;
-    }
-
-
-    aside .sidebar h3{
-        display: none;
-    }
-
-    aside .sidebar a{
-        width: 5.6rem;
-    }
-
-    aside .sidebar a:last-child{
-        position: relative;
-        margin-top: 1.8rem;
-    }
-
-    main .user-post{
-        max-width: 40rem;
-    }
-
-    main .comment-posting {
-        max-width: 40rem;
-    }
-
-
-    aside .sidebar .user-profile img{
-        width: 5rem;
-    }
-    
-    
-    aside .sidebar .user-profile .info p:last-child{
-        display: none
-    
-    }
-
-    main .profile-sec{
-        width: 40rem;
-
-    }
-
-    main .comment-sec{
-        width: 36rem;
-    }
-
-    
-    .post-btn{
-
-        background-color:transparent;
-        width: fit-content;
-    }
-
-    .post-btn span{
-        color: #5dbbff;
-    }
-
-    .post-btn:hover{
-        background-color: transparent;
-    }
-
-    
-
-
-}
-
-
-@media screen and (max-width: 768px){
-
-
-    .container{
-        width: 98%;
-        margin: 0 auto;
-        gap: 1rem;
-        grid-template-columns: 6rem auto 26rem;
-    }
-
-    main .user-post{
-        max-width: 76vw;
-    }
-
-    main .comment-posting {
-        max-width: 76vw;
-    }
-
-
-    aside .sidebar .user-profile img{
-        width: 4rem;
-    }
-    
-    
-    aside .sidebar .user-profile .info{
-        display: none
-    
-    }
-
-
-
-    main .profile-sec{
-        width: 76vw;
-    }
-
-    main .profile-sec .header-img{
-
-        margin-bottom: 0rem;
-        height: 9rem;
-    }
-
-    main .profile-sec .profile-heading{
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        width: 96%;
-    }
-
-
-    main .comment-sec{
-        width: 70vw;
-    }
-
-    main .profile-sec .profile-heading .profile-follow .right-sec{
-        display: flex;
-        flex-direction: row;
-        gap: 2rem;
-        align-items: center;
-        margin-top: 0rem;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* -- Like Class ♥ */
-.heart-emoji {
-    font-size: 24px;}
-.red-heart {
-    color: red;}
-.empty-heart {
-    color:darkgray;}
-/* -- End of Like Class ♥ */

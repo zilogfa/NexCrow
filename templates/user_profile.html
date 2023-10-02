@@ -60,7 +60,7 @@
                     {% endif %} 
                 </div>
                 <div class="profile-location">
-                    <p><span class="material-icons-sharp">date_range</span> Joined {{ user.created_at.strftime('%B %Y') }}</p>
+                    <p><span class="material-icons-sharp">date_range</span>&nbsp;Joined {{ user.created_at.strftime('%B %Y') }}</p>
                     {% if user.location %}
                     <p><span class="material-icons-sharp">room</span>&nbsp;{{ user.location }}</p>
                     {% else  %}

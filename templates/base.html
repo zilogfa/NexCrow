@@ -8,7 +8,17 @@
 
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/root.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/aside.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/right-section.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/btn.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tablet.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/phone.css')}}">
+
+
+
 </head>
 <body>
     <div class="container">
@@ -85,7 +95,7 @@
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
                             {% if current_user.birthday %}
-                            <p style="font-size: smaller; color: rgb(118, 118, 118);"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
+                            <p style="font-size: smaller;"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
                             {% endif %}
                         </div>
 
@@ -154,16 +164,10 @@
         <!-- End SideBar Section -->
 
 
-
-
-
-
-        <div class="main-div">
             <main>
             {% block content %}
             {% endblock %}
             </main>
-        </div>
 
 
 

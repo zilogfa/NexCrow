@@ -1,0 +1,97 @@
+
+.textArea{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    width: 96%;
+    min-height: 8rem;
+    resize: none;
+    border-radius: 8px;
+    border: 1px solid var(--color-info-dark);
+}
+
+.formField{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 2rem;
+    border-radius: 2px;
+    margin: 1rem 0;
+    border: 0.5px solid var(--color-dark-variant);
+    border-radius: 5px;
+}
+
+.btn-form{
+    background-color: var(--color-post);
+    color: var(--color-white);
+    font-size: 1rem;
+    font-weight: 700;
+    width: 5rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: 0.5px solid var(--color-background);
+    box-shadow: 2px 1px 2px #a4bfff00;
+}
+
+.btn-form:hover{
+    background-color: var(--color-post-hover);
+}
+
+
+.btn-follow{
+    background-color: var(--color-white);
+    color: var(--color-info-dark);
+    font-size: .9rem;
+    font-weight: 700;
+    width: 7rem;
+    height: 2rem;
+    border-radius: 15px;
+    border: 0.5px solid var(--color-info-dark);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.btn-follow:hover{
+    background-color: var(--color-dark);
+    color: var(--color-white);
+}
+
+
+.post-btn{
+    background-color: var(--color-post);
+    border-radius: 25px;
+    width: 7rem;
+}
+
+.post-btn span{
+    color: var(--color-white);
+}
+
+.post-btn h3{
+    color: var(--color-white);
+}
+
+.post-btn:hover{
+    background-color:var(--color-post-hover);
+}
+
+
+
+
+
+
+
+main .user-post .setting-sec button{
+    width: 8rem;
+    height: 3rem;
+    border-radius: 25px;
+    background-color: var(--color-background);
+    font-weight: 900;
+    font-style: initial;
+    transition: all 0.3s ease;
+}
+main .user-post .setting-sec button:hover{
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    transition: all 0.3s ease;
+}
