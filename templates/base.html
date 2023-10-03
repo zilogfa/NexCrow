@@ -62,12 +62,15 @@
                     <h3>About</h3>
                 </a>
 
+
                 <a href="{{ url_for('login') }}">
                     <span class="material-icons-sharp">
                         login
                     </span>
                     <h3>Login</h3>
                 </a>
+
+              
 
                
                 <a href="{{ url_for('register') }}">
@@ -146,6 +149,14 @@
                     </span>
                     <h3>Post</h3>
                 </a>
+
+                <a href="#" id="dark-mode-toggle">
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                    <h3>Theme</h3>
+                </a>
+                
                 <a href="{{ url_for('logout') }}">
                     <span class="material-icons-sharp">
                         logout
@@ -170,6 +181,7 @@
             </main>
 
 
+        
 
     </div>
 
@@ -177,6 +189,7 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <!-- Custom Script -->
+    <script src="{{url_for('static', filename='script/theme.js')}}"></script>
     <script src="{{url_for('static', filename='script/index.js')}}"></script>
 </body>
 </html>
