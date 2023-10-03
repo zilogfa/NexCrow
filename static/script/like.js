@@ -1,50 +1,41 @@
-// -------------------- Like btn Script ♥   
 function likePost(event, button) {
-    event.preventDefault();
+  event.preventDefault();
 
-    var postId = button.getAttribute("data-post-id");
-    var likesCountElement = button.querySelector(".likes-count");
-    var likesCount = parseInt(likesCountElement.textContent);
+  var postId = button.getAttribute("data-post-id");
+  var likesCountElement = button.querySelector(".likes-count");
 
-    fetch(`/like/${postId}`, {
+  fetch(`/like/${postId}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
       },
-    })
-    .then(response => {
-      if (response.ok) {
-        // Handle successful response
-        button.classList.toggle("liked");
-        if (button.classList.contains("liked")) {
-          likesCount++;
-        } else {
-          likesCount--;
-        }
-        likesCountElement.textContent = likesCount;
-        updateHeartEmoji(button, likesCount);
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Use the data from the backend to update the button state
+      if (data.liked) {
+          button.classList.add("liked");
       } else {
-        // Handle error response
-        console.error('Failed to like the post');
+          button.classList.remove("liked");
       }
-    })
-    .catch(error => {
-      // Handle error
-      console.error('An error occurred:', error);
-    });
-  }
 
-  function updateHeartEmoji(button, likesCount) {
-    var heartEmoji = button.querySelector('.heart-emoji');
-    if (likesCount === 1) {
-      
+      likesCountElement.textContent = data.likes;
+      updateHeartEmoji(button, data.likes);
+  })
+  .catch(error => {
+      console.error('An error occurred:', error);
+  });
+}
+
+function updateHeartEmoji(button, likesCount) {
+  var heartEmoji = button.querySelector('.heart-emoji');
+  if (likesCount >= 1 && button.classList.contains("liked")) {
       heartEmoji.innerHTML = '<span class="material-icons-sharp">favorite</span>'; // Red heart
       heartEmoji.classList.add('red-heart');
       heartEmoji.classList.remove('empty-heart');
-    } else {
+  } else {
       heartEmoji.innerHTML = '<span class="material-icons-sharp">favorite_border</span>'; // Empty heart
       heartEmoji.classList.remove('red-heart');
       heartEmoji.classList.add('empty-heart');
-    }
   }
-// -------------------- END Like Script ♥ 
+}

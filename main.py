@@ -82,86 +82,6 @@ def save_profile_picture(file):
     # Returning the filename to store in the database
     return new_filename
 
-# def save_profile_picture(file):
-#     # Check if the uploaded file exists
-#     if not file:
-#         return None
-
-#     # Generating a secure random string as the filename
-#     random_hex = secrets.token_hex(8)
-#     # Getting the file extension
-#     _, file_extension = os.path.splitext(file.filename)
-#     # Creating a new filename using the random string and the original extension
-#     new_filename = random_hex + file_extension
-#     # Setting the destination folder to save the profile pictures
-#     destination = os.path.join(current_app.config['UPLOAD_FOLDER'], 'profile_pictures', new_filename)
-
-#     # Create missing directories
-#     os.makedirs(os.path.dirname(destination), exist_ok=True)
-
-#     # Opening the uploaded image
-#     try:
-#         image = Image.open(file)
-
-#         # Croping the image to a square aspect ratio (1x1)
-#         width, height = image.size
-#         size = min(width, height)
-#         left = (width - size) / 2
-#         top = (height - size) / 2
-#         right = (width + size) / 2
-#         bottom = (height + size) / 2
-#         image = image.crop((left, top, right, bottom))
-
-#         # Resizing the image to a desired size (optional)
-#         output_size = (400, 400)  # Adjust the size as needed
-#         image.thumbnail(output_size)
-
-#         # Saving the cropped and resized image to the destination folder
-#         image.save(destination)
-
-#         # Returning the filename to store in the database
-#         return new_filename
-#     except Exception as e:
-#         # Handle any errors that might occur during image processing
-#         print(f"Error while saving image: {e}")
-#         return None
-
-
-# def save_profile_picture(file):
-#     # Generating a secure random string as the filename
-#     random_hex = secrets.token_hex(8)
-#     # Getting the file extension
-#     _, file_extension = os.path.splitext(file.filename)
-#     # Creating a new filename using the random string and the original extension
-#     new_filename = random_hex + file_extension
-#     # Setting the destination folder to save the profile pictures
-
-#     destination = os.path.join(app.config['UPLOAD_FOLDER'], 'profile_pictures', new_filename)
-
-#     # Create missing directories
-#     os.makedirs(os.path.dirname(destination), exist_ok=True)
-
-#     # Opening the uploaded image
-#     image = Image.open(file)
-
-#     # Croping the image to a square aspect ratio (1x1)
-#     width, height = image.size
-#     size = min(width, height)
-#     left = (width - size) / 2
-#     top = (height - size) / 2
-#     right = (width + size) / 2
-#     bottom = (height + size) / 2
-#     image = image.crop((left, top, right, bottom))
-
-#     # Resizing the image to a desired size (optional)
-#     output_size = (400, 400)  # Adjust the size as needed
-#     image.thumbnail(output_size)
-
-#     # Saving the cropped and resized image to the destination folder
-#     image.save(destination)
-
-#     # Returning the filename to store in the database
-#     return new_filename
 
 # -------------------- Post picture Storing Setup ---------------------
 
@@ -695,29 +615,24 @@ with app.app_context():
     @app.route('/like/<int:post_id>', methods=['POST'])
     @login_required
     def like_post(post_id):
-        # Get the current user
-
-        # Get the post
         post = Post.query.get(post_id)
-        print("USER CALLED Like_Post function ///////////////////////////")
         if post and current_user:
             if post in current_user.liked_posts:
-                # User already liked the post, remove the like
                 current_user.liked_posts.remove(post)
                 post.likes -= 1
-                print("USER Like_Post post.Likes -=1 ///////////////////////////")
+                liked = False  #  to indicate that the post was unliked
             else:
-                # User didn't like the post yet, add the like
                 current_user.liked_posts.append(post)
                 post.likes += 1
-                print("USER Like_Post post.Likes +=1 ///////////////////////////")
+                liked = True  #  to indicate that the post was liked
 
             db.session.commit()
-            flash('Post liked successfully.')
-        else:
-            flash('Post not found.')
 
-        return redirect(url_for('show_post', post_id=post_id))
+            # Return the new state and updated like count
+            return jsonify({'liked': liked, 'likes': post.likes})
+
+        else:
+            return jsonify({'error': 'Post not found.'}), 404
 
     # -------------------- Follow / Unfollow -----------------------------------
     # ---------------------------------------------------------------------------
@@ -778,7 +693,7 @@ with app.app_context():
         return render_template('about.html', logged_in=current_user.is_authenticated)
     
 
-    # -------------------- Post/Comment Impressions  -----------------------------------------
+    # -------------------- Post/Comment/Profile Impressions  -----------------------------------------
 
     @app.route('/track_impression/<int:post_id>', methods=['POST'])
     def track_impression(post_id):
@@ -801,6 +716,18 @@ with app.app_context():
             db.session.commit()
 
         return jsonify({'message': 'Comment Impression tracked successfully'})
+    
+    @app.route('/track_profile_impression/<int:user_id>', methods=['POST'])
+    def track_profile_impression(user_id):
+        user = User.query.get(user_id)
+        if user:
+            print(f"Profile impressions +1 successfully for user {user.id}")
+            user.profile_impressions += 1
+            db.session.commit()
+
+        return jsonify({'message': 'Profile Impression tracked successfully'})
+
+
 
 
     # -------------------- Register Page  --------------------------------------

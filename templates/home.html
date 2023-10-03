@@ -18,7 +18,7 @@
 
         <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
         <h3>{{ post.user.username }}</h3>
-        <p style="font-size: xx-small; color: dimgray;">{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
+        <p style="font-size: xx-small; color: dimgray;">{{ post.created_at.strftime('%H:%M · %B %d, %Y') }} </p>
         </a>
     </div>
     
@@ -58,7 +58,7 @@
             </a>
             
             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
+                <p>{{ post.created_at.strftime('%H:%M · %B %d, %Y') }} </p>
             </a>
         </div>
     </div>

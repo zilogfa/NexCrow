@@ -7,7 +7,7 @@
 
 
 
-<div class="profile-sec">
+<div class="profile-sec" data-user-id="{{ user.id }}">
     <div class="header-img">
         {% if user.header_picture %}
         <img src="{{ url_for('static', filename='header_pictures/' + user.header_picture) }}">
@@ -68,12 +68,16 @@
                     {% endif %} 
                 </div>
                 <div class="profile-location">
+                    <p class="profile-impression-count"><span class="material-icons-sharp">equalizer</span> &nbsp; <span class="count-value" style="font-size: 0.7rem;">{{ user.profile_impressions }}</span> </p>
+                </div>
+                <div class="profile-location">
                     {% if user.bio_url %}
                     <p><span class="material-icons-sharp">insert_link</span> <a href="{{ user.bio_url }}" target="_blank" >&nbsp; {{ user.bio_url }}</a></p>
                     {% else  %}
                     <p><span class="material-icons-sharp">insert_link</span> &nbsp; </p>
                     {% endif %} 
                 </div>
+             
             </div>
                       
         </div>
