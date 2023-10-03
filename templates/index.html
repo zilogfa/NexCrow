@@ -4,7 +4,7 @@
 <h1>Public Posts</h1>
 {% if posts %}
 {% for post in posts %}
-<div class="user-post">
+<div class="user-post" data-post-id="{{ post.id }}">
     <div class="content">
         <div class="title">
             {% if post.user.profile_picture %}
@@ -46,6 +46,13 @@
                         chat_bubble_outline
                     </span>
                     <p>{{ post.comments|length }} </p>
+                </a>
+
+                <a href="{{ url_for('show_post', post_id=post.id) }}">
+                    <span class="material-icons-sharp">
+                        equalizer
+                    </span>
+                    <p class="impression-count">{{ post.post_impressions }} </p>
                 </a>
 
                 <a href="{{ url_for('show_post', post_id=post.id) }}">

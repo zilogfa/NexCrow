@@ -185,6 +185,19 @@ main .user-post{
 
 }
 
+/*  -webkit-user-select for Safari support */
+.user-post {
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard */
+}
+
+/*  -moz-fit-content for Firefox support */
+.user-post {
+    width: -moz-fit-content; /* Firefox */
+    width: fit-content; /* Standard */
+}
+
+
 main .user-post:hover{
     box-shadow: none;
 }
@@ -225,6 +238,7 @@ main .user-post .content .title img{
 
 main .user-post .content .title h3{
     margin-top: 0.5rem;
+    font-weight: bolder;
 }
 
 main .user-post .content .title h3{
@@ -237,11 +251,13 @@ main .user-post .content .post-body{
     margin-left: 4rem;
     position: relative;
     align-items: center;
+    
 }
 
 main .user-post .content .post-body .p-body{
     inline-size: 98%;
     overflow-wrap: break-word;
+    color: var(--color-dark);
 }
 
 
@@ -448,7 +464,6 @@ main .comment-posting{
 main .comment-posting .comment-textArea {
     margin-left: 1rem;
     padding: 1rem;
-
 }
 
 
@@ -488,17 +503,12 @@ main .comment-sec:hover{
 main .comment-sec  .title{
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    justify-content:flex-start;
-    gap: 1rem;
     margin-left: 1rem;
     margin-top: 0.5rem;
+    align-items: center;
+    gap: 1rem;
 }
 
-main .comment-sec .title .title-profile{
-
-    
-}
 
 main .comment-sec .title img{
     width: 2.5rem;
@@ -506,15 +516,22 @@ main .comment-sec .title img{
     border-radius: 50px;
 }
 
-main .comment-sec .title h3{
-
-
+main .comment-sec  .title-body h3{
+    color:var(--color-dark-variant);
+    font-weight: bolder;
 }
 
-main .comment-sec .title .comment-body{
+
+
+
+main .comment-sec .comment-body{
     inline-size: 80%;
     overflow-wrap: break-word;
+    padding-left: 4.5rem;
+}
 
+main .comment-sec .comment-body p{
+    color: var(--color-dark);
 }
 
 
@@ -522,10 +539,10 @@ main .comment-sec .title .comment-body{
 main .comment-sec .comment-detail{
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
-    gap: 1rem;
+    justify-content:flex-end;
+    gap: 4rem;
     padding: 1rem;
-    margin-top: 0.7rem;
+    margin-top: 0.8rem;
     font-size: 0.7rem;
     color:var(--color-info-dark);
 }
@@ -537,11 +554,12 @@ main .comment-sec .comment-detail a{
     align-items: center;
 }
 
-main .comment-sec .comment-detail a span{
-    font-size: 1.5rem;
+main .comment-sec a span{
+    font-size: 1.0rem;
 }
 
-main .comment-sec .comment-detail a:hover{
+main .comment-sec a:hover{
     color: var(--color-danger);
 }
+
 

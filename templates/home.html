@@ -6,8 +6,8 @@
 <h1>Home</h1>
 {% if posts %}
 {% for post in posts %}
-<div class="user-post">
-<div class="content">
+<div class="user-post" data-post-id="{{ post.id }}">
+<div class="content" >
 
     <div class="title">
         {% if post.user.profile_picture %}
@@ -50,6 +50,13 @@
                 </span>
                 <p>{{ post.comments|length }} </p>
             </a>
+            <a href="{{ url_for('show_post', post_id=post.id) }}">
+                <span class="material-icons-sharp">
+                    equalizer
+                </span>
+                <p class="impression-count">{{ post.post_impressions }} </p>
+            </a>
+            
             <a href="{{ url_for('show_post', post_id=post.id) }}">
                 <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
             </a>

@@ -3,7 +3,7 @@
 
 
 <h1>Post by ID</h1>
-<div class="user-post">
+<div class="user-post" data-post-id="{{ post.id }}">
   <div class="content">
 
     <!-- Post Profile Picture + UserName -->
@@ -31,7 +31,7 @@
 
 
 
-      {% if logged_in and current_user %}
+      {% if logged_in and current_user == post.user %}
       <div class="comment-icon">
         <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
             <span class="likes-wrapper">
@@ -56,7 +56,12 @@
       </a>
 
 
-
+      <a href="{{ url_for('show_post', post_id=post.id) }}">
+        <span class="material-icons-sharp">
+            equalizer
+        </span>
+        <p class="impression-count">{{ post.post_impressions }} </p>
+      </a>
 
       <a href="{{url_for('edit_post', post_id=post.id)}}">
           <span class="material-icons-sharp">
@@ -94,6 +99,13 @@
                 chat_bubble_outline
             </span>
             <p>{{ post.comments|length }}</p>
+        </a>
+
+        <a href="{{ url_for('show_post', post_id=post.id) }}">
+          <span class="material-icons-sharp">
+              equalizer
+          </span>
+          <p class="impression-count">{{ post.post_impressions }} </p>
         </a>
 
         <a href="#" onclick="return false;">
@@ -139,47 +151,52 @@
 
 
   {% for comment in post.comments %}
-  <div class="comment-sec">
+  <div class="comment-sec" data-comment-id="{{ comment.id }}">
 
       <div class="title">
-        <div class="title-profile">
+        <div>
           {% if comment.user.profile_picture %}
           <img src="{{ url_for('static', filename='profile_pictures/' + comment.user.profile_picture) }}">
           {% else %}
           <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
           {% endif %}
-      </div>
-
-        <div class="comment-body">
-          <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
+        </div>
+        <div class="title-body">
+          <a href="{{ url_for('user_profile', user_id=comment.user.id) }}">
             <h3>{{ comment.user.username }}</h3>
           </a>
-          <p>{{ comment.content }}</p>
         </div>
+      </div>
 
+      <div class="comment-body">
+        <p>{{ comment.content }}</p>
       </div>
 
 
       <!-- comment details: Like & time stamp section -->
 
       <div class="comment-detail">
+        {% if logged_in and current_user.id == comment.user.id %}
+          <a href="{{url_for('delete_comment', comment_id=comment.id , post_id=comment.post.id)}}">
+            <span class="material-icons-sharp">
+              clear
+            </span>
+            Delete
+          </a>
+        {% endif %}
 
-      {% if logged_in and current_user.id == comment.user.id %}
-        <p>{{ comment.timestamp.strftime('%H:%M · %B %Y') }} </p>
-        <a href="{{url_for('delete_comment', comment_id=comment.id , post_id=comment.post.id)}}">
+        <a href="#">
           <span class="material-icons-sharp">
-            delete
+              equalizer
           </span>
-          <p>Delete </p>
+          <p class="comment-impression-count">&nbsp;{{ comment.comment_impressions }}</p>
         </a>
 
-      {% else %}
-
-      <p>{{ comment.timestamp.strftime('%H:%M · %B %Y') }} </p>
-
-      {% endif %}
-
+        <a href="#">
+          <p>{{ comment.timestamp.strftime('%H:%M · %D') }} </p>
+        </a>
       </div>
+
 
       <!-- end comment Time Stamp and Delete  -->
       
@@ -194,30 +211,3 @@
 
 {% endblock %}
 
-
-
-<!-- 
-<script>
-    function likePost(postId) {
-      fetch(`/post/${postId}/like`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token() }}'  // Assuming you're using CSRF protection
-        },
-      })
-      .then(response => {
-        if (response.ok) {
-          // Handle successful response, e.g., display a success message
-          console.log('Post liked successfully');
-        } else {
-          // Handle error response, e.g., display an error message
-          console.error('Failed to like the post');
-        }
-      })
-      .catch(error => {
-        // Handle error, e.g., display an error message
-        console.error('An error occurred:', error);
-      });
-    }
-  </script> -->

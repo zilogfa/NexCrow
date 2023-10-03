@@ -776,6 +776,32 @@ with app.app_context():
     @app.route('/about')
     def about():
         return render_template('about.html', logged_in=current_user.is_authenticated)
+    
+
+    # -------------------- Post/Comment Impressions  -----------------------------------------
+
+    @app.route('/track_impression/<int:post_id>', methods=['POST'])
+    def track_impression(post_id):
+        # Retrieve the post from the database and update the impression count
+        post = Post.query.get(post_id)
+        if post:
+            print(f"Post impressions +1 successfully for post {post.id}")
+            post.post_impressions += 1
+            db.session.commit()
+
+        return jsonify({'message': 'Impression tracked successfully'})
+    
+
+    @app.route('/track_comment_impression/<int:comment_id>', methods=['POST'])
+    def track_comment_impression(comment_id):
+        comment = Comment.query.get(comment_id)
+        if comment:
+            print(f"Comment impressions +1 successfully for comment {comment.id}")
+            comment.comment_impressions += 1
+            db.session.commit()
+
+        return jsonify({'message': 'Comment Impression tracked successfully'})
+
 
     # -------------------- Register Page  --------------------------------------
 
@@ -808,6 +834,7 @@ with app.app_context():
             return redirect(url_for('login'))
 
         return render_template('register.html', form=form)
+    
 
     # -------------------- Login Page  -----------------------------------------
 
