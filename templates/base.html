@@ -14,9 +14,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/right-section.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/btn.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/tablet.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/phone.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
+    
 
 
 
@@ -176,15 +177,33 @@
         <!-- End SideBar Section -->
 
 
-            <main>
-            {% block content %}
-            {% endblock %}
-            </main>
+        <main>
+        {% block content %}
+        {% endblock %}
+        </main>
 
-            <form action="/" method="GET" class="search-form">
-                <input type="text" name="query" placeholder="Search for posts and users...">
-                <button type="submit">Search</button>
-            </form>
+        <div class="right-section">
+            <div class="fix-right">
+                <div class="right-content">
+                    <!-- search ...................................................... -->
+                    <form action="{{url_for('search')}}" method="GET" class="search-form">
+                        <input type="text" name="query" placeholder="  Search for posts and users...">
+                        <button type="submit"><span class="material-icons-sharp">search</span></button>
+                    </form>
+
+                    <div>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda modi ex sit ut placeat dolor consectetur ducimus dolorum laborum itaque quisquam quia eos dolore temporibus, odit possimus. Vero, expedita dolores!</p>
+                    </div>
+
+                    <div>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda modi ex sit ut placeat dolor consectetur ducimus dolorum laborum itaque quisquam quia eos dolore temporibus, odit possimus. Vero, expedita dolores!</p>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+            
         
 
     </div>

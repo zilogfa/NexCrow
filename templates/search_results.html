@@ -7,7 +7,11 @@
 <div class="user-post mySearch">
 
     <form action="{{url_for('search')}}" method="GET" class="search-form">
+        {% if query %}
         <input type="text" name="query" placeholder=" {{query}}">
+        {% else %}
+        <input type="text" name="query" placeholder=" Search for posts and users...">
+        {% endif %}
         <button type="submit"><span class="material-icons-sharp">search</span></button>
     </form>
 </div>

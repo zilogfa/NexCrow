@@ -357,12 +357,26 @@ main .profile-sec .profile-heading .profile-title .profile-img{
     border-radius: 50%;
     border: solid 0.5rem var(--color-white);
     overflow: hidden;
+    transition: all 0.3s ease
+}
+main .profile-sec .profile-heading .profile-title .profile-img:hover{
+    border: solid 0.1rem var(--color-white);
+    scale: 1.8;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease
 }
 
 main .profile-sec .profile-heading .profile-title .profile-img img{
     width: 100%;
     height: auto;
+    transition: all 0.3s ease
 
+}
+
+main .profile-sec .profile-heading .profile-title .profile-img img:hover{
+    scale: 1.2;
+    transition: all 0.3s ease
 }
 
 main .profile-sec .profile-heading .profile-title h3{
@@ -564,3 +578,76 @@ main .comment-sec a:hover{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.right-section{
+    height: 100vh;
+}
+
+
+.right-section .fix-right{
+    position: fixed;
+    width: 22rem;    
+}
+
+.right-section .fix-right .right-content{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 0.8rem;
+    top: 4rem;
+    height: 88vh;
+
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow);
+
+    border-radius: 15px;
+    position: relative;
+
+    transition: all 0.3s ease;
+}
+
+.right-section .right-content:hover{
+    box-shadow: none;
+}

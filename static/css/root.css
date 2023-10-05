@@ -124,17 +124,52 @@ strong{
     display: grid;
     width: 96%;
     margin: 0 auto;
+    gap: 1.2rem;
+    grid-template-columns: 12rem 46rem auto;
+}
+
+/* .container{
+    display: grid;
+    width: 96%;
+    margin: 0 auto;
     gap: 1.8rem;
     grid-template-columns: 12rem auto 23rem;
-}
+} */
+
 
 
 
 /* -- Like Class ♥ */
 .heart-emoji {
-    font-size: 24px;}
+    font-size: 24px;
+    transition: all 0.6s ease;
+}
 .red-heart {
-    color: var(--color-danger);}
+    color: var(--color-danger);
+    transition: all 0.6s ease;
+    animation: heart-hover 0.1s forwards ease-out;
+}
+
+@keyframes heart-hover {
+    0% {
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(0.8);
+    }
+
+    70% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
 .empty-heart {
-    color:var(--color-info-dark);}
+    color:var(--color-info-dark);
+    transition: all 0.6s ease
+}
 /* -- End of Like Class ♥ */

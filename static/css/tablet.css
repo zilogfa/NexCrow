@@ -6,6 +6,15 @@
         grid-template-columns: 6rem auto 6rem;
     }
 
+    
+    main .mySearch {
+        display: block;
+    }
+
+    .right-section{
+        display: none;
+    }
+
     aside .aside-fixed{
         max-width: 6rem;
     }
@@ -75,7 +84,6 @@
     .post-btn:hover{
         background-color: transparent;
     }
-
     
 
 

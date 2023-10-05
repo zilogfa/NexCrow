@@ -3,7 +3,7 @@ Crow Nexus - Social Media Platform
 started on: July/08/2023
 """
 
-from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response
+from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response, func
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField, DateField, DateTimeField, URLField, DateTimeLocalField
 from flask_wtf.file import FileField, FileAllowed
@@ -397,7 +397,16 @@ with app.app_context():
 
     @app.route('/')
     def all():
-        # Sorting and Reversing by created_at time
+        # Gather statistics
+        user = current_user
+        total_posts = Post.query.filter_by(user_id=user.id).count()
+        total_comments = Comment.query.filter_by(user_id=user.id).count()
+        profile_page_impressions = user.profile_impressions
+        total_post_impressions = db.session.query(func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        total_comment_impressions = db.session.query(func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        most_post_impressions = db.session.query(func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        most_comment_impressions = db.session.query(func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+         # Sorting and Reversing by created_at time
         all_posts = Post.query.order_by(Post.created_at.desc()).all()
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
