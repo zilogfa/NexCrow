@@ -176,7 +176,7 @@ main .user-post{
     background-color: var(--color-white);
     box-shadow: var(--box-shadow);
     border-radius: 15px;
-    min-height: 12vh;
+    min-height: 6vh;
     width: 46rem;
     position: relative;
     top: 1.5rem;

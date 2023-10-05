@@ -16,7 +16,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from sqlalchemy.orm import relationship
 
-# import flask_whooshalchemy as wa
 
 from datetime import datetime
 
@@ -25,16 +24,16 @@ import secrets
 from PIL import Image  # pip Pillow
 from flask import current_app
 
-# ----------------- Configuring Flask, Bcrypt & Connecting to DB -----------------
+# ----------------- Configuring Flask, Bcrypt, Search/Woosh & Connecting to DB ----
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'My-Secret-Key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///user.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
-# app.config['WHOOSH_BASE'] = 'whoosh'
 app.config['UPLOAD_FOLDER'] = 'static'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+
 
 
 # -------------------- Configuring Auth Req --------------------------------------
@@ -693,7 +692,7 @@ with app.app_context():
         return render_template('about.html', logged_in=current_user.is_authenticated)
     
 
-    # -------------------- Post/Comment/Profile Impressions  -----------------------------------------
+    # -------------------- Post/Comment/Profile Impressions  ---------------------------
 
     @app.route('/track_impression/<int:post_id>', methods=['POST'])
     def track_impression(post_id):
@@ -727,8 +726,19 @@ with app.app_context():
 
         return jsonify({'message': 'Profile Impression tracked successfully'})
 
+    # -------------------- Search  ---------------------------
+    @app.route('/search')
+    def search():
+        query = request.args.get('query')  # Get the search term from the query parameter
+        if not query:
+            flash("Please enter a search query.")
+            return redirect(url_for('home_page'))
 
+        # Search for posts/users
+        posts = Post.query.filter(Post.body.ilike(f"%{query}%")).all()
+        users = User.query.filter(User.username.ilike(f"%{query}%")).all()
 
+        return render_template('search_results.html', posts=posts, users=users, current_user=current_user, logged_in=current_user.is_authenticated, query=query)
 
     # -------------------- Register Page  --------------------------------------
 

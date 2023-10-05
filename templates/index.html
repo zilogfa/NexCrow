@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Main content Section -->
+
 <h1>Public Posts</h1>
+
+<!-- Search -->
+<div class="user-post mySearch">
+
+    <form action="{{url_for('search')}}" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="  Search for posts and users...">
+        <button type="submit"><span class="material-icons-sharp">search</span></button>
+    </form>
+
+</div>
+
+<!-- Main content Section -->
 {% if posts %}
 {% for post in posts %}
 <div class="user-post" data-post-id="{{ post.id }}">

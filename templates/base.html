@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/btn.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/tablet.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/phone.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
 
 
 
@@ -180,7 +181,10 @@
             {% endblock %}
             </main>
 
-
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Search for posts and users...">
+                <button type="submit">Search</button>
+            </form>
         
 
     </div>

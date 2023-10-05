@@ -1,0 +1,44 @@
+
+main .search-form{
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    gap: 0.5rem;
+}
+
+
+main .search-form input{
+
+    background-color: var(--color-background);
+    color: var(--color-dark);
+    height: 3rem;
+    border-radius: 5px;
+    width: 90%;
+}
+
+main .search-form button{
+    background-color: var(--color-background);
+    width: 4rem;
+    color: var(--color-dark);
+    font-weight: bold;
+    border-radius: 50px;
+    
+}
+
+
+
+main .search-form button:hover{
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    transition: all 0.3s ease
+}
+
+
+main .mySearch {
+    margin-top: 1.5rem;
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
