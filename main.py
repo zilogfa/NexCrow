@@ -3,7 +3,7 @@ Crow Nexus - Social Media Platform
 started on: July/08/2023
 """
 
-from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response, func
+from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField, DateField, DateTimeField, URLField, DateTimeLocalField
 from flask_wtf.file import FileField, FileAllowed
@@ -14,6 +14,7 @@ from flask_bcrypt import Bcrypt
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
+from sqlalchemy import func
 from sqlalchemy.orm import relationship
 
 
@@ -33,7 +34,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 app.config['UPLOAD_FOLDER'] = 'static'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
 
 
 # -------------------- Configuring Auth Req --------------------------------------
@@ -351,8 +351,8 @@ with app.app_context():
 
     class EditURL(FlaskForm):
         url = URLField('Website', render_kw={
-                'class': 'formField', 'placeholder': ' Website'})   
-        submit = SubmitField('Save', render_kw={'class': 'btn-form'})         
+            'class': 'formField', 'placeholder': ' Website'})
+        submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
     class EditBirthday(FlaskForm):
         birthday = DateField('Birthday', render_kw={
@@ -402,11 +402,15 @@ with app.app_context():
         total_posts = Post.query.filter_by(user_id=user.id).count()
         total_comments = Comment.query.filter_by(user_id=user.id).count()
         profile_page_impressions = user.profile_impressions
-        total_post_impressions = db.session.query(func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        total_comment_impressions = db.session.query(func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
-        most_post_impressions = db.session.query(func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        most_comment_impressions = db.session.query(func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
-         # Sorting and Reversing by created_at time
+        total_post_impressions = db.session.query(
+            func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        total_comment_impressions = db.session.query(
+            func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        most_post_impressions = db.session.query(
+            func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        most_comment_impressions = db.session.query(
+            func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        # Sorting and Reversing by created_at time
         all_posts = Post.query.order_by(Post.created_at.desc()).all()
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
@@ -549,7 +553,7 @@ with app.app_context():
             user.location = form.location.data
             user.birthday = form.birthday.data
             db.session.commit()
-            return redirect(url_for('user_profile', user_id = current_user.id))
+            return redirect(url_for('user_profile', user_id=current_user.id))
 
         response = make_response(render_template('edit_profile.html', form=form, user=user,
                                  logged_in=current_user.is_authenticated, current_user=current_user))
@@ -628,11 +632,11 @@ with app.app_context():
             if post in current_user.liked_posts:
                 current_user.liked_posts.remove(post)
                 post.likes -= 1
-                liked = False  #  to indicate that the post was unliked
+                liked = False  # to indicate that the post was unliked
             else:
                 current_user.liked_posts.append(post)
                 post.likes += 1
-                liked = True  #  to indicate that the post was liked
+                liked = True  # to indicate that the post was liked
 
             db.session.commit()
 
@@ -699,7 +703,6 @@ with app.app_context():
     @app.route('/about')
     def about():
         return render_template('about.html', logged_in=current_user.is_authenticated)
-    
 
     # -------------------- Post/Comment/Profile Impressions  ---------------------------
 
@@ -713,18 +716,18 @@ with app.app_context():
             db.session.commit()
 
         return jsonify({'message': 'Impression tracked successfully'})
-    
 
     @app.route('/track_comment_impression/<int:comment_id>', methods=['POST'])
     def track_comment_impression(comment_id):
         comment = Comment.query.get(comment_id)
         if comment:
-            print(f"Comment impressions +1 successfully for comment {comment.id}")
+            print(
+                f"Comment impressions +1 successfully for comment {comment.id}")
             comment.comment_impressions += 1
             db.session.commit()
 
         return jsonify({'message': 'Comment Impression tracked successfully'})
-    
+
     @app.route('/track_profile_impression/<int:user_id>', methods=['POST'])
     def track_profile_impression(user_id):
         user = User.query.get(user_id)
@@ -738,7 +741,8 @@ with app.app_context():
     # -------------------- Search  ---------------------------
     @app.route('/search')
     def search():
-        query = request.args.get('query')  # Get the search term from the query parameter
+        # Get the search term from the query parameter
+        query = request.args.get('query')
         if not query:
             flash("Please enter a search query.")
             return redirect(url_for('home_page'))
@@ -780,7 +784,6 @@ with app.app_context():
             return redirect(url_for('login'))
 
         return render_template('register.html', form=form)
-    
 
     # -------------------- Login Page  -----------------------------------------
 
