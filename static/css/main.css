@@ -617,10 +617,6 @@ main .comment-sec a:hover{
 
 
 
-
-
-
-
 .right-section{
     height: 100vh;
 }
@@ -651,3 +647,39 @@ main .comment-sec a:hover{
 .right-section .right-content:hover{
     box-shadow: none;
 }
+
+
+
+
+.right-section .analysis{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    background-color: var(--color-background);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.right-section .analysis div{
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 10px;
+    background-color: var(--color-white);
+}
+
+.right-section .analysis div h3{
+    font-size: larger;
+    font-weight: bold;
+}
+
+.right-section .analysis div p{
+    font-size: smaller;
+    font-weight: 500;
+}
+
+

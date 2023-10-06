@@ -1,0 +1,310 @@
+
+/* Custome Image Input FileField */
+.custom-input {
+    position: relative;
+    display: inline-block;
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+.custom-image-input {
+    background-color: var(--color-dark);
+    position: relative;
+    z-index: 2;
+    width: 0rem;
+    height: 3rem;
+    margin: 0;
+    opacity: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.custom-image-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 20rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 3rem;
+    padding: .375rem .75rem;
+    font-weight: 400;
+    line-height: 2.5;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-dark-variant);
+    border-radius: .25rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.custom-image-label:hover{
+    background-color: var(--color-dark-variant);
+    transition: all 0.3s ease;
+}
+
+/* end of Register fileField */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Register File/ Btn input for FileField */
+.register-file {
+    position: relative;
+    display: inline-block;
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+.register-file-input {
+    background-color: var(--color-dark);
+    position: relative;
+    z-index: 2;
+    width: 0rem;
+    height: 3rem;
+    margin: 0;
+    opacity: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.register-file-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 20rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 3rem;
+    padding: .375rem .75rem;
+    font-weight: 400;
+    line-height: 2.5;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-dark-variant);
+    border-radius: .25rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.register-file-label:hover{
+    background-color: var(--color-dark-variant);
+    transition: all 0.3s ease;
+}
+
+/* end of Register fileField */
+
+/* Post Image File/ Btn input for FileField */
+.post-image-file {
+    position: relative;
+    display: inline-block;
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+.post-image-input {
+    background-color: var(--color-dark);
+    position: relative;
+    z-index: 2;
+    width: 0rem;
+    height: 3rem;
+    margin: 0;
+    opacity: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.post-image-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 20rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 3rem;
+    padding: .375rem .75rem;
+    font-weight: 400;
+    line-height: 2.5;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border-radius: .25rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.post-image-label:hover{
+    background-color: var(--color-dark-variant);
+    transition: all 0.3s ease;
+}
+
+/* end of PostImage FileField */
+
+
+
+/* Edit Image File/ Btn input for FileField */
+.edit-image-file {
+    position: relative;
+    display: inline-block;
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+.edit-image-input {
+    background-color: var(--color-dark);
+    position: relative;
+    z-index: 2;
+    width: 0rem;
+    height: 3rem;
+    margin: 0;
+    opacity: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.edit-image-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 20rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 3rem;
+    padding: .375rem .75rem;
+    font-weight: 400;
+    line-height: 2.5;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-dark-variant);
+    border-radius: .25rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.edit-image-label:hover{
+    background-color: var(--color-dark-variant);
+    transition: all 0.3s ease;
+}
+
+/* end of PostImage FileField */
+
+
+
+/* Edit Header Image File/ Btn input for FileField */
+.header-image-file {
+    position: relative;
+    display: inline-block;
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2rem;
+    background-color: var(--color-background);
+    color: var(--color-white);
+}
+
+.header-image-input {
+    background-color: var(--color-dark);
+    position: relative;
+    z-index: 2;
+    width: 0rem;
+    height: 3rem;
+    margin: 0;
+    opacity: 0;
+    margin-bottom: 0.5rem;
+    
+}
+
+.header-image-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 20rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 3rem;
+    padding: .375rem .75rem;
+    font-weight: 400;
+    line-height: 2.5;
+    font-weight: bold;
+    color: var(--color-white);
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-dark-variant);
+    border-radius: .25rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
+}
+
+.header-image-label:hover{
+    background-color: var(--color-dark-variant);
+    transition: all 0.3s ease;
+}
+
+/* end of Header FileField */

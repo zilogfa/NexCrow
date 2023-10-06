@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/right-section.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/btn.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/inputFile.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/search.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/tablet.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/phone.css')}}">
@@ -62,6 +63,13 @@
                         contact_support
                     </span>
                     <h3>About</h3>
+                </a>
+
+                <a href="#" id="dark-mode-toggle">
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                    <h3>Theme</h3>
                 </a>
 
 
@@ -190,15 +198,22 @@
                         <input type="text" name="query" placeholder="  Search for posts and users...">
                         <button type="submit"><span class="material-icons-sharp">search</span></button>
                     </form>
+                    
 
-                    <div>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda modi ex sit ut placeat dolor consectetur ducimus dolorum laborum itaque quisquam quia eos dolore temporibus, odit possimus. Vero, expedita dolores!</p>
+                    {% if logged_in %}
+                    <h3><span class="material-icons-sharp">insights</span>Profile Analysis</h3>
+                    <div class="analysis">
+                        <div><h3 id="total-posts">Loading...</h3><p>Total posts</p></div>
+                        <div><h3 id="total-comments">Loading...</h3><p>Total comments</p></div>
+                        <div><h3 id="total-posts-impressions">Loading...</h3><p>Total posts impressions</p></div>
+                        <div><h3 id="total-comments-impressions">Loading...</h3><p>Total comments impressions</p></div>
+                        <!-- <div><h3></h3><p>Profile impressions</p></div> -->
                     </div>
 
                     <div>
                         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda modi ex sit ut placeat dolor consectetur ducimus dolorum laborum itaque quisquam quia eos dolore temporibus, odit possimus. Vero, expedita dolores!</p>
                     </div>
-
+                    {% endif %}
 
                 </div>
             </div>
@@ -215,8 +230,15 @@
     <script src="{{url_for('static', filename='script/theme.js')}}"></script>
     <script src="{{url_for('static', filename='script/index.js')}}"></script>
     <script src="{{url_for('static', filename='script/like.js')}}"></script>
+
     <script src="{{url_for('static', filename='script/post_impression.js')}}"></script>
     <script src="{{url_for('static', filename='script/comment_impression.js')}}"></script>
     <script src="{{url_for('static', filename='script/profile_impression.js')}}"></script>
+
+    <script src="{{url_for('static', filename='script/registerFile.js')}}"></script>
+    <script src="{{url_for('static', filename='script/postFile.js')}}"></script>
+    <script src="{{url_for('static', filename='script/editFile.js')}}"></script>
+    <script src="{{url_for('static', filename='script/headerFile.js')}}"></script>
+    <script src="{{url_for('static', filename='script/customInput.js')}}"></script>
 </body>
 </html>

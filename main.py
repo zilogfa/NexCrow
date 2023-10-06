@@ -293,7 +293,7 @@ with app.app_context():
             DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+                                    FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
         submit = SubmitField('Register', render_kw={'class': 'btn-form'})
 
@@ -309,9 +309,9 @@ with app.app_context():
             DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+                                    FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'],'Images only!')], render_kw={'class': ''})
         header_picture = FileField('Profile Picture', validators=[
-            FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+            FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
         bio = TextAreaField('Bio', validators=[Length(min=1, max=280)], render_kw={
                             'class': 'textArea', 'placeholder': ' Bio'})
@@ -361,13 +361,13 @@ with app.app_context():
 
     class EditProfilePic(FlaskForm):
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+                                    FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
         submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
     class EditHeaderPic(FlaskForm):
         header_picture = FileField('Profile Picture', validators=[
-                                   FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+                                   FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
         submit = SubmitField('Save', render_kw={'class': 'btn-form'})
 
@@ -397,19 +397,6 @@ with app.app_context():
 
     @app.route('/')
     def all():
-        # Gather statistics
-        user = current_user
-        total_posts = Post.query.filter_by(user_id=user.id).count()
-        total_comments = Comment.query.filter_by(user_id=user.id).count()
-        profile_page_impressions = user.profile_impressions
-        total_post_impressions = db.session.query(
-            func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        total_comment_impressions = db.session.query(
-            func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
-        most_post_impressions = db.session.query(
-            func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        most_comment_impressions = db.session.query(
-            func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
         # Sorting and Reversing by created_at time
         all_posts = Post.query.order_by(Post.created_at.desc()).all()
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
@@ -423,6 +410,29 @@ with app.app_context():
     def home_page():
         followed_posts = current_user.followed_posts()
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+    
+    # -------------------- User Statistics  ------------------------------------------
+    @app.route('/user_stats/')
+    @login_required
+    def user_stats():
+        user = current_user
+        total_posts = Post.query.filter_by(user_id=user.id).count()
+        total_comments = Comment.query.filter_by(user_id=user.id).count()
+        profile_page_impressions = user.profile_impressions
+        total_post_impressions = db.session.query(func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        total_comment_impressions = db.session.query(func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        most_post_impressions = db.session.query(func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        most_comment_impressions = db.session.query(func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        print(f"User ID: {user.id}, data fetched")
+        return jsonify({
+            'total_posts': total_posts,
+            'total_comments': total_comments,
+            'profile_page_impressions': profile_page_impressions,
+            'total_post_impressions': total_post_impressions,
+            'total_comment_impressions': total_comment_impressions,
+            'most_post_impressions': most_post_impressions,
+            'most_comment_impressions': most_comment_impressions
+        })
 
     # -------------------- Profile Page  ---------------------------------------
     @app.route('/profile')

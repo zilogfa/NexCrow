@@ -6,23 +6,30 @@
     <h1>Register Page</h1>
     <div class="user-post main-bg-color">
         <div class="content">
-
             <div class="register-sec">
-                
-     
-
                 <form method="POST" action="{{url_for('register')}}" enctype="multipart/form-data">
-                    {{ form.hidden_tag() }} 
-                    {{ form.profile_picture }} 
+                    {{ form.hidden_tag() }}
+                       
                     {{ form.username }} 
                     {{ form.email }} 
                     {{ form.phone_number }} 
                     {{ form.password }} 
+
+                    <div class="custom-input"> 
+                    {{ form.profile_picture(id="registerFile", class="custom-image-input") }} 
+                    <label for="registerFile" class="custom-image-label"><span class="material-icons-sharp">portrait</span>Upload profile picture...</label>
+                        {% if form.profile_picture.errors %}
+                        <ul class="errors">
+                            {% for error in form.profile_picture.errors %}
+                                <li style="color: var(--color-danger);">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div> 
+                    <br>
                     {{ form.submit }}
                 </form>
-
             </div>
-
         </div>
     </div>
 

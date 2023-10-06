@@ -10,7 +10,18 @@
 
     <form method="POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
-        {{ form.header_picture }} <br>
+        <div class="header-image-file">
+            {{ form.header_picture(id="HeaderFile", class="header-image-input")  }}
+            <label for="HeaderFile" class="header-image-label"><span class="material-icons-sharp">panorama</span>Upload photo...</label>
+        </div>
+        {% if form.header_picture.errors %}
+        <ul class="errors">
+            {% for error in form.header_picture.errors %}
+                <li style="color: var(--color-danger);">{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+         <br>
         {{ form.submit }}
 
 

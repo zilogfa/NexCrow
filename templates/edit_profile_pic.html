@@ -10,10 +10,18 @@
 
     <form method="POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
-        {{ form.profile_picture }} <br>
+        <div class="register-file">
+        {{ form.profile_picture(id="editProfileImage", class="register-file-input") }} 
+        <label for="editProfileImage" class="register-file-label"><span class="material-icons-sharp">portrait</span>Choose profile picture...</label>
+            {% if form.profile_picture.errors %}
+            <ul class="errors">
+                {% for error in form.profile_picture.errors %}
+                    <li style="color: var(--color-danger);">{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} <br>
         {{ form.submit }}
-
-
+        </div>
     </form>
     
 </div>

@@ -12,8 +12,18 @@
 <form method="POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {{ form.body }} <br>
-    <p>Image</p>
-    {{ form.post_picture }} <br> <br>
+    <div class="edit-image-file">
+        {{ form.post_picture(id="editImageFile", class="edit-image-input")  }}
+        <label for="editImageFile" class="edit-image-label"><span class="material-icons-sharp">portrait</span>Add/Change picture...</label>
+    </div>
+    {% if form.post_picture.errors %}
+    <ul class="errors">
+        {% for error in form.post_picture.errors %}
+            <li style="color: var(--color-danger);">{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <br>
     {{ form.submit }}
 </form>
 
