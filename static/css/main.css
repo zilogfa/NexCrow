@@ -118,29 +118,30 @@ aside .sidebar a:last-child{
 }
 
 
-aside .sidebar a.active{
+/* aside .sidebar a:active{
     width: 100%;
     color: var(--color-primary);
-    background-color: var(--color-light);
+    background-color: var(--color-background);
     margin-left: 0;
 }
 
 
 
-aside .sidebar a.active::before{
+aside .sidebar a:active::before{
     content: '';
     width: 6px;
     height: 18px;
     background-color: var(--color-primary);
 }
 
-aside .sidebar a.active span{
+aside .sidebar a:active span{
     color: var(--color-primary);
     margin-left: calc(1rem - 3px);
-}
+} */
 
 aside .sidebar a:hover{
     color: var(--color-primary);
+    
 }
 
 aside .sidebar a:hover span{
@@ -361,7 +362,7 @@ main .profile-sec .profile-heading .profile-title .profile-img{
 }
 main .profile-sec .profile-heading .profile-title .profile-img:hover{
     border: solid 0.1rem var(--color-white);
-    scale: 1.8;
+    scale: 1.7;
     border-radius: 20px;
     box-shadow: var(--box-shadow);
     transition: all 0.3s ease
@@ -375,7 +376,11 @@ main .profile-sec .profile-heading .profile-title .profile-img img{
 }
 
 main .profile-sec .profile-heading .profile-title .profile-img img:hover{
-    scale: 1.2;
+    scale: 1.15;
+    transition: all 0.8s ease
+}
+main .profile-sec .profile-heading .profile-title .profile-img img:active{
+    scale: 1.5;
     transition: all 0.3s ease
 }
 
@@ -670,6 +675,14 @@ main .comment-sec a:hover{
     gap: 1rem;
     border-radius: 10px;
     background-color: var(--color-white);
+    transition: all 0.3s ease;
+}
+
+.right-section .analysis div:active{
+    scale: 1.02;
+    margin-bottom: .5rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--box-shadow);
 }
 
 .right-section .analysis div h3{

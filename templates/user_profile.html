@@ -33,23 +33,27 @@
                 <p><strong>{{ followers|length }}</strong> Followers</p>
                 <p><strong>{{ followed|length }}</strong> Following</p>
                 <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
-                <div>
+
+                <!-- Follow/unfollow || OR || EDIT PROFILE-->
+                
                 {% if current_user == user %}
+                <div>
                     <a href="{{url_for('edit_profile')}}"><button class="btn-follow">Edit profile</button></a>
-                {% endif %}
-                <!-- Follow unfollow -->
-                {% if current_user != user %}
-                {% if current_user.is_following(user) %}
-                <form action="{{ url_for('unfollow', user_id=user.id) }}" method="POST">
-                    <button class="btn-follow" type="submit">Unfollow</button>
-                </form>
-                {% else %}
-                <form action="{{ url_for('follow', user_id=user.id) }}" method="POST">
-                    <button class="btn-follow" type="submit">Follow</button>
-                </form>
-                {% endif %}
-                {% endif %}
                 </div>
+                {% endif %}
+                
+                {% if current_user != user %}
+                <div id="followActions">
+                    {% if current_user.is_following(user) %}
+                    <button class="btn-follow" data-action="unfollow" data-user-id="{{ user.id }}">Unfollow</button>
+                    {% else %}
+                    <button class="btn-follow" data-action="follow" data-user-id="{{ user.id }}">Follow</button>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- End follow btn ||OR|| edit profile -->
+
             </div>
             <div class="profile-detail">
                 <div class="profile-about">             
@@ -116,7 +120,7 @@
 
 
                     <div class="post-body">
-                        <p class="p-body">{{ post.body }}</p>
+                        <p class="p-body">{{ post.body|replace('\n', '<br>')|safe }}</p>
 
                         {% if post.post_picture %}
                             <img src="{{ url_for('static', filename='post_pictures/' + post.post_picture) }}">

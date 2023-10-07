@@ -12,9 +12,9 @@
 <form method="POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {{ form.body }} <br>
-    <div class="edit-image-file">
-        {{ form.post_picture(id="editImageFile", class="edit-image-input")  }}
-        <label for="editImageFile" class="edit-image-label"><span class="material-icons-sharp">portrait</span>Add/Change picture...</label>
+    <div class="custom-input">
+        {{ form.post_picture(id="editImage", class="custom-image-input")  }}
+        <label for="editImage" class="custom-image-label"><span class="material-icons-sharp">portrait</span>Add/Change picture...</label>
     </div>
     {% if form.post_picture.errors %}
     <ul class="errors">

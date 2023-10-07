@@ -10,9 +10,9 @@
 
     <form method="POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
-        <div class="header-image-file">
-            {{ form.header_picture(id="HeaderFile", class="header-image-input")  }}
-            <label for="HeaderFile" class="header-image-label"><span class="material-icons-sharp">panorama</span>Upload photo...</label>
+        <div class="custom-input">
+            {{ form.header_picture(id="HeaderFile", class="custom-image-input")  }}
+            <label for="HeaderFile" class="custom-image-label"><span class="material-icons-sharp">panorama</span>Upload photo...</label>
         </div>
         {% if form.header_picture.errors %}
         <ul class="errors">

@@ -13,9 +13,9 @@
 <form action="{{ url_for('new_post') }}" method="post" enctype="multipart/form-data" class="">
     {{ form.csrf_token }}
     {{ form.body }}
-    <div class="post-image-file">
-        {{ form.post_picture(id="postFile", class="post-image-input")  }}
-        <label for="postFile" class="post-image-label"><span class="material-icons-sharp">portrait</span>Upload photo...</label>
+    <div class="custom-input">
+        {{ form.post_picture(id="postImage", class="custom-image-input")  }}
+        <label for="postImage" class="custom-image-label"><span class="material-icons-sharp">portrait</span>Upload photo...</label>
     </div>
     {% if form.post_picture.errors %}
     <ul class="errors">

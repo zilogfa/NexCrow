@@ -96,6 +96,7 @@ main .user-post .setting-sec button{
     width: 8rem;
     height: 3rem;
     border-radius: 25px;
+    color: var(--color-dark);
     background-color: var(--color-background);
     font-weight: 900;
     font-style: initial;
@@ -109,3 +110,21 @@ main .user-post .setting-sec button:hover{
 
 
 
+
+
+.hashtag-link {
+    color: var(--color-primary);
+}
+
+.hashtag-link:hover{
+    background-color: var(--color-background);
+    border-radius: 5px;
+}
+
+.url-link {
+    color: var(--color-primary);
+}
+
+.url-link:hover:hover {
+    text-decoration: underline;
+}

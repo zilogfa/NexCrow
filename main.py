@@ -9,6 +9,9 @@ from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaFi
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import DataRequired, InputRequired, Length, ValidationError, EqualTo, Email
 
+from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import generate_csrf
+
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from flask_bcrypt import Bcrypt
 
@@ -20,6 +23,8 @@ from sqlalchemy.orm import relationship
 
 from datetime import datetime
 
+import re  # for identifying and converting # & URL in user posts to <a>
+
 import os
 import secrets
 from PIL import Image  # pip Pillow
@@ -28,6 +33,7 @@ from flask import current_app
 # ----------------- Configuring Flask, Bcrypt, Search/Woosh & Connecting to DB ----
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 app.config['SECRET_KEY'] = 'My-Secret-Key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///user.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
@@ -48,7 +54,22 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# -------------------- Converting Posts # & URL to clickable <a>  -------------------
+def process_post_body(body):
+    # Convert URLs into clickable links
+    body = re.sub(
+        r'(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)',
+        r'<a href="\1" target="_blank" class="url-link">\1</a>', body
+    )
+
+    # Convert hashtags into clickable search links
+    body = re.sub(
+        r'#(\w+)', r'<a href="/search?query=\1" class="hashtag-link">#\1</a>', body)
+
+    return body
+
 # -------------------- Profile picture Storing function Setup ---------------------
+
 
 def save_profile_picture(file):
     if not file:
@@ -230,6 +251,16 @@ with app.app_context():
         comments = db.relationship(
             'Comment', back_populates='post', cascade="all, delete-orphan")
 
+        # def process_post_body(self):
+        #     # Convert URLs into clickable links
+        #     self.body = re.sub(
+        #         r'(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)',
+        #         r'<a href="\1" target="_blank">\1</a>', self.body)
+
+        #     # Convert hashtags into clickable search links
+        #     self.body = re.sub(
+        #         r'#(\w+)', r'<a href="/search/\1">#\1</a>', self.body)
+
     class Comment(db.Model):  # user.comments.all()
         __tablename__ = 'comments'
         id = db.Column(db.Integer, primary_key=True)
@@ -244,6 +275,16 @@ with app.app_context():
 
         user = db.relationship('User', back_populates='comments')
         post = db.relationship('Post', back_populates='comments')
+
+        # def process_comment_content(self):
+        #     # Convert URLs into clickable links
+        #     self.content = re.sub(
+        #         r'(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)',
+        #         r'<a href="\1" target="_blank">\1</a>', self.content)
+
+        #     # Convert hashtags into clickable search links
+        #     self.content = re.sub(
+        #         r'#(\w+)', r'<a href="/search/\1">#\1</a>', self.content)
 
     class UserLoginHistory(db.Model):  # user.login_history.all()
         id = db.Column(db.Integer, primary_key=True)
@@ -309,7 +350,7 @@ with app.app_context():
             DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
         # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
-                                    FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'],'Images only!')], render_kw={'class': ''})
+                                    FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
         header_picture = FileField('Profile Picture', validators=[
             FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
@@ -399,6 +440,8 @@ with app.app_context():
     def all():
         # Sorting and Reversing by created_at time
         all_posts = Post.query.order_by(Post.created_at.desc()).all()
+        for post in all_posts:
+            post.body = process_post_body(post.body)
         return render_template('index.html', posts=all_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- Home Page  ------------------------------------------
@@ -409,8 +452,10 @@ with app.app_context():
     @login_required
     def home_page():
         followed_posts = current_user.followed_posts()
+        for post in followed_posts:
+            post.body = process_post_body(post.body)
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
-    
+
     # -------------------- User Statistics  ------------------------------------------
     @app.route('/user_stats/')
     @login_required
@@ -419,11 +464,16 @@ with app.app_context():
         total_posts = Post.query.filter_by(user_id=user.id).count()
         total_comments = Comment.query.filter_by(user_id=user.id).count()
         profile_page_impressions = user.profile_impressions
-        total_post_impressions = db.session.query(func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        total_comment_impressions = db.session.query(func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
-        most_post_impressions = db.session.query(func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
-        most_comment_impressions = db.session.query(func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
-        print(f"User ID: {user.id}, data fetched")
+        total_post_impressions = db.session.query(
+            func.sum(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        total_comment_impressions = db.session.query(
+            func.sum(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        most_post_impressions = db.session.query(
+            func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
+        most_comment_impressions = db.session.query(
+            func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        print(
+            f"*** static data fetched --- User ID: {user.id} / Email: {user.email} **")
         return jsonify({
             'total_posts': total_posts,
             'total_comments': total_comments,
@@ -433,15 +483,6 @@ with app.app_context():
             'most_post_impressions': most_post_impressions,
             'most_comment_impressions': most_comment_impressions
         })
-
-    # -------------------- Profile Page  ---------------------------------------
-    @app.route('/profile')
-    @login_required
-    def profile():
-        """Current User Profile page - include all posts"""
-        user_posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc(
-        )).all()  # reversing posts based on created_at , and calling posts by user id
-        return render_template('profile.html', user_posts=user_posts, current_user=current_user, logged_in=current_user.is_authenticated)
 
     # -------------------- User Profile Page by ID  -------------------------
     @app.route('/<int:user_id>')
@@ -454,7 +495,9 @@ with app.app_context():
             followed = user.followed.all()
             reversed_posts = Post.query.filter_by(
                 user_id=user.id).order_by(Post.created_at.desc()).all()
-            return render_template('user_profile.html', user=user, followers=followers, followed=followed, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+            for post in reversed_posts:
+                post.body = process_post_body(post.body)
+            return render_template('user_profile.html', user=user, followers=followers, followed=followed, posts=reversed_posts, current_user=current_user, logged_in=current_user.is_authenticated, csrf_token=generate_csrf())
         else:
             flash('User not found.')
             return redirect(url_for('home_page'))
@@ -473,13 +516,20 @@ with app.app_context():
                 content=form.comment.data, user=user, post=post)
             db.session.add(new_comment)
             db.session.commit()
-            flash('Comment added successfully.')
+            print(f'Comment added successfully. post ID: {post_id}')
             return redirect(url_for('show_post', post_id=post_id))
 
         if requested_post:
-            return render_template('showpost.html', form=form, post=requested_post, current_user=current_user, logged_in=current_user.is_authenticated)
+            comments = requested_post.comments
+            requested_post.body = process_post_body(requested_post.body)
+
+            if comments:
+                for comment in comments:
+                    comment.content = process_post_body(comment.content)
+
+            return render_template('showpost.html', form=form, post=requested_post, comments=comments, current_user=current_user, logged_in=current_user.is_authenticated)
         else:
-            flash('Post not found.')
+            print(f'Post not found. {post_id}')
             return redirect(url_for('home_page'))
 
     # -------------------- Create New Post Page  --------------------------------
@@ -659,7 +709,6 @@ with app.app_context():
     # -------------------- Follow / Unfollow -----------------------------------
     # ---------------------------------------------------------------------------
 
-    # Follow .................................................
     @app.route('/user/<int:user_id>/follow', methods=['POST'])
     @login_required
     def follow(user_id):
@@ -667,12 +716,10 @@ with app.app_context():
         if user:
             current_user.follow(user)
             db.session.commit()
-            flash('You are now following {}'.format(user.username))
+            return jsonify(status="success", action="followed")
         else:
-            flash('User not found')
-        return redirect(url_for('user_profile', user_id=user_id))
+            return jsonify(status="error", action="follow", message="User not found!")
 
-    # Unfollow ..................................................
     @app.route('/user/<int:user_id>/unfollow', methods=['POST'])
     @login_required
     def unfollow(user_id):
@@ -680,11 +727,9 @@ with app.app_context():
         if user:
             current_user.unfollow(user)
             db.session.commit()
-            flash('You have unfollowed {}'.format(user.username))
+            return jsonify(status="success", action="unfollowed")
         else:
-            flash('User not found')
-        return redirect(url_for('user_profile', user_id=user_id))
-
+            return jsonify(status="error", action="unfollow", message="User not found!")
     # -------------------- Delete Page  -----------------------------------------
 
     @app.route('/delete-post')
@@ -760,6 +805,9 @@ with app.app_context():
         # Search for posts/users
         posts = Post.query.filter(Post.body.ilike(f"%{query}%")).all()
         users = User.query.filter(User.username.ilike(f"%{query}%")).all()
+
+        for post in posts:
+            post.body = process_post_body(post.body)
 
         return render_template('search_results.html', posts=posts, users=users, current_user=current_user, logged_in=current_user.is_authenticated, query=query)
 

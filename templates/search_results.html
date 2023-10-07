@@ -60,7 +60,7 @@
     
 
     <div class="post-body">
-        <p class="p-body">{{ post.body }}</p>
+        <p class="p-body">{{ post.body|replace('\n', '<br>')|safe }}</p>
         {% if post.post_picture %}
             <img src="{{ url_for('static', filename='post_pictures/' + post.post_picture) }}">
         {% endif %}    
