@@ -1,4 +1,5 @@
-let impressionTimeouts = {};  // To store timeouts for each post
+document.addEventListener("DOMContentLoaded", function() {
+    let impressionTimeouts = {};  // To store timeouts for each post
 
 function handlePostImpression(entries, observer) {
     entries.forEach(entry => {
@@ -44,6 +45,10 @@ posts.forEach(post => observer.observe(post));
 function trackImpression(postId) {
     fetch(`/track_impression/${postId}`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
     })
     .then(response => response.json())
     .then(data => {
@@ -60,3 +65,7 @@ function trackImpression(postId) {
         console.error('Error tracking impression:', error);
     });
 }
+
+});
+
+

@@ -3,7 +3,7 @@ Crow Nexus - Social Media Platform
 started on: July/08/2023
 """
 
-from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response
+from flask import Flask, render_template, url_for, redirect, jsonify, flash, request, make_response, g
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TelField, TextAreaField, BooleanField, SubmitField, DateField, DateTimeField, URLField, DateTimeLocalField
 from flask_wtf.file import FileField, FileAllowed
@@ -30,7 +30,7 @@ import secrets
 from PIL import Image  # pip Pillow
 from flask import current_app
 
-# ----------------- Configuring Flask, Bcrypt, Search/Woosh & Connecting to DB ----
+# ----------------- Configuring Flask, Bcrypt, Upload folder & Connecting to DB ----
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -40,7 +40,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 app.config['UPLOAD_FOLDER'] = 'static'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
 
 # -------------------- Configuring Auth Req --------------------------------------
 
@@ -52,6 +51,13 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+# -------- Globally to all render_templates ---------------------------------------
+@app.before_request
+def before_request():
+    """universally accessible without repeatedly passing them manually to every render_template call."""
+    g.csrf_token = generate_csrf()  # from flask import g
 
 
 # -------------------- Converting Posts # & URL to clickable <a>  -------------------
@@ -709,27 +715,25 @@ with app.app_context():
     # -------------------- Follow / Unfollow -----------------------------------
     # ---------------------------------------------------------------------------
 
-    @app.route('/user/<int:user_id>/follow', methods=['POST'])
+    @app.route('/user/<int:user_id>/toggle_follow', methods=['POST'])
     @login_required
-    def follow(user_id):
+    def toggle_follow(user_id):
         user = User.query.get(user_id)
-        if user:
-            current_user.follow(user)
-            db.session.commit()
-            return jsonify(status="success", action="followed")
-        else:
-            return jsonify(status="error", action="follow", message="User not found!")
+        if not user:
+            return jsonify({'error': 'User not found!'}), 404
 
-    @app.route('/user/<int:user_id>/unfollow', methods=['POST'])
-    @login_required
-    def unfollow(user_id):
-        user = User.query.get(user_id)
-        if user:
+        if current_user.is_following(user):
             current_user.unfollow(user)
-            db.session.commit()
-            return jsonify(status="success", action="unfollowed")
+            action = 'unfollowed'
         else:
-            return jsonify(status="error", action="unfollow", message="User not found!")
+            current_user.follow(user)
+            action = 'followed'
+
+        db.session.commit()
+        followers_count = user.followers.count()
+
+        return jsonify({'followers_count': followers_count, 'action': action})
+
     # -------------------- Delete Page  -----------------------------------------
 
     @app.route('/delete-post')
@@ -764,6 +768,7 @@ with app.app_context():
     @app.route('/track_impression/<int:post_id>', methods=['POST'])
     def track_impression(post_id):
         # Retrieve the post from the database and update the impression count
+        print("Entered the track_impression route")
         post = Post.query.get(post_id)
         if post:
             print(f"Post impressions +1 successfully for post {post.id}")

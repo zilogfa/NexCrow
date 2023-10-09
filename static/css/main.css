@@ -356,6 +356,7 @@ main .profile-sec .profile-heading .profile-title .profile-img{
     height: 12rem;
     width: 12rem;
     border-radius: 50%;
+    background-color: var(--color-white);
     border: solid 0.5rem var(--color-white);
     overflow: hidden;
     transition: all 0.3s ease
@@ -407,9 +408,7 @@ main .profile-sec .profile-heading .profile-follow .right-sec{
     margin-top: 4rem;
 }
 
-main .profile-sec .profile-heading .profile-follow .right-sec p{
-    color: var(--color-dark);
-}
+
 
 
 main .profile-sec .profile-detail{

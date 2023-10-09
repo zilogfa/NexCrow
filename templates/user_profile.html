@@ -8,6 +8,7 @@
 
 
 <div class="profile-sec" data-user-id="{{ user.id }}">
+    <!-- PROFILE HEADER Image -->
     <div class="header-img">
         {% if user.header_picture %}
         <img src="{{ url_for('static', filename='header_pictures/' + user.header_picture) }}">
@@ -15,7 +16,9 @@
         <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
         {% endif %}
     </div>
+   
     <div class="profile-heading">
+         <!-- PROFILE Image & Username -->
         <div class="profile-title">
             <div class="profile-img">
                 {% if user.profile_picture %}
@@ -27,32 +30,34 @@
             
             <h3>{{ user.username }}</h3>
         </div>
-        <!-- FOLLOW COUNT -->
+        <!-- Profile | User Details -->
         <div class="profile-follow">
             <div class="right-sec">
-                <p><strong>{{ followers|length }}</strong> Followers</p>
+                <p><strong id="followersCount">{{ followers|length }}</strong> Followers</p>
                 <p><strong>{{ followed|length }}</strong> Following</p>
                 <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
 
-                <!-- Follow/unfollow || OR || EDIT PROFILE-->
+                <!-- EDIT PROFILE BTN if current USER-->
                 
                 {% if current_user == user %}
                 <div>
                     <a href="{{url_for('edit_profile')}}"><button class="btn-follow">Edit profile</button></a>
                 </div>
                 {% endif %}
-                
+                <!-- Follow/unfollow BTN if not current USER-->
                 {% if current_user != user %}
-                <div id="followActions">
-                    {% if current_user.is_following(user) %}
-                    <button class="btn-follow" data-action="unfollow" data-user-id="{{ user.id }}">Unfollow</button>
-                    {% else %}
-                    <button class="btn-follow" data-action="follow" data-user-id="{{ user.id }}">Follow</button>
-                    {% endif %}
-                </div>
+                <form id="followForm" action="{{ url_for('toggle_follow', user_id=user.id) }}" method="POST">
+                    <button class="btn-follow" type="submit">
+                        {% if current_user.is_following(user) %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </form>
                 {% endif %}
                 
-                <!-- End follow btn ||OR|| edit profile -->
+                <!-- End follow btn & edit profile -->
 
             </div>
             <div class="profile-detail">

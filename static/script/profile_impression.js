@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", function() {
+   
 let profileImpressionTimeout = null;
 
 function handleProfileImpression(entries, observer) {
@@ -21,6 +23,10 @@ function handleProfileImpression(entries, observer) {
 function trackProfileImpression(userId) {
     fetch(`/track_profile_impression/${userId}`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
     })
     .then(response => response.json())
     .then(data => {
@@ -47,3 +53,5 @@ if (userProfile) {
     const profileObserver = new IntersectionObserver(handleProfileImpression, options);
     profileObserver.observe(userProfile);
 }
+
+});

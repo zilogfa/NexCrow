@@ -1,4 +1,5 @@
-let commentImpressionTimeouts = {};
+document.addEventListener("DOMContentLoaded", function() {
+    let commentImpressionTimeouts = {};
 
 function handleCommentImpression(entries, observer) {
     entries.forEach(entry => {
@@ -21,6 +22,10 @@ function handleCommentImpression(entries, observer) {
 function trackCommentImpression(commentId) {
     fetch(`/track_comment_impression/${commentId}`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
     })
     .then(response => response.json())
     .then(data => {
@@ -45,3 +50,7 @@ const options = {
 const commentObserver = new IntersectionObserver(handleCommentImpression, options);
 const comments = document.querySelectorAll('.comment-sec');
 comments.forEach(comment => commentObserver.observe(comment));
+
+});
+
+

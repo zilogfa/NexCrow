@@ -8,6 +8,7 @@ function likePost(event, button) {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       },
   })
   .then(response => response.json())

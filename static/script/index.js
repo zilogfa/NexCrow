@@ -32,41 +32,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // ---------------------------------- FOLLOW / UNFOLLOW
-document.querySelector("#followActions").addEventListener("click", function(event) {
-    if (event.target.matches(".btn-follow")) {
-        event.preventDefault(); // Prevent the default form submission
+let followBtn = document.querySelector('.btn-follow');
 
-        const action = event.target.getAttribute("data-action");
-        const userId = event.target.getAttribute("data-user-id");
-        const url = `/user/${userId}/${action}`;
+// When user clicks the follow/unfollow button
+followBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    let endpoint = followBtn.parentElement.getAttribute('action');
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // This is where you add the CSRF token header
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                if (data.action === "followed") {
-                    event.target.textContent = "Unfollow";
-                    event.target.setAttribute("data-action", "unfollow");
-                } else if (data.action === "unfollowed") {
-                    event.target.textContent = "Follow";
-                    event.target.setAttribute("data-action", "follow");
-                }
-            } else {
-                console.error(data.message);
-                alert("An error occurred. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
-        });
-    }
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.followers_count !== null) {
+            document.getElementById('followersCount').textContent = data.followers_count;
+        }
+
+        // switch the button text based on the action performed on the server
+        followBtn.textContent = (data.action == 'followed') ? 'Unfollow' : 'Follow';
+    });
 });
 
 
