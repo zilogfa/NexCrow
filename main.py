@@ -471,6 +471,41 @@ with app.app_context():
         for post in followed_posts:
             post.body = process_post_body(post.body)
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
+    
+    @app.route('/home_v2')
+    @login_required
+    def home_page_v2():
+        return render_template('home_v2.html', current_user=current_user, logged_in=current_user.is_authenticated)
+
+    
+
+    # API HOME
+
+    @app.route('/api/home_posts', methods=['GET'])
+    @login_required
+    def api_home_posts():
+        followed_posts = current_user.followed_posts()
+        posts_data = []
+        
+        for post in followed_posts:
+            post_data = {
+                'id': post.id,
+                'body': process_post_body(post.body),
+                'user': {
+                    'id': post.user.id,
+                    'username': post.user.username,
+                    'unique_id': post.user.unique_id,
+                    'profile_picture': post.user.profile_picture or url_for('static', filename='images/blank-profile-pic.png'),
+                },
+                'post_picture': post.post_picture,
+                'likes': post.likes,
+                'comments_count': len(post.comments),
+                'post_impressions': post.post_impressions,
+                'created_at': post.created_at.strftime('%H:%M · %B %d, %Y')
+            }
+            posts_data.append(post_data)
+        
+        return jsonify(posts_data)
 
     # -------------------- User Statistics  ------------------------------------------
     @app.route('/user_stats/')
