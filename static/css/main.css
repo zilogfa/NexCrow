@@ -324,6 +324,7 @@ main .profile-sec .header-img{
     border-top-left-radius: 15px;
     overflow: hidden;
     object-fit: cover;
+    background-color: var(--color-dark);
 }
 
 main .profile-sec .header-img img{

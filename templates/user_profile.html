@@ -12,8 +12,6 @@
     <div class="header-img">
         {% if user.header_picture %}
         <img src="{{ url_for('static', filename='header_pictures/' + user.header_picture) }}">
-        {% else %}
-        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
         {% endif %}
     </div>
    

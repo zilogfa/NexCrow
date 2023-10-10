@@ -22,6 +22,8 @@ from sqlalchemy.orm import relationship
 
 
 from datetime import datetime
+import random
+
 
 import re  # for identifying and converting # & URL in user posts to <a>
 
@@ -29,6 +31,7 @@ import os
 import secrets
 from PIL import Image  # pip Pillow
 from flask import current_app
+
 
 # ----------------- Configuring Flask, Bcrypt, Upload folder & Connecting to DB ----
 
@@ -60,6 +63,14 @@ def before_request():
     g.csrf_token = generate_csrf()  # from flask import g
 
 
+# -------------------- Generating Unique ID -----------------------------------------
+def generate_unique_id():
+    """ Unique 11-Digit ID for each user oppon registeration """
+    while True:
+        unique_id = str(random.randint(10000000000, 99999999999))  # generate a random 11-digit number
+        user_with_id = User.query.filter_by(unique_id=unique_id).first()
+        if not user_with_id:
+            return unique_id
 # -------------------- Converting Posts # & URL to clickable <a>  -------------------
 def process_post_body(body):
     # Convert URLs into clickable links
@@ -186,6 +197,7 @@ with app.app_context():
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
         __tablename__ = 'user'
         id = db.Column(db.Integer, primary_key=True)
+        unique_id = db.Column(db.String(11), unique=True, nullable=False)
 
         username = db.Column(db.String(40), nullable=False, unique=False)
         email = db.Column(db.String(80), nullable=False, unique=True)
@@ -334,11 +346,10 @@ with app.app_context():
             DataRequired(), Length(min=2, max=20)], render_kw={'class': 'formField', 'placeholder': ' Display Name'})
         email = EmailField('Email', validators=[DataRequired()], render_kw={'class': 'formField',
                            'placeholder': ' Email'})
-        phone_number = TelField('Phone Number', validators=[Length(min=6, max=20)], render_kw={'class': 'formField',
-                                'placeholder': ' Phone Number'})
         password = PasswordField('Password', validators=[
             DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
-        # Add the profile picture field
+        confirm_password = PasswordField('Confirm Password', validators=[
+            DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Confirm Password'})
         profile_picture = FileField('Profile Picture', validators=[
                                     FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
 
@@ -354,7 +365,6 @@ with app.app_context():
                                 'placeholder': ' Phone Number'})
         password = PasswordField('Password', validators=[
             DataRequired(), Length(min=6, max=20)], render_kw={'class': 'formField', 'placeholder': ' Password'})
-        # Add the profile picture field
         profile_picture = FileField('Profile Picture', validators=[
                                     FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp'], 'Images only!')], render_kw={'class': ''})
         header_picture = FileField('Profile Picture', validators=[
@@ -763,7 +773,7 @@ with app.app_context():
     def about():
         return render_template('about.html', logged_in=current_user.is_authenticated)
 
-    # -------------------- Post/Comment/Profile Impressions  ---------------------------
+    # -------------------- Impressions for Post/Comment/Profile   ----------------
 
     @app.route('/track_impression/<int:post_id>', methods=['POST'])
     def track_impression(post_id):
@@ -825,10 +835,13 @@ with app.app_context():
             if User.query.filter_by(email=form.email.data).first():
                 print(User.query.filter_by(email=form.email.data).first())
                 # User already exists
-                flash("You've already signed up with that email, log in instead!")
-                return redirect(url_for('login'))
+                flash(f"This email address '{form.email.data}' has already been registered!")
+                return redirect(url_for('register'))
 
             # Save the uploaded file
+            if form.password.data != form.confirm_password.data:
+                flash('Passwords do not match!', 'danger')  # error message using Flask's flash
+                return redirect(url_for('register'))
             if form.profile_picture.data:
                 profile_picture_filename = save_profile_picture(
                     form.profile_picture.data)
@@ -840,10 +853,11 @@ with app.app_context():
                 username=form.username.data,
                 email=(form.email.data).lower(),
                 profile_picture=profile_picture_filename,
-                phone_number=form.phone_number.data,
+                unique_id = generate_unique_id(),
                 password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
+            print(f"New User with Unique ID: {User.unique_id}, registered")
             return redirect(url_for('login'))
 
         return render_template('register.html', form=form)

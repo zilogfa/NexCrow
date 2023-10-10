@@ -108,6 +108,7 @@
                     <div class="profile-name">
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
+                            <h3>@{{current_user.unique_id}}</h3>
                             {% if current_user.birthday %}
                             <p style="font-size: smaller;"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
                             {% endif %}

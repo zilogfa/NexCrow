@@ -16,6 +16,7 @@
 
         <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
           <h3>{{ post.user.username }}</h3>
+          <p style="font-size: xx-small; font-weight: 500; color: var(--color-dark)">@{{ post.user.unique_id }}</p>
         </a>
     </div>
 
@@ -163,7 +164,7 @@
         </div>
         <div class="title-body">
           <a href="{{ url_for('user_profile', user_id=comment.user.id) }}">
-            <h3>{{ comment.user.username }}</h3>
+            <h3>{{ comment.user.username }} <span style="font-size: xx-small; font-weight: 500; color: var(--color-dark)">@{{ comment.user.unique_id }}</span></h3>
           </a>
         </div>
       </div>

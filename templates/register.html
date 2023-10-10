@@ -7,13 +7,21 @@
     <div class="user-post main-bg-color">
         <div class="content">
             <div class="register-sec">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <p style="color:var(--color-danger); display: flex; align-items: center; gap: 1rem; padding: 0.5rem ;font-weight: bolder;"><span class="material-icons-sharp">warning</span> {{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
                 <form method="POST" action="{{url_for('register')}}" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                        
                     {{ form.username }} 
                     {{ form.email }} 
-                    {{ form.phone_number }} 
                     {{ form.password }} 
+                    {{ form.confirm_password }}
 
                     <div class="custom-input"> 
                     {{ form.profile_picture(id="registerFile", class="custom-image-input") }} 
