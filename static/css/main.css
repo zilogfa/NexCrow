@@ -242,11 +242,12 @@ main .user-post .content .title h3{
     font-weight: bolder;
 }
 
-main .user-post .content .title h3{
-    margin-top: 0.5rem;
-
-
+main .user-post .content .title p{
+    font-size: xx-small; 
+    font-weight: 500; 
+    color: var(--color-dark)
 }
+
 main .user-post .content .post-body{
     margin-top: 0.5rem;
     margin-left: 4rem;

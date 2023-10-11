@@ -59,7 +59,7 @@
                     <h3>Explore</h3>
                 </a>
 
-                <a href="{{ url_for('about') }}">
+                <a id="about-page" href="#">
                     <span class="material-icons-sharp">
                         contact_support
                     </span>
@@ -125,12 +125,19 @@
                     <h3>Home</h3>
                 </a>
 
-                <a id="aside-home" href="#">
+                <a id="home-page" href="#">
                     <span class="material-icons-sharp">
                         home
                     </span>
                     <h3>Home 2</h3>
                 </a>
+
+                <!-- <a id="loadMoreButton" href="#">
+                    <span class="material-icons-sharp">
+                        home
+                    </span>
+                    <h3>Load home2</h3>
+                </a> -->
 
 
                 <a href="{{ url_for('all') }}">
@@ -199,6 +206,7 @@
         {% endblock %}
         </main>
 
+
         <div class="right-section">
             <div class="fix-right">
                 <div class="right-content">
@@ -236,16 +244,28 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <!-- Custom Script -->
+    
+    <script>$('main').append(`
+        <div style="margin-top: 5rem;">
+        <a id="loadMoreButton" href="#">
+        <h3>Load more Post</h3>
+        </a>
+        </div>
+        `);</script>
     <script src="{{url_for('static', filename='script/theme.js')}}"></script>
     <script src="{{url_for('static', filename='script/index.js')}}"></script>
     <script src="{{url_for('static', filename='script/like.js')}}"></script>
 
     <script src="{{url_for('static', filename='script/post_impression.js')}}"></script>
+
+    <script src="{{url_for('static', filename='script/home.js')}}"></script>
+    <script src="{{url_for('static', filename='script/about.js')}}"></script>
+
+    
     <script src="{{url_for('static', filename='script/comment_impression.js')}}"></script>
     <script src="{{url_for('static', filename='script/profile_impression.js')}}"></script>
 
     <script src="{{url_for('static', filename='script/custom_input_image.js')}}"></script>
 
-    <script src="{{url_for('static', filename='script/home.js')}}"></script>
 </body>
 </html>
