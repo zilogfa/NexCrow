@@ -18,7 +18,7 @@
 
         <a href="{{ url_for('user_profile', user_id=post.user.id) }}">
         <h3>{{ post.user.username }}</h3>
-        <p style="font-size: xx-small; font-weight: 500; color: var(--color-dark)">@{{ post.user.unique_id }}</p>
+        <p>@{{ post.user.unique_id }}</p>
         </a>
     </div>
     
@@ -54,7 +54,7 @@
                 <span class="material-icons-sharp">
                     equalizer
                 </span>
-                <p class="impression-count">{{ post.post_impressions }} </p>
+                <p class="impression-count">{{ post.post_impressions }}</p>
             </a>
             
             <a href="{{ url_for('show_post', post_id=post.id) }}">

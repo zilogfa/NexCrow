@@ -67,11 +67,14 @@ def before_request():
 def generate_unique_id():
     """ Unique 11-Digit ID for each user oppon registeration """
     while True:
-        unique_id = str(random.randint(10000000000, 99999999999))  # generate a random 11-digit number
+        # generate a random 11-digit number
+        unique_id = str(random.randint(10000000000, 99999999999))
         user_with_id = User.query.filter_by(unique_id=unique_id).first()
         if not user_with_id:
             return unique_id
 # -------------------- Converting Posts # & URL to clickable <a>  -------------------
+
+
 def process_post_body(body):
     # Convert URLs into clickable links
     body = re.sub(
@@ -241,6 +244,16 @@ with app.app_context():
         def is_following(self, user):
             return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
+        # def followed_posts(self):
+        #     # Get the IDs of followed users
+        #     followed_ids = [user.id for user in self.followed]
+
+        #     # Include your own user ID
+        #     followed_ids.append(self.id)
+
+        #     # Query all posts from users in the followed_ids list
+        #     return Post.query.filter(Post.user_id.in_(followed_ids)).order_by(desc(Post.created_at)).all()
+
         def followed_posts(self):
             # Get the IDs of followed users
             followed_ids = [user.id for user in self.followed]
@@ -249,7 +262,7 @@ with app.app_context():
             followed_ids.append(self.id)
 
             # Query all posts from users in the followed_ids list
-            return Post.query.filter(Post.user_id.in_(followed_ids)).order_by(desc(Post.created_at)).all()
+            return Post.query.filter(Post.user_id.in_(followed_ids))
 
     class Post(db.Model):  # user.posts.all()
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
@@ -471,41 +484,80 @@ with app.app_context():
         for post in followed_posts:
             post.body = process_post_body(post.body)
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
-    
+
     @app.route('/home_v2')
     @login_required
     def home_page_v2():
         return render_template('home_v2.html', current_user=current_user, logged_in=current_user.is_authenticated)
 
-    
-
     # API HOME
+
+    # @app.route('/api/home_posts', methods=['GET'])
+    # @login_required
+    # def api_home_posts():
+    #     followed_posts = current_user.followed_posts()
+    #     posts_data = []
+
+    #     for post in followed_posts:
+    #         post_data = {
+    #             'post_id': post.id,
+    #             'user_id': post.user.id,
+    #             'username': post.user.username,
+    #             'unique_id': post.user.unique_id,
+    #             'post_picture': post.post_picture,
+
+    #             'post_body': process_post_body(post.body),
+    #             'profile_picture': post.user.profile_picture or url_for('static', filename='images/blank-profile-pic.png'),
+
+    #             'likes': post.likes,
+    #             'comments_count': len(post.comments),
+    #             'post_impressions': post.post_impressions,
+    #             'created_at': post.created_at.strftime('%H:%M · %B %d, %Y')
+    #         }
+    #         posts_data.append(post_data)
+
+    #     return jsonify(posts_data)
+
+    # API HOME 2
 
     @app.route('/api/home_posts', methods=['GET'])
     @login_required
     def api_home_posts():
-        followed_posts = current_user.followed_posts()
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        followed_posts_query = current_user.followed_posts().order_by(desc(Post.created_at))
+        followed_posts_pagination = followed_posts_query.paginate(
+            page=page, per_page=limit, error_out=False)
+
+        followed_posts = followed_posts_pagination.items
+        next_url = url_for('api_home_posts', page=followed_posts_pagination.next_num, limit=limit) \
+            if followed_posts_pagination.has_next else None
+
         posts_data = []
-        
+
         for post in followed_posts:
             post_data = {
-                'id': post.id,
-                'body': process_post_body(post.body),
-                'user': {
-                    'id': post.user.id,
-                    'username': post.user.username,
-                    'unique_id': post.user.unique_id,
-                    'profile_picture': post.user.profile_picture or url_for('static', filename='images/blank-profile-pic.png'),
-                },
+                'post_id': post.id,
+                'user_id': post.user.id,
+                'username': post.user.username,
+                'unique_id': post.user.unique_id,
                 'post_picture': post.post_picture,
+
+                'post_body': process_post_body(post.body),
+                'profile_picture': post.user.profile_picture or url_for('static', filename='images/blank-profile-pic.png'),
+
                 'likes': post.likes,
                 'comments_count': len(post.comments),
                 'post_impressions': post.post_impressions,
                 'created_at': post.created_at.strftime('%H:%M · %B %d, %Y')
             }
             posts_data.append(post_data)
-        
-        return jsonify(posts_data)
+
+        return jsonify({
+            'posts': posts_data,
+            'next_url': next_url,
+            'moreAvailable': followed_posts_pagination.has_next
+        })
 
     # -------------------- User Statistics  ------------------------------------------
     @app.route('/user_stats/')
@@ -536,7 +588,7 @@ with app.app_context():
         })
 
     # -------------------- User Profile Page by ID  -------------------------
-    @app.route('/<int:user_id>')
+    @app.route('/user_profile/<int:user_id>')
     @login_required
     def user_profile(user_id):
         user = User.query.get(user_id)
@@ -554,7 +606,7 @@ with app.app_context():
             return redirect(url_for('home_page'))
 
     # --------------------- Post Page by ID --------------------------------------
-    @app.route('/showpost/<int:post_id>', methods=['GET', 'POST'])
+    @app.route('/show_post/<int:post_id>', methods=['GET', 'POST'])
     def show_post(post_id):
         requested_post = Post.query.get(post_id)
         form = CommentForm()
@@ -870,12 +922,14 @@ with app.app_context():
             if User.query.filter_by(email=form.email.data).first():
                 print(User.query.filter_by(email=form.email.data).first())
                 # User already exists
-                flash(f"This email address '{form.email.data}' has already been registered!")
+                flash(
+                    f"This email address '{form.email.data}' has already been registered!")
                 return redirect(url_for('register'))
 
             # Save the uploaded file
             if form.password.data != form.confirm_password.data:
-                flash('Passwords do not match!', 'danger')  # error message using Flask's flash
+                # error message using Flask's flash
+                flash('Passwords do not match!', 'danger')
                 return redirect(url_for('register'))
             if form.profile_picture.data:
                 profile_picture_filename = save_profile_picture(
@@ -888,7 +942,7 @@ with app.app_context():
                 username=form.username.data,
                 email=(form.email.data).lower(),
                 profile_picture=profile_picture_filename,
-                unique_id = generate_unique_id(),
+                unique_id=generate_unique_id(),
                 password=hashed_password)
             db.session.add(new_user)
             db.session.commit()

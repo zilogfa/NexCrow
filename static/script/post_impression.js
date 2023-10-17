@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     let impressionTimeouts = {};  // To store timeouts for each post
 
@@ -32,17 +33,15 @@ const options = {
 
 const observer = new IntersectionObserver(handlePostImpression, options);
 
-// Observe all user posts
-const posts = document.querySelectorAll('.user-post');
-posts.forEach(post => observer.observe(post));
-
-
-
-
-
+function initializeObserver() {
+    const posts = document.querySelectorAll('.user-post');
+    console.log("Total posts found for observing:", posts.length);
+    posts.forEach(post => observer.observe(post));
+}
 
 
 function trackImpression(postId) {
+    console.log("Attempting to track impression for post:", postId);
     fetch(`/track_impression/${postId}`, {
         method: 'POST',
         headers: {
@@ -65,6 +64,10 @@ function trackImpression(postId) {
         console.error('Error tracking impression:', error);
     });
 }
+
+
+initializeObserver();
+
 
 });
 
