@@ -146,7 +146,7 @@ def save_post_picture(file):
         current_app.root_path, 'static/post_pictures', new_filename)
 
     # Resize the image to a desired size (optional)
-    output_size = (800, 800)  # Adjust the size as needed
+    output_size = (1200, 1200)  # Adjust the size as needed
     image = Image.open(file)
     image.thumbnail(output_size)
 
@@ -424,7 +424,7 @@ with app.app_context():
                                         'placeholder': ' What is happening?!'}
                              )
         post_picture = FileField('Post Picture', validators=[
-            FileAllowed(['jpg', 'jpeg', 'png'])], render_kw={'class': ''})
+            FileAllowed(['jpg', 'jpeg', 'png', 'webp', 'gif'])], render_kw={'class': ''})
         submit = SubmitField('Post', render_kw={'class': 'btn-form'})
 
     class RegisterForm(FlaskForm):
@@ -554,7 +554,7 @@ with app.app_context():
     @app.route('/home')
     @login_required
     def home_page():
-        followed_posts = current_user.followed_posts()
+        followed_posts = current_user.followed_posts().order_by(Post.created_at.desc()).all()
         for post in followed_posts:
             post.body = process_post_body(post.body)
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
@@ -655,9 +655,9 @@ with app.app_context():
             'total_posts': total_posts,
             'total_comments': total_comments,
             'profile_page_impressions': profile_page_impressions,
-            'total_post_impressions': total_post_impressions,
-            'total_comment_impressions': total_comment_impressions,
-            'most_post_impressions': most_post_impressions,
+            'total_post_impressions': total_post_impressions or 0,
+            'total_comment_impressions': total_comment_impressions or 0,
+            'most_post_impressions': most_post_impressions or 0,
             'most_comment_impressions': most_comment_impressions
         })
 

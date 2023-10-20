@@ -8,6 +8,14 @@
         <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
     </div>
 
+    <div class="profile-img setting-img">
+        {% if user.profile_picture %}
+        <img src="{{ url_for('static', filename='profile_pictures/' + user.profile_picture) }}">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+        {% endif %}
+    </div>
+
     <form method="POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="custom-input">

@@ -218,6 +218,13 @@ main .user-post .setting-sec{
 }
 
 
+main .user-post .setting-header img{
+    width: 100%;
+    height: 12rem;
+    margin: 2rem 0rem;
+    border-radius: var(--border-radius-2);
+}
+
 
 
 
@@ -242,11 +249,17 @@ main .user-post .content .title h3{
     font-weight: bolder;
 }
 
-main .user-post .content .title p{
-    font-size: xx-small; 
+main .user-post .content .title .userInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+    font-size: x-small; 
     font-weight: 500; 
     color: var(--color-dark)
 }
+
+
 
 main .user-post .content .post-body{
     margin-top: 0.5rem;
@@ -354,40 +367,66 @@ main .profile-sec .profile-heading .profile-title{
     margin: 1rem 0;
 }
 
-main .profile-sec .profile-heading .profile-title .profile-img{
+main .profile-img{
     height: 12rem;
     width: 12rem;
     border-radius: 50%;
     background-color: var(--color-white);
     border: solid 0.5rem var(--color-white);
     overflow: hidden;
-    transition: all 0.3s ease
+    transition: all 0.3s ease;
+    z-index: 10;
 }
-main .profile-sec .profile-heading .profile-title .profile-img:hover{
+
+
+
+main .profile-img:hover{
     border: solid 0.1rem var(--color-white);
-    scale: 1.7;
+    scale: 1.05;
     border-radius: 20px;
     box-shadow: var(--box-shadow);
     transition: all 0.3s ease
 }
 
-main .profile-sec .profile-heading .profile-title .profile-img img{
-    width: 100%;
-    height: auto;
-    transition: all 0.3s ease
-
-}
-
-main .profile-sec .profile-heading .profile-title .profile-img img:hover{
-    scale: 1.15;
-    transition: all 0.8s ease
-}
-main .profile-sec .profile-heading .profile-title .profile-img img:active{
+main .profile-img:active{
     scale: 1.5;
     transition: all 0.3s ease
 }
 
-main .profile-sec .profile-heading .profile-title h3{
+main  .profile-img img{
+    width: 100%;
+    height: auto;
+    transition: all 0.3s ease
+}
+
+main .profile-img img:hover{
+    scale: 1.05;
+    transition: all 0.8s ease
+}
+main .profile-img img:active{
+    scale: 1.5;
+    transition: all 0.3s ease
+}
+
+main .setting-img{
+    margin-bottom: 2rem;
+}
+
+main .setting-img:hover{
+    scale: 1;
+}
+
+main .setting-img img:hover{
+    scale: 1.1;
+}
+
+main .setting-img img:active{
+    scale: 1.2;
+}
+
+
+
+main  .profile-title h3{
     color: var(--color-dark);
     font-weight:700;
 }

@@ -8,6 +8,12 @@
         <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
     </div>
 
+    {% if current_user.header_picture %}
+    <div class="setting-header">
+        <img src="{{ url_for('static', filename='header_pictures/' + current_user.header_picture) }}">
+    </div>
+    {% endif %}
+
     <form method="POST" enctype="multipart/form-data">
         {{ form.csrf_token }}
         <div class="custom-input">
