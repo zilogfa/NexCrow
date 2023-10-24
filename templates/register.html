@@ -3,10 +3,19 @@
 
 
 
-    <h1>Register Page</h1>
+    <h1>Create a new account <span style="font-size:xx-small; color: var(--color-info-dark);">It’s quick and easy.</span></h1>
     <div class="user-post main-bg-color">
         <div class="content">
+            
             <div class="register-sec">
+                <div class="register-heading">
+                    <img src="{{url_for('static', filename='images/logo/reg-banner.png')}}">
+
+                    <h3>NexCrow is a social media platform where users can share their thoughts and memories through text and images, follow other users, and interact with them. Join the flock and take off with NexCrow!</h3>
+                </div>
+
+                
+                
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 {% for message in messages %}

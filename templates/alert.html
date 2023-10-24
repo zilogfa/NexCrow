@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Alerts and Notifications</h1>
+<div class="user-post main-bg-color alert-border">
+<div class="content">
+    <div class="alert-sec">
+        <hr>
+        <div class="alert-title">
+            <p> <strong>From:</strong> NexCrow</p>
+            <p> <strong>Subject:</strong> 🎉 Welcome to NexCrow - Your New Space to Connect and Share!</p>
+            <p>{{ current_user.created_at.strftime('%H:%M · %B %d, %Y') }}</p>
+        </div>
+        <hr>
+        <div class="alert-body">
+            <h3>Dear, {{current_user.username}}</h3>
+            <p>
+                A warm welcome to NexCrow, your new digital space to voice your thoughts, share your cherished moments, and connect with a vibrant community of individuals from all walks of life! 
+            </p>
+            <p>
+                At NexCrow, we believe in the power of sharing and connecting. We've created this platform to give you the freedom to express yourself, engage with others, and be part of a community that values openness, respect, and authenticity.
+            </p>
+            <br>
+            <h3>
+                Here’s a glimpse of what you can do on NexCrow:
+            </h3>
+
+            
+
+            <ol>
+                <li>
+                    <p>
+                        <strong>Express Yourself:</strong>
+                        Share your thoughts, stories, and memories through text or images. Whether it's a fleeting moment or a significant milestone, your story matters here.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>Connect and Engage:</strong>
+                        Follow friends, family, and people who inspire you. Like, comment, and interact with posts that resonate with you. Your voice is a significant contribution to the community.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>Discover and Explore:</strong>
+                        Dive into a world of content tailored just for you. Explore trending topics, join in on conversations, and discover new ideas and perspectives.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>Stay Informed:</strong>
+                        Visit the "Alerts and Notifications" page to ensure you never miss an update from your connections or the latest buzz in the community.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>Your Space, Your Rules:</strong>
+                        Your privacy and comfort are our top priority. Customize your settings to create a safe and secure space that feels like home.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <strong>We’re Here for You:</strong>
+                        If you have any questions, need help navigating the platform, or just want to say hi, our friendly support team is always here for you.
+                    </p>
+                </li>
+            </ol>
+
+            <p>
+                Get ready to embark on a journey of connection, expression, and discovery. Dive in, explore, and make NexCrow your space to shine.
+            </p>
+            <p>
+                Welcome to the community, {{ current_user.username }}! We’re so excited to have you here.
+            </p>
+
+            <p>Warmest regards,</p>
+            <br>
+            <h3>The NexCrow Team</h3>
+            <img src="{{url_for('static', filename='images/logo/crow-nav-logo.png')}}">
+            
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

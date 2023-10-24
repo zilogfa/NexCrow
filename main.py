@@ -92,6 +92,8 @@ def process_post_body(body):
     return body
 
 # -------------------- if an uploaded file has a valid extension ------------------
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -189,34 +191,42 @@ with app.app_context():
 
     # post.likes - user.liked_posts
     likes = db.Table('likes',
-        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-        db.Column('post_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
+                     db.Column('user_id', db.Integer, db.ForeignKey(
+                         'user.id'), primary_key=True),
+                     db.Column('post_id', db.Integer, db.ForeignKey(
+                         'post.id'), primary_key=True)
                      )
-    
+
     comment_likes = db.Table('comment_likes',
-        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-        db.Column('comment_id', db.Integer, db.ForeignKey('comments.id'), primary_key=True)
-                    )
+                             db.Column('user_id', db.Integer, db.ForeignKey(
+                                 'user.id'), primary_key=True),
+                             db.Column('comment_id', db.Integer, db.ForeignKey(
+                                 'comments.id'), primary_key=True)
+                             )
 
     # followers = user.followers.all()  # followed = user.followed.all()
     followers = db.Table('followers',
-        db.Column('follower_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-        db.Column('followed_id', db.Integer,db.ForeignKey('user.id'), primary_key=True)
+                         db.Column('follower_id', db.Integer, db.ForeignKey(
+                             'user.id'), primary_key=True),
+                         db.Column('followed_id', db.Integer,
+                                   db.ForeignKey('user.id'), primary_key=True)
                          )
-    
+
     # Block Users
     blocked = db.Table('blocked',
-        db.Column('blocker_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-        db.Column('blocked_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    )
+                       db.Column('blocker_id', db.Integer, db.ForeignKey(
+                           'user.id'), primary_key=True),
+                       db.Column('blocked_id', db.Integer, db.ForeignKey(
+                           'user.id'), primary_key=True)
+                       )
 
     # Mute Users
     muted = db.Table('muted',
-        db.Column('muter_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-        db.Column('muted_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    )
-
-
+                     db.Column('muter_id', db.Integer, db.ForeignKey(
+                         'user.id'), primary_key=True),
+                     db.Column('muted_id', db.Integer, db.ForeignKey(
+                         'user.id'), primary_key=True)
+                     )
 
     class User(db.Model, UserMixin):
         """User Meta Data DB:--> id(unique), username[String(40)], email[String(80)], phone_number[String(20)], password[String(80)], created_at[datetime.utc], updated_at[datetime.utc], is_blocked[Boolean]"""
@@ -249,18 +259,23 @@ with app.app_context():
         comments = db.relationship('Comment', back_populates='user')
         liked_posts = db.relationship(
             'Post', secondary=likes, backref='likers')
-        liked_comments = db.relationship('Comment', secondary=comment_likes, backref='likers')
+        liked_comments = db.relationship(
+            'Comment', secondary=comment_likes, backref='likers')
         blocked_users = db.relationship('User', secondary=blocked,
-                                    primaryjoin=(blocked.c.blocker_id == id),
-                                    secondaryjoin=(blocked.c.blocked_id == id),
-                                    backref=db.backref('blocking_users', lazy='dynamic'),
-                                    lazy='dynamic')
-    
+                                        primaryjoin=(
+                                            blocked.c.blocker_id == id),
+                                        secondaryjoin=(
+                                            blocked.c.blocked_id == id),
+                                        backref=db.backref(
+                                            'blocking_users', lazy='dynamic'),
+                                        lazy='dynamic')
+
         muted_users = db.relationship('User', secondary=muted,
-                                    primaryjoin=(muted.c.muter_id == id),
-                                    secondaryjoin=(muted.c.muted_id == id),
-                                    backref=db.backref('muting_users', lazy='dynamic'),
-                                    lazy='dynamic')
+                                      primaryjoin=(muted.c.muter_id == id),
+                                      secondaryjoin=(muted.c.muted_id == id),
+                                      backref=db.backref(
+                                          'muting_users', lazy='dynamic'),
+                                      lazy='dynamic')
         followed = db.relationship('User', secondary=followers,
                                    primaryjoin=(followers.c.follower_id == id),
                                    secondaryjoin=(
@@ -297,7 +312,7 @@ with app.app_context():
 
             # Query all posts from users in the followed_ids list
             return Post.query.filter(Post.user_id.in_(followed_ids))
-        
+
         # -------- block and Mute Funcs:
         def block(self, user):
             if not self.is_blocking(user):
@@ -321,7 +336,6 @@ with app.app_context():
         def is_muting(self, user):
             return self.muted_users.filter(muted.c.muted_id == user.id).count() > 0
 
-
     class Post(db.Model):  # user.posts.all()
         """Post Meta Data DB: body[Text], likes[default=0], created_at[utcnow], updated_at[utcnow]"""
         __tablename__ = 'post'
@@ -339,9 +353,8 @@ with app.app_context():
         user = relationship('User', back_populates='posts')
         comments = db.relationship(
             'Comment', back_populates='post', cascade="all, delete-orphan")
-        media = db.relationship('Media', back_populates='post', uselist=True, cascade="all, delete-orphan")
-
-
+        media = db.relationship(
+            'Media', back_populates='post', uselist=True, cascade="all, delete-orphan")
 
         # def process_post_body(self):
         #     # Convert URLs into clickable links
@@ -355,12 +368,13 @@ with app.app_context():
 
     class Media(db.Model):
         id = db.Column(db.Integer, primary_key=True)
-        post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+        post_id = db.Column(db.Integer, db.ForeignKey(
+            'post.id'), nullable=False)
         media_type = db.Column(db.Enum('image', 'video'), nullable=False)
         media_url = db.Column(db.String(200), nullable=False)
         media_order = db.Column(db.Integer, default=0)
         timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-        post = db.relationship('Post', back_populates='media')    
+        post = db.relationship('Post', back_populates='media')
 
     class Comment(db.Model):  # user.comments.all()
         __tablename__ = 'comments'
@@ -377,9 +391,10 @@ with app.app_context():
 
         user = db.relationship('User', back_populates='comments')
         post = db.relationship('Post', back_populates='comments')
-        parent_comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'), nullable=True)
-        replies = db.relationship('Comment', backref=db.backref('parent', remote_side=[id]), lazy='dynamic')
-
+        parent_comment_id = db.Column(
+            db.Integer, db.ForeignKey('comments.id'), nullable=True)
+        replies = db.relationship('Comment', backref=db.backref(
+            'parent', remote_side=[id]), lazy='dynamic')
 
         # def process_comment_content(self):
         #     # Convert URLs into clickable links
@@ -554,7 +569,8 @@ with app.app_context():
     @app.route('/home')
     @login_required
     def home_page():
-        followed_posts = current_user.followed_posts().order_by(Post.created_at.desc()).all()
+        followed_posts = current_user.followed_posts().order_by(
+            Post.created_at.desc()).all()
         for post in followed_posts:
             post.body = process_post_body(post.body)
         return render_template('home.html', posts=followed_posts, current_user=current_user, logged_in=current_user.is_authenticated)
@@ -638,6 +654,22 @@ with app.app_context():
     @login_required
     def user_stats():
         user = current_user
+
+        # Received Likes comments & Posts if any
+        rec_posts_likes = 0
+        if db.session.query(
+                func.sum(Post.likes)).filter_by(user_id=user.id).scalar():
+            rec_posts_likes = db.session.query(
+                func.sum(Post.likes)).filter_by(user_id=user.id).scalar()
+
+        rec_comments_likes = 0
+        if db.session.query(
+                func.sum(Comment.likes_count)).filter_by(user_id=user.id).scalar():
+            rec_comments_likes = db.session.query(
+                func.sum(Comment.likes_count)).filter_by(user_id=user.id).scalar()
+
+        # passing values
+        unique_id = user.unique_id
         total_posts = Post.query.filter_by(user_id=user.id).count()
         total_comments = Comment.query.filter_by(user_id=user.id).count()
         profile_page_impressions = user.profile_impressions
@@ -649,16 +681,27 @@ with app.app_context():
             func.max(Post.post_impressions)).filter_by(user_id=user.id).scalar()
         most_comment_impressions = db.session.query(
             func.max(Comment.comment_impressions)).filter_by(user_id=user.id).scalar()
+        total_received_likes = rec_posts_likes + rec_comments_likes
+        most_received_likes = db.session.query(
+            func.max(Post.likes)).filter_by(user_id=user.id).scalar()
+        total_given_likes = db.session.query(
+            func.count(likes.c.post_id)
+        ).filter(likes.c.user_id == user.id).scalar()
+
         print(
             f"*** static data fetched --- User ID: {user.id} / Email: {user.email} **")
         return jsonify({
-            'total_posts': total_posts,
-            'total_comments': total_comments,
-            'profile_page_impressions': profile_page_impressions,
+            'unique_id': f'@{unique_id}',
+            'total_posts': total_posts or 0,
+            'total_comments': total_comments or 0,
+            'profile_page_impressions': profile_page_impressions or 0,
             'total_post_impressions': total_post_impressions or 0,
             'total_comment_impressions': total_comment_impressions or 0,
             'most_post_impressions': most_post_impressions or 0,
-            'most_comment_impressions': most_comment_impressions
+            'most_comment_impressions': most_comment_impressions or 0,
+            'total_received_likes': total_received_likes or 0,
+            'most_received_likes': most_received_likes or 0,
+            'total_given_likes': total_given_likes or 0,
         })
 
     # -------------------- User Profile Page by ID  -------------------------
@@ -932,7 +975,13 @@ with app.app_context():
 
     @app.route('/about')
     def about():
-        return render_template('about.html', logged_in=current_user.is_authenticated)
+        return render_template('about.html', logged_in=current_user.is_authenticated, current_user=current_user)
+
+    # -------------------- About Page  -----------------------------------------
+
+    @app.route('/alert')
+    def alert():
+        return render_template('alert.html', logged_in=current_user.is_authenticated, current_user=current_user)
 
     # -------------------- Impressions for Post/Comment/Profile   ----------------
 
@@ -1012,15 +1061,17 @@ with app.app_context():
                 profile_picture_filename = None
 
             hashed_password = bcrypt.generate_password_hash(form.password.data)
+            unique_id = generate_unique_id()
             new_user = User(
                 username=form.username.data,
                 email=(form.email.data).lower(),
                 profile_picture=profile_picture_filename,
-                unique_id=generate_unique_id(),
+                unique_id=unique_id,
                 password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            print(f"New User with Unique ID: {User.unique_id}, registered")
+            print(
+                f"### New User: {form.username.data} ,Email: {(form.email.data).lower()}, Unique ID: {unique_id} registered")
             return redirect(url_for('login'))
 
         return render_template('register.html', form=form)
@@ -1053,7 +1104,6 @@ with app.app_context():
     def logout():
         logout_user()
         return redirect(url_for('home_page'))
-    
 
     # ----------------------- Refrence for upload -------------------------------
 
@@ -1068,12 +1118,11 @@ with app.app_context():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # Save the file URL to the Media model
-            media = Media(media_url=filename, media_type='image' if filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'video')
+            media = Media(media_url=filename, media_type='image' if filename.rsplit(
+                '.', 1)[1].lower() in ['png', 'jpg', 'jpeg', 'gif', 'webp'] else 'video')
             db.session.add(media)
             db.session.commit()
             return redirect(url_for('index'))
-    
-
 
     if __name__ == '__main__':
         app.run(debug=True)

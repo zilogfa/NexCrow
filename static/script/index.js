@@ -8,10 +8,21 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch('/user_stats/')
         .then(response => response.json())
         .then(data => {
+            document.getElementById('user-uid').textContent = data.unique_id;
+            document.getElementById('profile-impressions').textContent = data.profile_page_impressions;
+
             document.getElementById('total-posts').textContent = data.total_posts;
-            document.getElementById('total-comments').textContent = data.total_comments;
             document.getElementById('total-posts-impressions').textContent = data.total_post_impressions;
+            document.getElementById('most-posts-impressions').textContent = data.most_post_impressions;
+
+            document.getElementById('total-comments').textContent = data.total_comments;
             document.getElementById('total-comments-impressions').textContent = data.total_comment_impressions;
+            document.getElementById('most-comments-impressions').textContent = data.most_comment_impressions;
+
+            document.getElementById('total-received-likes').textContent = data.total_received_likes;
+            document.getElementById('most-received-likes').textContent = data.most_received_likes;
+            document.getElementById('total-given-likes').textContent = data.total_given_likes;
+            
         })
         .catch(error => {
             console.error('Error fetching user stats:', error);

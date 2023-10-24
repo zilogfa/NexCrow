@@ -210,6 +210,21 @@ main .user-post .content{
 }
 
 
+main .register-sec{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main .register-heading {
+    max-width: 100%;
+    margin-bottom: 2rem;
+    color: var(--color-info-dark);
+    text-align: center;
+}
+
+
+
 main .user-post .setting-sec{
     padding: 2rem;
     display: flex;
@@ -247,6 +262,11 @@ main .user-post .content .title img{
 main .user-post .content .title h3{
     margin-top: 0.5rem;
     font-weight: bolder;
+}
+
+main .user-post .content .title p{
+    font-size: xx-small; 
+    color: var(--color-info-dark);
 }
 
 main .user-post .content .title .userInfo{
@@ -320,6 +340,8 @@ main .profile-sec{
     box-shadow: var(--box-shadow);
     border-radius: 15px;
     margin-top: 1.6rem;
+    position:relative;
+    min-height: auto;
     transition: all 0.3s ease;
 }
 
@@ -699,40 +721,122 @@ main .comment-sec a:hover{
 .right-section .analysis{
     display: flex;
     flex-wrap: wrap;
-    gap: 1.2rem;
+    gap: 1rem;
     background-color: var(--color-background);
     padding: 0.5rem;
     border-radius: 10px;
 }
 
-.right-section .analysis div{
-    width: 20rem;
+.analysis .tab{
     display: flex;
+    width: 20rem;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1rem;
-    gap: 1rem;
-    border-radius: 10px;
+    gap: .8rem;
     background-color: var(--color-white);
+    border-radius: var(--border-radius-2);
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
     transition: all 0.3s ease;
 }
 
-.right-section .analysis div:active{
+.analysis .tab:active{
     scale: 1.02;
     margin-bottom: .5rem;
     transition: all 0.3s ease;
     box-shadow: var(--box-shadow);
 }
 
-.right-section .analysis div h3{
-    font-size: larger;
-    font-weight: bold;
+.analysis .tab:hover{
+    box-shadow: none;
 }
 
-.right-section .analysis div p{
-    font-size: smaller;
-    font-weight: 500;
+.analysis .tab .analysis-title{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content:flex-start;
+    gap: .5rem;
+    margin-left: 1rem;
+    margin-bottom: .5rem;
+}
+
+.analysis .tab div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 
+
+.right-sec-about{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    background-color: var(--color-white);
+    padding: 1rem;
+    width: 20rem;
+    border-radius: var(--border-radius-1);
+    transition: all 0.3s ease;
+    bottom: 1rem;
+    left: 1rem;
+    justify-content: center;
+}
+
+.right-sec-about a{
+    color: var(--color-info-dark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    transition: all 0.3s ease;
+}
+
+.right-sec-about a:hover{
+    color: var(--color-primary);
+    scale: 1.1;
+    transition: all 0.3s ease;
+}
+
+.right-sec-about a:active{
+    color: var(--color-dark);
+    scale: .9;
+    transition: all 0.3s ease;
+}
+
+
+main .alert-border{
+    border-radius: 3px;
+}
+main .alert-sec{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 98%;
+    padding: 2rem;
+}
+
+.alert-sec .alert-title p:last-child{
+    margin-top: .5rem;
+    font-size: 0.7rem;
+}
+
+main .alert-sec hr{
+    border: solid 1px var(--color-background);
+}
+
+main .alert-sec .alert-body{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+main .alert-sec .alert-body ol{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+main .alert-sec .alert-body img{
+    width: 3rem;
+}

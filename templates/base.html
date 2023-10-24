@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ g.csrf_token }}">
     <title>CrowNexus</title>
-    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/logo/favicon.ico')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/logo/fav-icon.ico')}}">
 
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
@@ -59,12 +59,6 @@
                     <h3>Explore</h3>
                 </a>
 
-                <a id="about-page" href="#">
-                    <span class="material-icons-sharp">
-                        contact_support
-                    </span>
-                    <h3>About</h3>
-                </a>
 
                 <a href="#" id="dark-mode-toggle">
                     <span class="material-icons-sharp">
@@ -108,7 +102,6 @@
                     <div class="profile-name">
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
-                            <h3>@{{current_user.unique_id}}</h3>
                             {% if current_user.birthday %}
                             <p style="font-size: smaller;"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
                             {% endif %}
@@ -148,12 +141,14 @@
                     <h3>Profile</h3>
                 </a>
 
-                <a href="#">
+                <a href="{{ url_for('alert') }}">
                     <span class="material-icons-sharp">
                         notifications
                     </span>
                     <h3>Alert</h3>
                 </a>
+
+                
 
                 <a href="{{ url_for('setting') }}">
                     <span class="material-icons-sharp">
@@ -213,20 +208,55 @@
                     {% if logged_in %}
                     <h3><span class="material-icons-sharp">insights</span>Profile Analysis</h3>
                     <div class="analysis">
-                        <div><h3 id="total-posts">Loading...</h3><p>Total posts</p></div>
-                        <div><h3 id="total-comments">Loading...</h3><p>Total comments</p></div>
-                        <div><h3 id="total-posts-impressions">Loading...</h3><p>Total posts impressions</p></div>
-                        <div><h3 id="total-comments-impressions">Loading...</h3><p>Total comments impressions</p></div>
-                        <!-- <div><h3></h3><p>Profile impressions</p></div> -->
+                        <div class="tab">
+                            <h3 class="analysis-title"><span class="material-icons-sharp">perm_contact_calendar</span>Pofile</h3>
+                            <div><p>UID:</p><h3 id="user-uid">Loading...</h3></div>
+                            <div><p>Profile Visits:</p><h3 id="profile-impressions">Loading...</h3></div>
+                        </div>
+                        <div class="tab">
+                            <h3 class="analysis-title"><span class="material-icons-sharp">article</span>Posts</h3>
+                            <div><p>Published Posts::</p><h3 id="total-posts">Loading...</h3></div>
+                            <div><p>Post Impressions:</p><h3 id="total-posts-impressions">Loading...</h3></div>
+                            <div><p>Top Post by Views:</p><h3 id="most-posts-impressions">Loading...</h3></div>
+                        </div>
+
+                        <div class="tab">
+                            <h3 class="analysis-title"><span class="material-icons-sharp">chat</span>Comments</h3>
+                            <div><p>Comments Made:</p><h3 id="total-comments">Loading...</h3></div>
+                            <div><p>Comment Impressions:</p><h3 id="total-comments-impressions">Loading...</h3></div>
+                            <div><p>Top Comment:</p><h3 id="most-comments-impressions">Loading...</h3></div>
+                        </div>
+                        <div class="tab">
+                            <h3 class="analysis-title"><span class="material-icons-sharp">favorite</span>Likes</h3>
+                            <!-- <div><p>Total given Likes:</p><h3 id="total-given-likes">Loading...</h3></div> -->
+                            <div><p>Leading Post:</p><h3 id="most-received-likes">Loading...</h3></div>
+                            <div><p>Likes Received:</p><h3 id="total-received-likes">Loading...</h3></div>
+                        </div>
+
+                       
+
                     </div>
 
                     <div>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda modi ex sit ut placeat dolor consectetur ducimus dolorum laborum itaque quisquam quia eos dolore temporibus, odit possimus. Vero, expedita dolores!</p>
                     </div>
+                    {% else %}
+                        <div style="width: 20rem;">
+                            <a href="{{ url_for('login') }}">
+                                <img src="{{url_for('static', filename='images/logo/loginnow-banner.png')}}">
+                            </a>
+                        </div>
                     {% endif %}
-
-                </div>
+                        
             </div>
+            <div class="right-sec-about">
+                <a id="about-page" href="#">
+                    <span class="material-icons-sharp">
+                        contact_support
+                    </span>
+                    <h3>About NexCrow</h3>
+                </a>
+            </div>
+    </div>
         </div>
             
         

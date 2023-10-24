@@ -1,13 +1,16 @@
-$('#about-page').click(function() {
+
+function aboutPage(){
     $('main').html(`
+    <h1>About NexCrow</h1>
     <div class="user-post main-bg-color">
     <div class="content">
     <div class="about-sec">
-    <h3>About Crow Nexus</h3>
-    <p>Welcome to Crow Nexus, the social platform designed to connect, share, and inspire. Created by <em>Ali Jafarbeglou</em>, Crow Nexus is more than just a social network; it's a community where users can interact, express themselves, and stay connected with friends and interests.</p>
+    <img src="../static/images/logo/about-banner.png">
+
+    <p>Welcome to NexCrow, the social platform designed to connect, share, and inspire. Created by <em>Ali Jafarbeglou</em>, NexCrow is more than just a social network; it's a community where users can interact, express themselves, and stay connected with friends and interests.</p>
     <h3>Purpose and Benefits</h3>
 
-    <p>At Crow Nexus, our mission is to provide a unique and personalized social experience. Here's why you'll love using Crow Nexus:</p>
+    <p>At NexCrow, our mission is to provide a unique and personalized social experience. Here's why you'll love using NexCrow:</p>
 
     <ol>
         <li>
@@ -28,7 +31,7 @@ $('#about-page').click(function() {
 
     <ul>
         <li>
-            <p><strong>User-Friendly Interface:</strong> Crow Nexus offers an intuitive and user-friendly design for effortless navigation.</p>
+            <p><strong>User-Friendly Interface:</strong> NexCrow offers an intuitive and user-friendly design for effortless navigation.</p>
         </li>
         <li>
             <p><strong>Customizable Profiles:</strong> Personalize your profile with profile and header pictures, a bio, and more.</p>
@@ -46,14 +49,19 @@ $('#about-page').click(function() {
             <p><strong>Privacy Controls:</strong> Customize your privacy settings to ensure a safe and enjoyable experience.</p>
         </li>
         <li>
-            <p><strong>Responsive Design:</strong> njoy Crow Nexus on your desktop, tablet, or mobile device with a responsive design.</p>
+            <p><strong>Responsive Design:</strong> enjoy NexCrow on your desktop, tablet, or mobile device with a responsive design.</p>
         </li>
     </ul>
 
-    <p>Join Crow Nexus today and become a part of a thriving online community. Connect, share, and inspire with Crow Nexus - where social networking meets personal expression.</p>
+    <p>Join NexCrow today and become a part of a thriving online community. Connect, share, and inspire with NexCrow - where social networking meets personal expression.</p>
 
     </div>
     </div>
     </div>
     `);
+
+}
+
+$('#about-page').click(function() {
+    aboutPage();
 });

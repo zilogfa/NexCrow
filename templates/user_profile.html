@@ -55,7 +55,7 @@
                 </form>
                 {% endif %}
                 
-                <!-- End follow btn & edit profile -->
+                <!-- End follow btn & edit profile ###-->
 
             </div>
             <div class="profile-detail">
@@ -70,18 +70,14 @@
                     <p><span class="material-icons-sharp">date_range</span>&nbsp;Joined {{ user.created_at.strftime('%B %Y') }}</p>
                     {% if user.location %}
                     <p><span class="material-icons-sharp">room</span>&nbsp;{{ user.location }}</p>
-                    {% else  %}
-                    <p><span class="material-icons-sharp">room</span> &nbsp; </p>
                     {% endif %} 
                 </div>
-                <div class="profile-location">
+                <!-- <div class="profile-location">
                     <p class="profile-impression-count"><span class="material-icons-sharp">equalizer</span> &nbsp; <span class="count-value" style="font-size: 0.7rem;">{{ user.profile_impressions }}</span> </p>
-                </div>
+                </div> -->
                 <div class="profile-location">
                     {% if user.bio_url %}
                     <p><span class="material-icons-sharp">insert_link</span> <a href="{{ user.bio_url }}" target="_blank" >&nbsp; {{ user.bio_url }}</a></p>
-                    {% else  %}
-                    <p><span class="material-icons-sharp">insert_link</span> &nbsp; </p>
                     {% endif %} 
                 </div>
              
@@ -114,7 +110,8 @@
 
                         <a href="#" onclick="return false;">
                         <h3>{{ post.user.username }}</h3>
-                        <p style="font-size: xx-small; color: dimgray;">{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
+                        <p>@{{ post.user.unique_id }}</p>
+                        
                         </a>
                         
                     </div>
@@ -172,7 +169,7 @@
                                 <span class="material-icons-sharp">
                                     more_horiz
                                     </span>
-                                <p>{{ post.created_at.strftime('%B %Y') }} </p>
+                                <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
                             </a>
 
                             {% else %}
