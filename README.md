@@ -19,7 +19,7 @@ To get started with NexCrow, ensure you have Python, pip, and a virtual environm
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/NexCrow.git
+   git clone https://github.com/zilogfa/Crow-Nexus.git
    cd NexCrow
 
    ```
@@ -58,12 +58,12 @@ flask db upgrade
 
 ## Features
 
-. User authentication and profiles.
-. Posting text and images.
-. Liking posts and comments.
-. Commenting on posts.
-. Following and unfollowing users.
-. Real-time alerts and notifications.
+1. User authentication and profiles.
+2. Posting text and images.
+3. Liking posts and comments.
+4. Commenting on posts.
+5. Following and unfollowing users.
+6. Real-time alerts and notifications.
 
 ## Technologies Used
 
