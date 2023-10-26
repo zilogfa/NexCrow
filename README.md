@@ -37,7 +37,7 @@ To get started with NexCrow, ensure you have Python, pip, and a virtual environm
    pip install -r requirements.txt
    ```
 
-- Setup
+## Setup
 
 1. Set up the configuration in config.py, ensure to configure the database URI and other environment variables.
 2. Run database migrations:
@@ -51,26 +51,26 @@ flask db upgrade
 
 ## Usage
 
-. Home Page: View posts from followed users, and create new posts.
-. Profile Page: View and edit your user profile.
-. Search: Search for other users.
-. Alerts and Notifications: Stay up to date with interactions on your posts.
+- Home Page: View posts from followed users, and create new posts.
+- Profile Page: View and edit your user profile.
+- Search: Search for other users.
+- Alerts and Notifications: Stay up to date with interactions on your posts.
 
 ## Features
 
-1. User authentication and profiles.
-2. Posting text and images.
-3. Liking posts and comments.
-4. Commenting on posts.
-5. Following and unfollowing users.
-6. Real-time alerts and notifications.
+- User authentication and profiles.
+- Posting text and images.
+- Liking posts and comments.
+- Commenting on posts.
+- Following and unfollowing users.
+- Real-time alerts and notifications.
 
 ## Technologies Used
 
-. ackend: Flask, SQLAlchemy
-. Frontend: HTML, CSS, JavaScript
-. Database: PostgreSQL
-. Deployment: [Add Deployment Platform]
+- Backend: Flask, SQLAlchemy
+- Frontend: HTML, CSS, JavaScript
+- Database: PostgreSQL
+- Deployment: [Add Deployment Platform]
 
 ## Contributing
 
