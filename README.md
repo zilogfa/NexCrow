@@ -78,5 +78,5 @@ Contributions to NexCrow are welcome! Please ensure you follow the Contributing 
 
 ## Contact
 
-- For any inquiries or issues, please contact
+- For any inquiries or issues, please contact:
   Ali Jafarbeglou - zilogfa@live.com - https://alijafarbeglou.com
