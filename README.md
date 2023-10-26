@@ -70,7 +70,7 @@ flask db upgrade
 - Backend: Flask, SQLAlchemy
 - Frontend: HTML, CSS, JavaScript
 - Database: PostgreSQL
-- Deployment: [Add Deployment Platform]
+- Deployment: Heroku
 
 ## Contributing
 
@@ -78,5 +78,5 @@ Contributions to NexCrow are welcome! Please ensure you follow the Contributing 
 
 ## Contact
 
-For any inquiries or issues, please contact
-Ali Jafarbeglou - zilogfa@live.com
+- For any inquiries or issues, please contact
+  Ali Jafarbeglou - zilogfa@live.com - https://alijafarbeglou.com
