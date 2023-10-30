@@ -559,26 +559,35 @@ def toggle_follow(user_id):
 
 # -------------------- Delete Page  -----------------------------------------
 
-@app.route('/delete-post')
+@app.route('/delete-post/<int:post_id>', methods=['POST'])
 @login_required
-def delete_post():
-    id = request.args.get('post_id')
-    post_to_delete = Post.query.get(id)
-    db.session.delete(post_to_delete)
-    db.session.commit()
-    return redirect(url_for('user_profile', user_id=current_user.id))
+def delete_post(post_id):
+    post = Post.query.filter_by(id=post_id).first()
+    if post:
+        if post.user_id == current_user.id:
+            db.session.delete(post)
+            db.session.commit()
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Unauthorized access'}), 403
+    else:
+        return jsonify({'status': 'error', 'message': 'Post not found'}), 404
 
-# -------------------- Delete Comment I/P show post!!!  -----------------------------------------
 
-@app.route('/delete-comment')
+@app.route('/delete-comment/<int:comment_id>', methods=['POST'])
 @login_required
-def delete_comment():
-    post_id = request.args.get('post_id')
-    id = request.args.get('comment_id')
-    post_to_delete = Comment.query.get(id)
-    db.session.delete(post_to_delete)
-    db.session.commit()
-    return redirect(url_for('show_post', post_id=post_id))
+def delete_comment(comment_id):
+    comment = Comment.query.filter_by(id=comment_id).first()
+    if comment:
+        if comment.user_id == current_user.id:
+            db.session.delete(comment)
+            db.session.commit()
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Unauthorized access'}), 403
+    else:
+        return jsonify({'status': 'error', 'message': 'Comment not found'}), 404
+
 
 # -------------------- About Page  -----------------------------------------
 

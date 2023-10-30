@@ -54,34 +54,34 @@
             </span>
         </a>
 
-      <a href="{{ url_for('show_post', post_id=post.id) }}">
-        <span class="material-icons-sharp">
-            chat_bubble_outline
-        </span>
-        <p>{{ post.comments|length }}</p>
-      </a>
-
-
-      <a href="{{ url_for('show_post', post_id=post.id) }}">
-        <span class="material-icons-sharp">
-            equalizer
-        </span>
-        <p class="impression-count">{{ post.post_impressions }} </p>
-      </a>
-
-      <a href="{{url_for('edit_post', post_id=post.id)}}">
+        <a href="{{ url_for('show_post', post_id=post.id) }}">
           <span class="material-icons-sharp">
-              edit_note
-              </span>
-          <p>Edit</p>
-      </a>
+              chat_bubble_outline
+          </span>
+          <p>{{ post.comments|length }}</p>
+        </a>
 
-      <a href="{{url_for('delete_post', post_id=post.id)}}">
+
+        <a href="{{ url_for('show_post', post_id=post.id) }}">
           <span class="material-icons-sharp">
-              delete
-              </span>
-          <p>delete </p>
-      </a>
+              equalizer
+          </span>
+          <p class="impression-count">{{ post.post_impressions }} </p>
+        </a>
+
+        <a href="{{url_for('edit_post', post_id=post.id)}}">
+            <span class="material-icons-sharp">
+                edit_note
+                </span>
+            <p>Edit</p>
+        </a>
+
+        <a href="#" class="delete-post" data-post-id="{{ post.id }}">
+            <span class="material-icons-sharp">
+                delete
+                </span>
+            <p>delete </p>
+        </a>
       </div>
       {% elif logged_in %}
       <div class="comment-icon">
@@ -185,12 +185,12 @@
 
       <div class="comment-detail">
         {% if logged_in and current_user.id == comment.user.id %}
-          <a href="{{url_for('delete_comment', comment_id=comment.id , post_id=comment.post.id)}}">
-            <span class="material-icons-sharp">
-              clear
-            </span>
-            Delete
-          </a>
+        <a href="#" class="delete-comment" data-comment-id="{{ comment.id }}">
+          <span class="material-icons-sharp">
+            clear
+          </span>
+          Delete
+        </a>
         {% endif %}
 
         <a href="#">
