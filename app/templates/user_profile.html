@@ -67,17 +67,17 @@
                     {% endif %} 
                 </div>
                 <div class="profile-location">
-                    <p><span class="material-icons-sharp">date_range</span>&nbsp;Joined {{ user.created_at.strftime('%B %Y') }}</p>
+                    <p><span class="material-icons-round">date_range</span>&nbsp;Joined {{ user.created_at.strftime('%B %Y') }}</p>
                     {% if user.location %}
-                    <p><span class="material-icons-sharp">room</span>&nbsp;{{ user.location }}</p>
+                    <p><span class="material-icons-round">room</span>&nbsp;{{ user.location }}</p>
                     {% endif %} 
                 </div>
                 <!-- <div class="profile-location">
-                    <p class="profile-impression-count"><span class="material-icons-sharp">equalizer</span> &nbsp; <span class="count-value" style="font-size: 0.7rem;">{{ user.profile_impressions }}</span> </p>
+                    <p class="profile-impression-count"><span class="material-icons-round">equalizer</span> &nbsp; <span class="count-value" style="font-size: 0.7rem;">{{ user.profile_impressions }}</span> </p>
                 </div> -->
                 <div class="profile-location">
                     {% if user.bio_url %}
-                    <p><span class="material-icons-sharp">insert_link</span> <a href="{{ user.bio_url }}" target="_blank" >&nbsp; {{ user.bio_url }}</a></p>
+                    <p><span class="material-icons-round">insert_link</span> <a href="{{ user.bio_url }}" target="_blank" >&nbsp; {{ user.bio_url }}</a></p>
                     {% endif %} 
                 </div>
              
@@ -134,11 +134,11 @@
                             <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
                                 <span class="likes-wrapper">
                                     {% if post.likes == 1 %}
-                                        <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                                        <span class="heart-emoji red-heart"><span class="material-icons-round">
                                             favorite
                                         </span></span>
                                     {% else %}
-                                        <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                                        <span class="heart-emoji empty-heart"><span class="material-icons-round">
                                             favorite_border
                                         </span></span>
                                     {% endif %}
@@ -151,7 +151,7 @@
                             {% if current_user != user %}
                             
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     chat_bubble_outline
                                 </span>
                                 <p>{{ post.comments|length }}</p>
@@ -159,14 +159,14 @@
 
 
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     equalizer
                                 </span>
                                 <p class="impression-count">{{ post.post_impressions }} </p>
                             </a>
 
                             <a href="#">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     more_horiz
                                     </span>
                                 <p>{{ post.created_at.strftime('%H:%M · %B %Y') }} </p>
@@ -175,14 +175,14 @@
                             {% else %}
 
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     chat_bubble_outline
                                 </span>
                                 <p>{{ post.comments|length }}</p>
                             </a>
 
                             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     equalizer
                                 </span>
                                 <p class="impression-count">{{ post.post_impressions }} </p>
@@ -190,14 +190,14 @@
 
 
                             <a href="{{url_for('edit_post', post_id=post.id)}}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     edit_note
                                     </span>
                                 <p>Edit</p>
                             </a>
 
                             <a href="#" class="delete-post" data-post-id="{{ post.id }}">
-                                <span class="material-icons-sharp">
+                                <span class="material-icons-round">
                                     delete
                                     </span>
                                 <p>delete </p>

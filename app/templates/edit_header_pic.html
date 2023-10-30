@@ -5,7 +5,7 @@
 <div class="user-post main-bg-color">
 <div class="content">
     <div class="setting-sec">
-        <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
+        <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-round">arrow_back_ios</span></button></a></h2>
     </div>
 
     {% if current_user.header_picture %}
@@ -18,7 +18,7 @@
         {{ form.csrf_token }}
         <div class="custom-input">
             {{ form.header_picture(id="HeaderFile", class="custom-image-input")  }}
-            <label for="HeaderFile" class="custom-image-label"><span class="material-icons-sharp">panorama</span>Upload photo...</label>
+            <label for="HeaderFile" class="custom-image-label"><span class="material-icons-round">panorama</span>Upload photo...</label>
         </div>
         {% if form.header_picture.errors %}
         <ul class="errors">

@@ -9,6 +9,7 @@
 
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='css/root.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/aside.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
@@ -39,7 +40,7 @@
                 </div>
 
                 <div class="close" id="close-btn">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         close
                     </span>
                 </div>
@@ -53,7 +54,7 @@
                 {% if not logged_in: %}
 
                 <a href="{{ url_for('all') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         travel_explore
                     </span>
                     <h3>Explore</h3>
@@ -61,7 +62,7 @@
 
 
                 <a href="#" id="dark-mode-toggle">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         dark_mode
                     </span>
                     <h3>Theme</h3>
@@ -69,7 +70,7 @@
 
 
                 <a href="{{ url_for('login') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         login
                     </span>
                     <h3>Login</h3>
@@ -79,7 +80,7 @@
 
                
                 <a href="{{ url_for('register') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         app_registration
                     </span>
                     <h3>Register</h3>
@@ -103,7 +104,7 @@
                         <div class="info">
                             <p>Hey, <b>{{current_user.username}}</b></p>
                             {% if current_user.birthday %}
-                            <p style="font-size: smaller;"> <span class="material-icons-sharp" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
+                            <p style="font-size: smaller;"> <span class="material-icons-round" style="font-size: small;">cake</span> {{ current_user.birthday.strftime('%B %d, %Y') }}</p>
                             {% endif %}
                         </div>
 
@@ -112,14 +113,14 @@
 
 
                 <a href="{{ url_for('home_page') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         home
                     </span>
                     <h3>Home</h3>
                 </a>
 
                 <!-- <a id="home-page" href="#">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         home
                     </span>
                     <h3>Home 2</h3>
@@ -127,7 +128,7 @@
 
 
                 <a href="{{ url_for('all') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         travel_explore
                     </span>
                     <h3>Explore</h3>
@@ -135,14 +136,14 @@
 
 
                 <a href="{{ url_for('user_profile', user_id=current_user.id) }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         person_outline
                     </span>
                     <h3>Profile</h3>
                 </a>
 
                 <a href="{{ url_for('alert') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         notifications
                     </span>
                     <h3>Alert</h3>
@@ -151,28 +152,28 @@
                 
 
                 <a href="{{ url_for('setting') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         settings
                     </span>
                     <h3>Setting</h3>
                 </a>
      
                 <a class="post-btn" href="{{ url_for('new_post') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         add
                     </span>
                     <h3>Post</h3>
                 </a>
 
                 <a href="#" id="dark-mode-toggle">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         dark_mode
                     </span>
                     <h3>Theme</h3>
                 </a>
 
                 <a href="{{ url_for('logout') }}">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         logout
                     </span>
                     <h3>Logout</h3>
@@ -201,33 +202,33 @@
                     <!-- search ...................................................... -->
                     <form action="{{url_for('search')}}" method="GET" class="search-form">
                         <input type="text" name="query" placeholder="  Search for posts and users...">
-                        <button type="submit"><span class="material-icons-sharp">search</span></button>
+                        <button type="submit"><span class="material-icons-round">search</span></button>
                     </form>
                     
 
                     {% if logged_in %}
-                    <h3><span class="material-icons-sharp">insights</span>Profile Analysis</h3>
+                    <h3><span class="material-icons-round">insights</span>Profile Analysis</h3>
                     <div class="analysis">
                         <div class="tab">
-                            <h3 class="analysis-title"><span class="material-icons-sharp">perm_contact_calendar</span>Pofile</h3>
+                            <h3 class="analysis-title"><span class="material-icons-round">perm_contact_calendar</span>Pofile</h3>
                             <div><p>UID:</p><h3 id="user-uid">Loading...</h3></div>
                             <div><p>Profile Visits:</p><h3 id="profile-impressions">Loading...</h3></div>
                         </div>
                         <div class="tab">
-                            <h3 class="analysis-title"><span class="material-icons-sharp">article</span>Posts</h3>
+                            <h3 class="analysis-title"><span class="material-icons-round">article</span>Posts</h3>
                             <div><p>Published Posts::</p><h3 id="total-posts">Loading...</h3></div>
                             <div><p>Post Impressions:</p><h3 id="total-posts-impressions">Loading...</h3></div>
                             <div><p>Top Post by Views:</p><h3 id="most-posts-impressions">Loading...</h3></div>
                         </div>
 
                         <div class="tab">
-                            <h3 class="analysis-title"><span class="material-icons-sharp">chat</span>Comments</h3>
+                            <h3 class="analysis-title"><span class="material-icons-round">chat</span>Comments</h3>
                             <div><p>Comments Made:</p><h3 id="total-comments">Loading...</h3></div>
                             <div><p>Comment Impressions:</p><h3 id="total-comments-impressions">Loading...</h3></div>
                             <div><p>Top Comment:</p><h3 id="most-comments-impressions">Loading...</h3></div>
                         </div>
                         <div class="tab">
-                            <h3 class="analysis-title"><span class="material-icons-sharp">favorite</span>Likes</h3>
+                            <h3 class="analysis-title"><span class="material-icons-round">favorite</span>Likes</h3>
                             <!-- <div><p>Total given Likes:</p><h3 id="total-given-likes">Loading...</h3></div> -->
                             <div><p>Leading Post:</p><h3 id="most-received-likes">Loading...</h3></div>
                             <div><p>Likes Received:</p><h3 id="total-received-likes">Loading...</h3></div>
@@ -250,7 +251,7 @@
             </div>
             <div class="right-sec-about">
                 <a id="about-page" href="#">
-                    <span class="material-icons-sharp">
+                    <span class="material-icons-round">
                         contact_support
                     </span>
                     <h3>About NexCrow</h3>

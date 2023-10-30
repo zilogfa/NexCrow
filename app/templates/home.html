@@ -33,11 +33,11 @@
             <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
                 <span class="likes-wrapper">
                     {% if post.likes == 1 %}
-                        <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                        <span class="heart-emoji red-heart"><span class="material-icons-round">
                             favorite
                         </span></span>
                     {% else %}
-                        <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                        <span class="heart-emoji empty-heart"><span class="material-icons-round">
                             favorite_border
                         </span></span>
                     {% endif %}
@@ -45,13 +45,13 @@
                 </span>
             </a>
             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                <span class="material-icons-sharp">
+                <span class="material-icons-round">
                     chat_bubble_outline
                 </span>
                 <p>{{ post.comments|length }} </p>
             </a>
             <a href="{{ url_for('show_post', post_id=post.id) }}">
-                <span class="material-icons-sharp">
+                <span class="material-icons-round">
                     equalizer
                 </span>
                 <p class="impression-count">{{ post.post_impressions }}</p>

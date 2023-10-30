@@ -5,7 +5,7 @@
 <div class="user-post main-bg-color">
 <div class="content">
     <div class="setting-sec">
-        <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
+        <h2><a href="{{url_for('setting')}}"><button class="btn-back-setting"><span class="material-icons-round">arrow_back_ios</span></button></a></h2>
     </div>
 
     <div class="profile-img setting-img">
@@ -20,7 +20,7 @@
         {{ form.csrf_token }}
         <div class="custom-input">
         {{ form.profile_picture(id="editProfileImage", class="custom-image-input") }} 
-        <label for="editProfileImage" class="custom-image-label"><span class="material-icons-sharp">portrait</span>Choose profile picture...</label>
+        <label for="editProfileImage" class="custom-image-label"><span class="material-icons-round">portrait</span>Choose profile picture...</label>
             {% if form.profile_picture.errors %}
             <ul class="errors">
                 {% for error in form.profile_picture.errors %}

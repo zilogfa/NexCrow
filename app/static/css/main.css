@@ -393,7 +393,7 @@ main .profile-img{
     height: 12rem;
     width: 12rem;
     border-radius: 50%;
-    background-color: var(--color-white);
+    background-color: var(--color-background);
     border: solid 0.5rem var(--color-white);
     overflow: hidden;
     transition: all 0.3s ease;
@@ -839,8 +839,12 @@ main .alert-sec .alert-body ol{
 
 main .alert-sec .alert-body img{
     width: 3rem;
+    transition: all 0.3s ease;
 }
 
+main .alert-sec .alert-body img:hover{
+    scale: 1.5;
+}
 
 
 

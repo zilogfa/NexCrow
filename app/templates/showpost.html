@@ -42,11 +42,11 @@
         <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
             <span class="likes-wrapper">
                 {% if post.likes == 1 %}
-                    <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                    <span class="heart-emoji red-heart"><span class="material-icons-round">
                         favorite_border
                     </span></span>
                 {% else %}
-                    <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                    <span class="heart-emoji empty-heart"><span class="material-icons-round">
                         favorite_border
                     </span></span>
                 {% endif %}
@@ -55,7 +55,7 @@
         </a>
 
         <a href="{{ url_for('show_post', post_id=post.id) }}">
-          <span class="material-icons-sharp">
+          <span class="material-icons-round">
               chat_bubble_outline
           </span>
           <p>{{ post.comments|length }}</p>
@@ -63,21 +63,21 @@
 
 
         <a href="{{ url_for('show_post', post_id=post.id) }}">
-          <span class="material-icons-sharp">
+          <span class="material-icons-round">
               equalizer
           </span>
           <p class="impression-count">{{ post.post_impressions }} </p>
         </a>
 
         <a href="{{url_for('edit_post', post_id=post.id)}}">
-            <span class="material-icons-sharp">
+            <span class="material-icons-round">
                 edit_note
                 </span>
             <p>Edit</p>
         </a>
 
         <a href="#" class="delete-post" data-post-id="{{ post.id }}">
-            <span class="material-icons-sharp">
+            <span class="material-icons-round">
                 delete
                 </span>
             <p>delete </p>
@@ -88,11 +88,11 @@
         <a href="#" class="like-button" data-post-id="{{ post.id }}" {% if current_user and post in current_user.liked_posts %}class="liked"{% endif %} onclick="likePost(event, this); return false;">
             <span class="likes-wrapper">
                 {% if post.likes == 1 %}
-                    <span class="heart-emoji red-heart"><span class="material-icons-sharp">
+                    <span class="heart-emoji red-heart"><span class="material-icons-round">
                         favorite_border
                     </span></span>
                 {% else %}
-                    <span class="heart-emoji empty-heart"><span class="material-icons-sharp">
+                    <span class="heart-emoji empty-heart"><span class="material-icons-round">
                         favorite_border
                     </span></span>
                 {% endif %}
@@ -101,14 +101,14 @@
         </a>
 
         <a href="#">
-            <span class="material-icons-sharp" onclick="return false;">
+            <span class="material-icons-round" onclick="return false;">
                 chat_bubble_outline
             </span>
             <p>{{ post.comments|length }}</p>
         </a>
 
         <a href="{{ url_for('show_post', post_id=post.id) }}">
-          <span class="material-icons-sharp">
+          <span class="material-icons-round">
               equalizer
           </span>
           <p class="impression-count">{{ post.post_impressions }} </p>
@@ -186,7 +186,7 @@
       <div class="comment-detail">
         {% if logged_in and current_user.id == comment.user.id %}
         <a href="#" class="delete-comment" data-comment-id="{{ comment.id }}">
-          <span class="material-icons-sharp">
+          <span class="material-icons-round">
             clear
           </span>
           Delete
@@ -194,7 +194,7 @@
         {% endif %}
 
         <a href="#">
-          <span class="material-icons-sharp">
+          <span class="material-icons-round">
               equalizer
           </span>
           <p class="comment-impression-count">&nbsp;{{ comment.comment_impressions }}</p>

@@ -17,7 +17,7 @@
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 {% for message in messages %}
-                <p style="color:var(--color-danger); display: flex; align-items: center; gap: 1rem; padding: 0.5rem ;font-weight: bolder;"><span class="material-icons-sharp">warning</span> {{ message }}</p>
+                <p style="color:var(--color-danger); display: flex; align-items: center; gap: 1rem; padding: 0.5rem ;font-weight: bolder;"><span class="material-icons-round">warning</span> {{ message }}</p>
                 {% endfor %}
                 {% else %}
                     <a style="color:var(--color-danger); font-weight:500; text-decoration:underline;" href="{{url_for('register')}}">Don't have an account? Signup!</a>

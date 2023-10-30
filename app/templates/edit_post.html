@@ -5,7 +5,7 @@
 <div class="user-post main-bg-color">
 <div class="content">
     <div class="setting-sec">
-        <h2><a href="{{url_for('user_profile', user_id=current_user.id)}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
+        <h2><a href="{{url_for('user_profile', user_id=current_user.id)}}"><button class="btn-back-setting"><span class="material-icons-round">arrow_back_ios</span></button></a></h2>
     </div>
 
 <p>Max 280 Char</p>
@@ -14,7 +14,7 @@
     {{ form.body }} <br>
     <div class="custom-input">
         {{ form.post_picture(id="editImage", class="custom-image-input")  }}
-        <label for="editImage" class="custom-image-label"><span class="material-icons-sharp">portrait</span>Add/Change picture...</label>
+        <label for="editImage" class="custom-image-label"><span class="material-icons-round">portrait</span>Add/Change picture...</label>
     </div>
     {% if form.post_picture.errors %}
     <ul class="errors">
