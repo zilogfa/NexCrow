@@ -31,8 +31,8 @@
         <!-- Profile | User Details -->
         <div class="profile-follow">
             <div class="right-sec">
-                <p><strong id="followersCount">{{ followers|length }}</strong> Followers</p>
-                <p><strong>{{ followed|length }}</strong> Following</p>
+                <p><strong id="followersCount">{{ followers|length }}</strong> <a href="{{url_for('user_followers', user_id=user.id)}}">Followers</a></p>
+                <p><strong>{{ followed|length }}</strong> <a href="{{url_for('user_following', user_id=user.id)}}">Following</a></p>
                 <p><strong>{{ current_user.posts|length }}</strong> Posts</p>
 
                 <!-- EDIT PROFILE BTN if current USER-->

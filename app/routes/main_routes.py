@@ -330,7 +330,25 @@ def user_profile(user_id):
     else:
         flash('User not found.')
         return redirect(url_for('home_page'))
+    
+#--------------------- followers / following PAGE----------------------------------
+@app.route('/followers/<int:user_id>')
+@login_required
+def user_followers(user_id):
+    user = User.query.get(user_id)
+    if user:
+        followers = user.followers.all()
+        return render_template('followers.html', followers=followers, user=user, current_user=current_user,logged_in=current_user.is_authenticated)  
+    return redirect(url_for('home_page'))
 
+@app.route('/following/<int:user_id>')
+@login_required
+def user_following(user_id):
+    user = User.query.get(user_id)
+    if user:
+        following = user.followed.all()
+        return render_template('following.html', following=following, user=user, current_user=current_user,logged_in=current_user.is_authenticated)       
+    return redirect(url_for('home_page'))
 # --------------------- Post Page by ID --------------------------------------
 @app.route('/show_post/<int:post_id>', methods=['GET', 'POST'])
 def show_post(post_id):

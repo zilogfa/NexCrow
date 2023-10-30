@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{user.username}}'s Followers</h1>
+
+<div class="user-post">
+<div class="content">
+    <div class="setting-sec">
+        <h2><a href="{{url_for('user_profile', user_id=user.id)}}"><button class="btn-back-setting"><span class="material-icons-sharp">arrow_back_ios</span></button></a></h2>
+    </div>
+</div>
+</div>
+
+{% if followers %}
+    {% for user in followers %}
+        <div class="user-post">
+            <div class="content" >
+                <div class="title follow-users">
+                    <a href="{{ url_for('user_profile', user_id=user.id) }}">
+                    {% if user.profile_picture %}
+                    <img src="{{ url_for('static', filename='profile_pictures/' + user.profile_picture) }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/blank-profile-pic.png') }}">
+                    {% endif %}
+                    {{ user.username }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+<div class="user-post">
+    <div class="content">
+        <h3>No followers</h3>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

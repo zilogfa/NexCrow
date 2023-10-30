@@ -840,3 +840,27 @@ main .alert-sec .alert-body ol{
 main .alert-sec .alert-body img{
     width: 3rem;
 }
+
+
+
+
+main .follow-users a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    font-weight: bold;
+
+}
+
+
+main .search-users a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    font-weight: bold;
+
+}
