@@ -10,6 +10,9 @@ bidict==0.22.1
 blinker==1.6.2
 certifi==2023.7.22
 cffi==1.15.1
+chardet==3.0.4
+click==7.1.2
+dominate==2.5.2
 
 email-validator==2.1.0.post1
 eventlet==0.33.3
@@ -24,7 +27,7 @@ Flask-SQLAlchemy==3.1.1
 Flask-Uploads==0.2.1
 
 Flask-WTF==1.1.1
-
+idna==2.10
 gunicorn==20.1.0
 
 
@@ -44,6 +47,7 @@ pycparser==2.21
 pyttsx3==2.90
 
 pywin32==306;platform_system == "Windows"
+psycopg2-binary==2.9.5
 requests==2.31.0
 
 SQLAlchemy==2.0.17
