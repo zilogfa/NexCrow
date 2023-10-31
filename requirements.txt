@@ -24,8 +24,6 @@ Flask-Login==0.6.2
 Flask-SocketIO==5.3.4
 Flask-SQLAlchemy==3.1.1
 Flask-Uploads==0.2.1
-Flask-WhooshAlchemy==0.56
-Flask-WhooshAlchemy-Redux==0.7.1
 Flask-WTF==1.1.1
 frozenlist==1.4.0
 gevent==22.10.2
@@ -47,12 +45,12 @@ Pillow==10.0.0
 pluggy==1.3.0
 PyAudio==0.2.13
 pycparser==2.21
-pypiwin32==223
+pypiwin32==223; platform_system == "Windows"
 pytest==7.4.2
 python-engineio==4.4.1
 python-socketio==5.8.0
 pyttsx3==2.90
-pywin32==306;platform_system == "Windows"
+pywin32==306; platform_system == "Windows"
 requests==2.31.0
 six==1.16.0
 SpeechRecognition==3.10.0
