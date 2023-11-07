@@ -6,6 +6,7 @@ Table of Contents
 
 - [Installation](#installation)
 - [Setup](#Setup)
+- [Key Features](#features)
 - [Usage](#usage)
 - [Features](#Features)
 - [Technologies Used](#Technologies)
@@ -35,6 +36,14 @@ To get started with NexCrow, ensure you have Python, pip, and a virtual environm
    ```python
    pip install -r requirements.txt
    ```
+## Key Features
+
+- User authentication and profiles.
+- Posting text and images
+- Liking posts and comments.
+- Commenting on posts.
+- Following and unfollowing.
+- Post Impressions & Engagement Analysis.
 
 ## Setup
 
