@@ -9,7 +9,6 @@ Table of Contents
 - [Usage](#usage)
 - [Features](#Features)
 - [Technologies Used](#Technologies)
-- [Contributing](#contributing)
 - [Contact](#contact)
 
 ## Installation
@@ -52,9 +51,16 @@ flask db upgrade
 ## Usage
 
 - Home Page: View posts from followed users, and create new posts.
+- Explore Page: View all public posts from all users.
 - Profile Page: View and edit your user profile.
+- Post Page: Comment on post.
+- Analysis: Detailed reports of how users interact with your content.
 - Search: Search for other users.
-- Alerts and Notifications: Stay up to date with interactions on your posts.
+- Setting Page: Edit your information and change profile and header images.
+- Login Page
+- Register Page
+- Alerts and Notifications Page.
+- About Page
 
 ## Features
 
@@ -67,16 +73,13 @@ flask db upgrade
 
 ## Technologies Used
 
-- Backend: Flask, SQLAlchemy
-- Frontend: HTML, CSS, JavaScript
-- Database: PostgreSQL
+- Backend: Python, Flask, SQLAlchemy, WTForms
+- Frontend: HTML, CSS, JavaScript, Ajax
+- Database: SQLite/PostgreSQL
 - Deployment: Heroku
 
-## Contributing
-
-Contributions to NexCrow are welcome! Please ensure you follow the Contributing Guidelines.
 
 ## Contact
+- Developer: Ali Jafarbeglou - zilogfa@live.com - https://alijafarbeglou.com
+- For any inquiries or issues, please contact
 
-- For any inquiries or issues, please contact:
-  Ali Jafarbeglou - zilogfa@live.com - https://alijafarbeglou.com

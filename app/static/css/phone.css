@@ -5,8 +5,8 @@
     .container{
         width: 98%;
         margin: 0 auto;
-        gap: 1rem;
-        grid-template-columns: 6rem auto 26rem;
+        gap: 1.6rem;
+        grid-template-columns: 6rem auto;
     }
 
     main .user-post{

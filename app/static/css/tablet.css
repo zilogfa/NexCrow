@@ -3,7 +3,8 @@
 
     .container{
         width: 95%;
-        grid-template-columns: 6rem auto 6rem;
+        gap: 2rem;
+        grid-template-columns: 6rem auto;
     }
 
     

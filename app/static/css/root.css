@@ -125,7 +125,8 @@ strong{
     width: 96%;
     margin: 0 auto;
     gap: 1.2rem;
-    grid-template-columns: 12rem 46rem auto;
+    grid-template-columns: 12rem 46rem 23rem;
+    justify-content: center;
 }
 
 /* .container{
