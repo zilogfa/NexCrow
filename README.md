@@ -81,10 +81,10 @@ flask db upgrade
 
 ## Project Structure
 
-Below is the filesystem blueprint for the CrowNexus Flask Social Media platform:
+Below is the filesystem blueprint for the NexCrow Flask Social Media platform:
 
 ```
-CrowNexus/
+NExCrow/
 ├── app/
 │ ├── forms/
 │ │ ├── init.py
