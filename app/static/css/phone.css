@@ -9,6 +9,10 @@
         grid-template-columns: 6rem auto;
     }
 
+    aside .aside-fixed{
+        width: 6rem;
+    }
+
     main .user-post{
         max-width: 76vw;
     }

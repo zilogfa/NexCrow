@@ -6,10 +6,10 @@ Table of Contents
 
 - [Installation](#installation)
 - [Setup](#Setup)
-- [Key Features](#features)
 - [Usage](#usage)
 - [Features](#Features)
 - [Technologies Used](#Technologies)
+- [Project Structure](#structure)
 - [Contact](#contact)
 
 ## Installation
@@ -36,14 +36,6 @@ To get started with NexCrow, ensure you have Python, pip, and a virtual environm
    ```python
    pip install -r requirements.txt
    ```
-## Key Features
-
-- User authentication and profiles.
-- Posting text and images
-- Liking posts and comments.
-- Commenting on posts.
-- Following and unfollowing.
-- Post Impressions & Engagement Analysis.
 
 ## Setup
 
@@ -78,7 +70,7 @@ flask db upgrade
 - Liking posts and comments.
 - Commenting on posts.
 - Following and unfollowing users.
-- Real-time alerts and notifications.
+- Post Impressions & Engagement Analysis.
 
 ## Technologies Used
 
@@ -86,6 +78,57 @@ flask db upgrade
 - Frontend: HTML, CSS, JavaScript, Ajax
 - Database: SQLite/PostgreSQL
 - Deployment: Heroku
+
+## Project Structure
+
+Below is the filesystem blueprint for the CrowNexus Flask Social Media platform:
+
+```
+CrowNexus/
+├── app/
+│ ├── forms/
+│ │ ├── init.py
+│ │ └── main_forms.py
+│ ├── models/
+│ │ ├── init.py
+│ │ └── user.py
+│ ├── routes/
+│ │ ├── init.py
+│ │ └── main_routes.py
+│ ├── static/
+│ │ ├── css/
+│ │ ├── images/
+│ │ ├── post_pictures/
+│ │ ├── profile_pictures/
+│ │ ├── header_pictures/
+│ │ └── js/
+│ ├── templates/
+│ └── init.py
+├── instance/
+├── .gitignore
+├── config.py
+├── Procfile
+├── README.md
+├── requirements.txt
+└── run.py
+```
+
+
+- `app/`: Contains the main application package.
+- `forms/`: Holds form classes for user input.
+- `models/`: Contains ORM models.
+- `routes/`: Defines the routes of the web application.
+- `static/`: Stores static files like CSS, JavaScript, and image assets.
+- `templates/`: Contains the HTML templates for the application.
+- `instance/`: A folder for instance-specific configurations (not tracked by git).
+- `config.py`: Configuration variables for the Flask app.
+- `Procfile`: Used for declaring what commands are run by the application on startup (Heroku specific).
+- `requirements.txt`: Lists all the Python dependencies.
+- `run.py`: The entry point to start the Flask server.
+
+Each directory has an `__init__.py` file to make it a package and potentially include package-level documentation or configuration.
+
+
 
 
 ## Contact
