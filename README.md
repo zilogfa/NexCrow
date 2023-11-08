@@ -84,7 +84,7 @@ flask db upgrade
 Below is the filesystem blueprint for the NexCrow Flask Social Media platform:
 
 ```
-NExCrow/
+NexCrow/
 ├── app/
 │ ├── forms/
 │ │ ├── init.py
